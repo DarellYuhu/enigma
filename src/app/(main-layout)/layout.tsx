@@ -1,8 +1,7 @@
-import React from "react";
-import Sidebar from "../componenets/Sidebar";
 import styles from "./layout.module.css";
-import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutlined";
+import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
 import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
+import Sidebar from "@/componenets/Sidebar";
 
 export default function MainLayout({
   children,
@@ -19,9 +18,9 @@ export default function MainLayout({
 
 const menus: { title: string; link: string; icon: React.ReactNode }[] = [
   {
-    title: "Dashboard",
-    link: "/dashboard",
-    icon: <SettingsSuggestOutlinedIcon />,
+    title: "Trend",
+    link: "/trend",
+    icon: <TrendingUpOutlinedIcon />,
   },
   {
     title: "Projects",

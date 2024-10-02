@@ -16,16 +16,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import styles from "./dashboard.module.css";
-import Card from "@/app/componenets/Card";
-import VisNetworkGraph from "@/app/componenets/VisNetworkGraph";
+import styles from "./trend.module.css";
 import { useQuery } from "@tanstack/react-query";
-import getStatistics from "@/app/api/getStatistics";
-import Chip from "@/app/componenets/Chip";
+import VisNetworkGraph from "@/componenets/VisNetworkGraph";
+import Chip from "@/componenets/Chip";
+import Card from "@/componenets/Card";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-const Dashboard = () => {
+const Trend = () => {
   return (
     <div className={styles.container}>
       <Card title="STATISTIK WAKTU KE WAKTU">
@@ -234,4 +233,4 @@ const verticalBarData = [
   { name: "Group C", value: 300 },
 ];
 
-export default Dashboard;
+export default Trend;
