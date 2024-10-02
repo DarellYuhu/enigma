@@ -1,13 +1,27 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --san-marino-50: #f3f7fb;
+  --san-marino-100: #e4ecf5;
+  --san-marino-200: #cedfef;
+  --san-marino-300: #adcae3;
+  --san-marino-400: #86afd4;
+  --san-marino-500: #6994c8;
+  --san-marino-600: #567cba;
+  --san-marino-700: #4e6fb1;
+  --san-marino-800: #42588b;
+  --san-marino-900: #394b6f;
+  --san-marino-950: #262f45;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --midnight-50: #eef8ff;
+  --midnight-100: #d8eeff;
+  --midnight-200: #bae2ff;
+  --midnight-300: #8ad1ff;
+  --midnight-400: #53b7ff;
+  --midnight-500: #2b96ff;
+  --midnight-600: #1477fc;
+  --midnight-700: #0d5ee8;
+  --midnight-800: #124cbb;
+  --midnight-900: #154493;
+  --midnight-950: #0b1a37;
 }
 
 html,
@@ -17,8 +31,7 @@ body {
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  background-color: var(--san-marino-900);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -28,15 +41,4 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
