@@ -11,6 +11,6 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-y: auto;
   background-color: #e8e8e8;
 }

@@ -1,0 +1,11 @@
+.chip {
+  padding: 7px;
+  background-color: var(--san-marino-300);
+  font-size: 12px;
+  border-radius: 6px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

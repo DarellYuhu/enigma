@@ -4,6 +4,8 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
+  Label,
+  LabelList,
   Legend,
   Line,
   LineChart,
@@ -15,17 +17,20 @@ import {
   YAxis,
 } from "recharts";
 import styles from "./dashboard.module.css";
+import Card from "@/app/componenets/Card";
+import VisNetworkGraph from "@/app/componenets/VisNetworkGraph";
+import { useQuery } from "@tanstack/react-query";
+import getStatistics from "@/app/api/getStatistics";
+import Chip from "@/app/componenets/Chip";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const Dashboard = () => {
-  // let data = await fetch("http://192.168.1.90:2225/api/v1");
-  // console.log(data);
   return (
     <div className={styles.container}>
-      <div>
+      <Card title="STATISTIK WAKTU KE WAKTU">
         <ResponsiveContainer width={"100%"} height={300}>
-          <BarChart data={data}>
+          <BarChart data={statisticData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
@@ -33,8 +38,9 @@ const Dashboard = () => {
             <Bar dataKey="pv" fill="#8884d8" />
           </BarChart>
         </ResponsiveContainer>
+      </Card>
 
-        {/* <ResponsiveContainer width="100%" height="100%">
+      {/* <ResponsiveContainer width="100%" height="100%">
         <LineChart
           width={500}
           height={300}
@@ -54,35 +60,125 @@ const Dashboard = () => {
           <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer> */}
-      </div>
 
-      <div>
+      <Card title="TOP KREATOR">
         <ResponsiveContainer width={"100%"} height={300}>
-          <PieChart width={800} height={400}>
+          <PieChart>
             <Pie
               data={pieData}
-              cx={110}
-              cy={200}
               innerRadius={50}
               outerRadius={80}
               fill="#8884d8"
               paddingAngle={5}
               dataKey="value"
             >
-              {data.map((entry, index) => (
+              {statisticData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={COLORS[index % COLORS.length]}
                 />
               ))}
             </Pie>
-            <Legend layout="vertical" align="right" />
+            <Legend layout="vertical" align="right" verticalAlign="middle" />
             <Tooltip />
           </PieChart>
         </ResponsiveContainer>
-      </div>
+      </Card>
 
-      <div></div>
+      <Card title="INTEREST NETWORK">
+        <VisNetworkGraph />
+      </Card>
+
+      <Card title="PETA HASHTAG">
+        <VisNetworkGraph />
+      </Card>
+
+      <Card title="RINCIAN HASHTAG MENURUT SEGMENT AUDIENS">
+        <div className={styles.fifthGrid}>
+          <ResponsiveContainer width={"100%"} height={300}>
+            <BarChart data={verticalBarData} layout="vertical">
+              <XAxis type="number" />
+              <YAxis type="category" hide dataKey="name" />
+              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" />
+              <Legend />
+              <Bar dataKey="value" fill="#8884d8">
+                <LabelList
+                  dataKey="name"
+                  position="insideLeft"
+                  style={{ fill: "#fff", fontSize: "14px" }}
+                />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+          <ResponsiveContainer width={"100%"} height={300}>
+            <BarChart data={verticalBarData} layout="vertical">
+              <XAxis type="number" />
+              <YAxis type="category" hide dataKey="name" />
+              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" />
+              <Legend />
+              <Bar dataKey="value" fill="#8884d8">
+                <LabelList
+                  dataKey="name"
+                  position="insideLeft"
+                  style={{ fill: "#fff", fontSize: "14px" }}
+                />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+          <ResponsiveContainer width={"100%"} height={300}>
+            <BarChart data={verticalBarData} layout="vertical">
+              <XAxis type="number" />
+              <YAxis type="category" hide dataKey="name" />
+              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" />
+              <Legend />
+              <Bar dataKey="value" fill="#8884d8">
+                <LabelList
+                  dataKey="name"
+                  position="insideLeft"
+                  style={{ fill: "#fff", fontSize: "14px" }}
+                />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </Card>
+
+      <Card title="INFORMASI HASHTAG">
+        <h4>#chelsea</h4>
+        <div className={styles.tagInfo}>
+          <Chip text="STATISTIK 2024-09-01 SD 2024-10-01" />
+          <Chip text="STATISTIK 2024-09-01 SD 2024-10-01" />
+          <Chip text="STATISTIK 2024-09-01 SD 2024-10-01" />
+        </div>
+
+        <h5>TOPIK TERKAIT</h5>
+
+        <div className={styles.topik}>
+          <Chip text="Romance" />
+          <Chip text="Other Transformation" />
+          <Chip text="Family" />
+        </div>
+        <h4>Kategori Usia</h4>
+        <ResponsiveContainer width={"100%"} height={180}>
+          <BarChart data={verticalBarData} layout="vertical">
+            <XAxis type="number" />
+            <YAxis type="category" hide dataKey="name" />
+            <Tooltip />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Legend />
+            <Bar dataKey="value" fill="#8884d8">
+              <LabelList
+                dataKey="name"
+                position="insideLeft"
+                style={{ fill: "#fff", fontSize: "14px" }}
+              />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </Card>
     </div>
   );
 };
@@ -94,7 +190,7 @@ const pieData = [
   { name: "Group D", value: 200 },
 ];
 
-const data = [
+const statisticData = [
   {
     name: "Page A",
     uv: 4000,
@@ -130,6 +226,12 @@ const data = [
     uv: 3490,
     pv: 4300,
   },
+];
+
+const verticalBarData = [
+  { name: "Group A", value: 400 },
+  { name: "Group B", value: 300 },
+  { name: "Group C", value: 300 },
 ];
 
 export default Dashboard;
