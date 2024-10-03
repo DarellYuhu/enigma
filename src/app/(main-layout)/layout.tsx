@@ -1,6 +1,5 @@
+import { ChartNoAxesCombined, FolderOpenDot } from "lucide-react";
 import styles from "./layout.module.css";
-import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
-import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
 import Sidebar from "@/componenets/Sidebar";
 
 export default function MainLayout({
@@ -20,11 +19,11 @@ const menus: { title: string; link: string; icon: React.ReactNode }[] = [
   {
     title: "Trend",
     link: "/trend",
-    icon: <TrendingUpOutlinedIcon />,
+    icon: <ChartNoAxesCombined />,
   },
   {
     title: "Projects",
     link: "/projects",
-    icon: <FolderOpenOutlinedIcon />,
+    icon: <FolderOpenDot />,
   },
 ];
