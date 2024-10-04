@@ -1,3 +1,7 @@
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/violet.css";
+@import "@radix-ui/colors/mauve.css";
+
 :root {
   --san-marino-50: #f3f7fb;
   --san-marino-100: #e4ecf5;
@@ -58,6 +62,18 @@
   --magenta-fuchsia-800: #a00896;
   --magenta-fuchsia-900: #820d78;
   --magenta-fuchsia-950: #580050;
+
+  --red-50: #fff0f0;
+  --red-100: #ffdede;
+  --red-200: #ffc3c3;
+  --red-300: #ff9a9a;
+  --red-400: #ff5f5f;
+  --red-500: #ff2e2e;
+  --red-600: #f41010;
+  --red-700: #ce0707;
+  --red-800: #aa0a0a;
+  --red-900: #8c1010;
+  --red-950: #4d0202;
 }
 
 html,

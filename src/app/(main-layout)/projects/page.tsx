@@ -2,7 +2,6 @@
 
 import {
   createColumnHelper,
-  createTable,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
@@ -16,16 +15,9 @@ import {
   Eye,
   ListMinus,
   Pencil,
-  View,
 } from "lucide-react";
 import EditPanel from "@/componenets/EditPanel";
-import { useState } from "react";
-import {
-  Description,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
+import * as Dialog from "@radix-ui/react-dialog";
 
 type Projects = {
   name: string;
@@ -98,16 +90,17 @@ const columns = [
         <button className={styles.view}>
           <Eye />
         </button>
-        <button className={styles.edit}>
-          <Pencil />
-        </button>
+        <Dialog.Trigger asChild>
+          <button className={styles.edit}>
+            <Pencil />
+          </button>
+        </Dialog.Trigger>
       </div>
     ),
   },
 ];
 
 const Projects = () => {
-  const [open, setOpen] = useState(false);
   const table = useReactTable({
     columns,
     data,
@@ -115,7 +108,7 @@ const Projects = () => {
     getSortedRowModel: getSortedRowModel(),
   });
   return (
-    <div>
+    <Dialog.Root>
       <table className={styles.table}>
         <thead className={styles.thead}>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -143,29 +136,8 @@ const Projects = () => {
           ))}
         </tbody>
       </table>
-
-      <button onClick={() => setOpen(true)}>Open dialog</button>
-
-      {/* <EditPanel open={open} setOpen={setOpen} /> */}
-      <Dialog className={styles.dialog} open={open} onClose={setOpen}>
-        <div>
-          <DialogPanel>
-            <DialogTitle>Deactivate account</DialogTitle>
-            <Description>
-              This will permanently deactivate your account
-            </Description>
-            <p>
-              Are you sure you want to deactivate your account? All of your data
-              will be permanently removed.
-            </p>
-            <div>
-              <button onClick={() => setOpen(false)}>Cancel</button>
-              <button onClick={() => setOpen(false)}>Deactivate</button>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
-    </div>
+      <EditPanel />
+    </Dialog.Root>
   );
 };
 
