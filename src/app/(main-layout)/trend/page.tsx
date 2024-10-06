@@ -3,85 +3,53 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Cell,
-  Label,
   LabelList,
   Legend,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import styles from "./trend.module.css";
-import { useQuery } from "@tanstack/react-query";
 import VisNetworkGraph from "@/componenets/VisNetworkGraph";
 import Chip from "@/componenets/Chip";
 import Card from "@/componenets/Card";
-
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+import CustomBarChart from "@/componenets/CustomBarChart";
+import CustomPieChart from "@/componenets/CustomPieChart";
+import Select from "@/componenets/Select";
+import CustomLineChart from "@/componenets/CustomLineChart";
 
 const Trend = () => {
   return (
-    <div className={styles.container}>
+    <div className={styles.Container}>
       <Card title="STATISTIK WAKTU KE WAKTU">
-        <ResponsiveContainer width={"100%"} height={300}>
-          <BarChart data={statisticData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="pv" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
+        <div className={styles.SelectionGroup}>
+          <Select
+            list={["play", "like", "share", "comment"]}
+            onValueChange={(value) => console.log(value)}
+          />
+          <Select
+            list={["play", "like", "share", "comment"]}
+            onValueChange={(value) => console.log(value)}
+          />
+          <Select
+            list={["play", "like", "share", "comment"]}
+            onValueChange={(value) => console.log(value)}
+          />
+        </div>
+
+        {/* <CustomBarChart data={statisticData} labelKey="name" dataKey="uv" /> */}
+        <CustomLineChart data={statisticData} labelKey="name" dataKey="uv" />
       </Card>
 
-      {/* <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-        </LineChart>
-      </ResponsiveContainer> */}
-
       <Card title="TOP KREATOR">
-        <ResponsiveContainer width={"100%"} height={300}>
-          <PieChart>
-            <Pie
-              data={pieData}
-              innerRadius={50}
-              outerRadius={80}
-              fill="#8884d8"
-              paddingAngle={5}
-              dataKey="value"
-            >
-              {statisticData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Legend layout="vertical" align="right" verticalAlign="middle" />
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
+        <div className={styles.SelectionGroup}>
+          <Select
+            list={["play", "like", "share", "comment"]}
+            onValueChange={(value) => console.log(value)}
+          />
+        </div>
+        <CustomPieChart data={pieData} dataKey="value" />
       </Card>
 
       <Card title="INTEREST NETWORK">
@@ -147,7 +115,7 @@ const Trend = () => {
 
       <Card title="INFORMASI HASHTAG">
         <h4>#chelsea</h4>
-        <div className={styles.tagInfo}>
+        <div className={styles.TagInfo}>
           <Chip text="STATISTIK 2024-09-01 SD 2024-10-01" />
           <Chip text="STATISTIK 2024-09-01 SD 2024-10-01" />
           <Chip text="STATISTIK 2024-09-01 SD 2024-10-01" />
@@ -155,7 +123,7 @@ const Trend = () => {
 
         <h5>TOPIK TERKAIT</h5>
 
-        <div className={styles.topik}>
+        <div className={styles.Topik}>
           <Chip text="Romance" />
           <Chip text="Other Transformation" />
           <Chip text="Family" />
