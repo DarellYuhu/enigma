@@ -1,6 +1,11 @@
+"use client";
+
 import { ChartNoAxesCombined, FolderOpenDot } from "lucide-react";
 import styles from "./layout.module.css";
 import Sidebar from "@/componenets/Sidebar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function MainLayout({
   children,
@@ -8,10 +13,12 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={styles.main}>
-      <Sidebar menus={menus} />
-      <div className={styles.page}>{children}</div>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className={styles.main}>
+        <Sidebar menus={menus} />
+        <div className={styles.page}>{children}</div>
+      </div>
+    </QueryClientProvider>
   );
 }
 

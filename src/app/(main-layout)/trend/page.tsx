@@ -1,4 +1,5 @@
 "use client";
+
 import styles from "./trend.module.css";
 import VisNetworkGraph from "@/componenets/VisNetworkGraph";
 import Chip from "@/componenets/Chip";
@@ -8,8 +9,24 @@ import CustomPieChart from "@/componenets/CustomPieChart";
 import Select from "@/componenets/Select";
 import CustomLineChart from "@/componenets/CustomLineChart";
 import VerticalBarChart from "@/componenets/VerticalBarChart";
+import { useQuery } from "@tanstack/react-query";
+import getTrends from "@/api/getTrends";
 
 const Trend = () => {
+  const trends = useQuery({
+    queryKey: ["trends"],
+    queryFn: () =>
+      getTrends({
+        project: "0",
+        since: "2024-07-8",
+        until: "2024-10-8",
+        string: "l",
+      }),
+  });
+  if (trends.status === "pending") {
+    return <div>Loading...</div>;
+  }
+  console.log(trends.data, "anjay");
   return (
     <div className={styles.Container}>
       <Card title="STATISTIK WAKTU KE WAKTU">
@@ -28,9 +45,32 @@ const Trend = () => {
           />
         </div>
 
-        <CustomBarChart data={statisticData} labelKey="name" dataKey="uv" />
+        <CustomBarChart
+          data={trends.data?.daily}
+          labelKey="play"
+          dataKey="date"
+        />
         {/* <CustomLineChart data={statisticData} labelKey="name" dataKey="uv" /> */}
       </Card>
+
+      <div className={styles.SecondBox}>
+        <Card title="WEEKLY" padding={false}>
+          <CustomLineChart
+            data={trends.data?.weekly}
+            labelKey="date"
+            dataKey="play"
+            height={100}
+          />
+        </Card>
+        <Card title="MONTHLY" padding={false}>
+          <CustomLineChart
+            data={trends.data?.monthly}
+            labelKey="date"
+            dataKey="play"
+            height={100}
+          />
+        </Card>
+      </div>
 
       <Card title="TOP KREATOR">
         <div className={styles.SelectionGroup}>
@@ -39,7 +79,7 @@ const Trend = () => {
             onValueChange={(value) => console.log(value)}
           />
         </div>
-        <CustomPieChart data={pieData} dataKey="value" />
+        <CustomPieChart data={pieData} dataKey="value" labelKey="name" />
       </Card>
 
       <Card title="INTEREST NETWORK">

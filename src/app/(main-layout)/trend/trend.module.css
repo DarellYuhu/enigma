@@ -1,38 +1,13 @@
 .Container {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-auto-flow: row dense;
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   padding: 1rem;
-}
-
-.Container :nth-child(1) {
-  grid-column: span 8;
-}
-
-.Container :nth-child(2) {
-  grid-column: span 4;
-}
-
-.Container :nth-child(3) {
-  grid-column: span 6;
-}
-
-.Container :nth-child(4) {
-  grid-column: span 6;
-}
-
-.Container :nth-child(5) {
-  grid-column: span 8;
 }
 
 .Container :nth-child(5) .FifthGrid {
   display: flex;
   flex-direction: row;
-}
-
-.Container :nth-child(6) {
-  grid-column: span 4;
 }
 
 .TagInfo {
@@ -53,4 +28,10 @@
   gap: 8px;
   justify-content: center;
   margin-bottom: 10px;
+}
+
+.SecondBox {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }

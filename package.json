@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/charts": "^2.2.1",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-form": "^0.1.0",

@@ -1,7 +1,8 @@
+import { Pie } from "@ant-design/charts";
 import {
   Cell,
   Legend,
-  Pie,
+  // Pie,
   PieChart,
   ResponsiveContainer,
   Tooltip,
@@ -10,28 +11,49 @@ import {
 type Props = {
   data: any[];
   dataKey: string;
+  labelKey: string;
 };
 
-const CustomPieChart = ({ data, dataKey }: Props) => {
+const CustomPieChart = ({ data, dataKey, labelKey }: Props) => {
+  const config = {
+    data,
+    angleField: dataKey,
+    colorField: labelKey,
+    innerRadius: 0.6,
+    label: {
+      text: dataKey,
+      style: {
+        fontWeight: "bold",
+      },
+    },
+    legend: {
+      color: {
+        title: false,
+        position: "right",
+        rowPadding: 5,
+      },
+    },
+  };
   return (
-    <ResponsiveContainer width={"100%"} height={300}>
-      <PieChart>
-        <Pie
-          data={data}
-          innerRadius={50}
-          outerRadius={80}
-          fill="#8884d8"
-          paddingAngle={5}
-          dataKey={dataKey}
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} />
-          ))}
-        </Pie>
-        <Legend layout="vertical" align="center" verticalAlign="bottom" />
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
+    // <ResponsiveContainer width={"100%"} height={300}>
+    //   <PieChart>
+    //     <Pie
+    //       data={data}
+    //       innerRadius={50}
+    //       outerRadius={80}
+    //       fill="#8884d8"
+    //       paddingAngle={5}
+    //       dataKey={dataKey}
+    //     >
+    //       {data.map((entry, index) => (
+    //         <Cell key={`cell-${index}`} />
+    //       ))}
+    //     </Pie>
+    //     <Legend layout="vertical" align="center" verticalAlign="bottom" />
+    //     <Tooltip />
+    //   </PieChart>
+    // </ResponsiveContainer>
+    <Pie {...config} />
   );
 };
 
