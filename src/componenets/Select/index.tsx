@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default ({ list, onValueChange }: Props) => (
-  <Select.Root onValueChange={onValueChange} defaultValue={list[0]}>
+  <Select.Root defaultValue={list[0]}>
     <Select.Trigger className={styles.Trigger}>
       <Select.Value placeholder="Select an option" />
       <Select.Icon className={styles.Icon}>

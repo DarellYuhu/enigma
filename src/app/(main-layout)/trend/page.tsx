@@ -1,15 +1,4 @@
 "use client";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  LabelList,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 import styles from "./trend.module.css";
 import VisNetworkGraph from "@/componenets/VisNetworkGraph";
 import Chip from "@/componenets/Chip";
@@ -18,6 +7,7 @@ import CustomBarChart from "@/componenets/CustomBarChart";
 import CustomPieChart from "@/componenets/CustomPieChart";
 import Select from "@/componenets/Select";
 import CustomLineChart from "@/componenets/CustomLineChart";
+import VerticalBarChart from "@/componenets/VerticalBarChart";
 
 const Trend = () => {
   return (
@@ -38,8 +28,8 @@ const Trend = () => {
           />
         </div>
 
-        {/* <CustomBarChart data={statisticData} labelKey="name" dataKey="uv" /> */}
-        <CustomLineChart data={statisticData} labelKey="name" dataKey="uv" />
+        <CustomBarChart data={statisticData} labelKey="name" dataKey="uv" />
+        {/* <CustomLineChart data={statisticData} labelKey="name" dataKey="uv" /> */}
       </Card>
 
       <Card title="TOP KREATOR">
@@ -61,55 +51,22 @@ const Trend = () => {
       </Card>
 
       <Card title="RINCIAN HASHTAG MENURUT SEGMENT AUDIENS">
-        <div className={styles.fifthGrid}>
-          <ResponsiveContainer width={"100%"} height={300}>
-            <BarChart data={verticalBarData} layout="vertical">
-              <XAxis type="number" />
-              <YAxis type="category" hide dataKey="name" />
-              <Tooltip />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Legend />
-              <Bar dataKey="value" fill="#8884d8">
-                <LabelList
-                  dataKey="name"
-                  position="insideLeft"
-                  style={{ fill: "#fff", fontSize: "14px" }}
-                />
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-          <ResponsiveContainer width={"100%"} height={300}>
-            <BarChart data={verticalBarData} layout="vertical">
-              <XAxis type="number" />
-              <YAxis type="category" hide dataKey="name" />
-              <Tooltip />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Legend />
-              <Bar dataKey="value" fill="#8884d8">
-                <LabelList
-                  dataKey="name"
-                  position="insideLeft"
-                  style={{ fill: "#fff", fontSize: "14px" }}
-                />
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-          <ResponsiveContainer width={"100%"} height={300}>
-            <BarChart data={verticalBarData} layout="vertical">
-              <XAxis type="number" />
-              <YAxis type="category" hide dataKey="name" />
-              <Tooltip />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Legend />
-              <Bar dataKey="value" fill="#8884d8">
-                <LabelList
-                  dataKey="name"
-                  position="insideLeft"
-                  style={{ fill: "#fff", fontSize: "14px" }}
-                />
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+        <div className={styles.FifthGrid}>
+          <VerticalBarChart
+            data={verticalBarData}
+            dataKey="value"
+            labelKey="name"
+          />
+          <VerticalBarChart
+            data={verticalBarData}
+            dataKey="value"
+            labelKey="name"
+          />
+          <VerticalBarChart
+            data={verticalBarData}
+            dataKey="value"
+            labelKey="name"
+          />
         </div>
       </Card>
 
@@ -129,24 +86,15 @@ const Trend = () => {
           <Chip text="Family" />
         </div>
         <h4>Kategori Usia</h4>
-        <ResponsiveContainer width={"100%"} height={180}>
-          <BarChart data={verticalBarData} layout="vertical">
-            <XAxis type="number" />
-            <YAxis type="category" hide dataKey="name" />
-            <Tooltip />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Legend />
-            <Bar dataKey="value" fill="#8884d8">
-              <LabelList
-                dataKey="name"
-                position="insideLeft"
-                style={{ fill: "#fff", fontSize: "14px" }}
-              />
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+        <VerticalBarChart
+          data={verticalBarData}
+          labelKey="name"
+          dataKey="value"
+          height={180}
+        />
       </Card>
     </div>
+    // <div>testing</div>
   );
 };
 

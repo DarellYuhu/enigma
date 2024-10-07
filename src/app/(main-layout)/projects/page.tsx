@@ -1,5 +1,4 @@
 "use client";
-
 import {
   createColumnHelper,
   flexRender,
@@ -20,8 +19,10 @@ import {
 import EditPanel from "@/componenets/EditPanel";
 import * as Dialog from "@radix-ui/react-dialog";
 import Tooltip from "@/componenets/Tooltip";
+import Link from "next/link";
 
 type Projects = {
+  id: string;
   name: string;
   totalVideos: number;
   createdAt: Date;
@@ -94,18 +95,22 @@ const columns = [
         </span>
       );
     },
-    cell: () => (
+    cell: ({
+      row: {
+        original: { id },
+      },
+    }) => (
       <div className={styles.actionContainer}>
         <Tooltip text="View Project Details">
-          <button className={styles.view}>
+          <Link href={`/projects/${id}`} className={styles.view}>
             <Eye />
-          </button>
+          </Link>
         </Tooltip>
         <Tooltip text="Edit">
           <Dialog.Trigger asChild>
-            <button className={styles.edit}>
+            <div className={styles.edit}>
               <Pencil />
-            </button>
+            </div>
           </Dialog.Trigger>
         </Tooltip>
       </div>
@@ -156,6 +161,7 @@ const Projects = () => {
 
 const data: Projects[] = [
   {
+    id: "1",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -163,6 +169,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "2",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -170,6 +177,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "3",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -177,6 +185,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "4",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -184,6 +193,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "5",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -191,6 +201,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "6",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -198,6 +209,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "7",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -205,6 +217,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "8",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -212,6 +225,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "9",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -219,6 +233,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "10",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -226,6 +241,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "11",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -233,6 +249,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "12",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -240,6 +257,7 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "13",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
@@ -247,6 +265,15 @@ const data: Projects[] = [
     status: "active",
   },
   {
+    id: "14",
+    name: "Coding",
+    totalVideos: 10,
+    createdAt: new Date(),
+    keywords: ["coding", "programing", "python", "java", "c++"],
+    status: "active",
+  },
+  {
+    id: "15",
     name: "Coding",
     totalVideos: 10,
     createdAt: new Date(),
