@@ -14,10 +14,12 @@ import {
   CircleAlert,
   Eye,
   ListMinus,
+  MonitorCog,
   Pencil,
 } from "lucide-react";
 import EditPanel from "@/componenets/EditPanel";
 import * as Dialog from "@radix-ui/react-dialog";
+import Tooltip from "@/componenets/Tooltip";
 
 type Projects = {
   name: string;
@@ -82,22 +84,33 @@ const columns = [
       </span>
     ),
   }),
-  {
-    header: "Actions",
-    accessor: "id",
+  columnHelper.display({
+    id: "actions",
+    header: () => {
+      return (
+        <span>
+          <MonitorCog />
+          Actions
+        </span>
+      );
+    },
     cell: () => (
       <div className={styles.actionContainer}>
-        <button className={styles.view}>
-          <Eye />
-        </button>
-        <Dialog.Trigger asChild>
-          <button className={styles.edit}>
-            <Pencil />
+        <Tooltip text="View Project Details">
+          <button className={styles.view}>
+            <Eye />
           </button>
-        </Dialog.Trigger>
+        </Tooltip>
+        <Tooltip text="Edit">
+          <Dialog.Trigger asChild>
+            <button className={styles.edit}>
+              <Pencil />
+            </button>
+          </Dialog.Trigger>
+        </Tooltip>
       </div>
     ),
-  },
+  }),
 ];
 
 const Projects = () => {
