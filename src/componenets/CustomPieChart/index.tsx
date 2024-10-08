@@ -1,4 +1,4 @@
-import { Pie } from "@ant-design/charts";
+import { Pie, PieConfig } from "@ant-design/charts";
 import {
   Cell,
   Legend,
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const CustomPieChart = ({ data, dataKey, labelKey }: Props) => {
-  const config = {
+  const config: PieConfig = {
     data,
     angleField: dataKey,
     colorField: labelKey,
@@ -25,13 +25,24 @@ const CustomPieChart = ({ data, dataKey, labelKey }: Props) => {
       style: {
         fontWeight: "bold",
       },
+      formatter: (_: any, datum: any) =>
+        Intl.NumberFormat("en-US", {
+          notation: "compact",
+          maximumFractionDigits: 1,
+        }).format(datum[dataKey]),
     },
     legend: {
       color: {
         title: false,
-        position: "right",
+        position: "bottom",
         rowPadding: 5,
       },
+    },
+    autoFit: true,
+    style: {
+      stroke: "#475569",
+      inset: 1,
+      radius: 10,
     },
   };
   return (

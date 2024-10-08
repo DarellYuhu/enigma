@@ -1,14 +1,4 @@
-import getColorVariable from "@/utils/getColorVariable";
 import { Column, ColumnConfig } from "@ant-design/charts";
-import {
-  // Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 
 type Props = {
   data: { [key: string]: any }[];
@@ -30,22 +20,31 @@ const CustomBarChart = ({ data, labelKey, dataKey }: Props) => {
     // },
     interactions: [{ type: "active-region" }],
     slider: {
-      x: {},
+      x: {
+        style: {
+          selectionFill: "#14b8a6",
+          selectionFillOpacity: 0.5,
+          handleLabelStrokeOpacity: 1,
+        },
+      },
     },
     style: {
       radiusTopLeft: 2,
       radiusTopRight: 2,
-      fill: getColorVariable("--indigo-9"),
+      fill: "rgba(16,185,129,1)",
     },
     axis: {
       y: {
         labelFormatter: "~s",
+        labelFill: "#f1f5f9",
       },
       x: {
         labelAutoRotate: false,
         labelAutoHide: true,
+        labelFill: "#f1f5f9",
       },
     },
+    autoFit: true,
   };
   return (
     // <ResponsiveContainer width={"100%"} height={300}>

@@ -901,4 +901,216 @@ export const statistics = {
       play: 2477021381,
     },
   ],
+  topUsers: {
+    like: [
+      {
+        user: "musicmediaco",
+        value: 10934715,
+      },
+      {
+        user: "phiia.s",
+        value: 8300000,
+      },
+      {
+        user: "txt.bighitent",
+        value: 7800000,
+      },
+      {
+        user: "ly4ris",
+        value: 7349100,
+      },
+      {
+        user: "cosmtixs",
+        value: 7100000,
+      },
+      {
+        user: "ynzkee.3",
+        value: 5310400,
+      },
+      {
+        user: "hollycockerill",
+        value: 4900000,
+      },
+      {
+        user: "ae2jxsh",
+        value: 4800000,
+      },
+      {
+        user: "liiberandomodelos",
+        value: 4492622,
+      },
+      {
+        user: "chelseafc",
+        value: 4296969,
+      },
+    ],
+    share: [
+      {
+        user: "ziezzii",
+        value: 960100,
+      },
+      {
+        user: "ynzkee.3",
+        value: 949400,
+      },
+      {
+        user: "brianschwartz53",
+        value: 896600,
+      },
+      {
+        user: "ae2jxsh",
+        value: 648400,
+      },
+      {
+        user: "hollycockerill",
+        value: 578600,
+      },
+      {
+        user: "tboi_terraria_player",
+        value: 420500,
+      },
+      {
+        user: "sevidovhair",
+        value: 385500,
+      },
+      {
+        user: "cozyautumnseason",
+        value: 378596,
+      },
+      {
+        user: "ch3n.sq",
+        value: 343300,
+      },
+      {
+        user: "edits_place_",
+        value: 318400,
+      },
+    ],
+    comment: [
+      {
+        user: "txt.bighitent",
+        value: 80000,
+      },
+      {
+        user: "royanews",
+        value: 60400,
+      },
+      {
+        user: ".jarvianz_",
+        value: 57112,
+      },
+      {
+        user: "truyenkechobe.ngungon",
+        value: 49600,
+      },
+      {
+        user: "storysad846",
+        value: 47500,
+      },
+      {
+        user: "hazelgrayye",
+        value: 47449,
+      },
+      {
+        user: "ramadhankum08",
+        value: 47427,
+      },
+      {
+        user: "ziezzii",
+        value: 47400,
+      },
+      {
+        user: "rasdinko",
+        value: 44700,
+      },
+      {
+        user: "realferdi_",
+        value: 42379,
+      },
+    ],
+    count: [
+      {
+        user: "aynaell",
+        value: 53,
+      },
+      {
+        user: "chocholvte",
+        value: 47,
+      },
+      {
+        user: "kahfeveryday",
+        value: 45,
+      },
+      {
+        user: "banjou_template",
+        value: 37,
+      },
+      {
+        user: "visinemaid",
+        value: 31,
+      },
+      {
+        user: "sz_template",
+        value: 31,
+      },
+      {
+        user: "muhammad_agil28",
+        value: 30,
+      },
+      {
+        user: "banjou14",
+        value: 28,
+      },
+      {
+        user: "spotv.indonesia",
+        value: 24,
+      },
+      {
+        user: "catatan_harian47",
+        value: 23,
+      },
+    ],
+    play: [
+      {
+        user: "truyenkechobe.ngungon",
+        value: 126800000,
+      },
+      {
+        user: "historiareals0",
+        value: 119200000,
+      },
+      {
+        user: "mobilelegends_id",
+        value: 83232100,
+      },
+      {
+        user: "musicmediaco",
+        value: 82930400,
+      },
+      {
+        user: "edits_place_",
+        value: 80200000,
+      },
+      {
+        user: "dailymail",
+        value: 75900000,
+      },
+      {
+        user: "anaamalia54",
+        value: 64900000,
+      },
+      {
+        user: "phiia.s",
+        value: 62600000,
+      },
+      {
+        user: "liiberandomodelos",
+        value: 61147100,
+      },
+      {
+        user: "antony_6688",
+        value: 60700000,
+      },
+    ],
+  },
 };
