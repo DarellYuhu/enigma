@@ -1,30 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import Dashboard from "@/layouts/dashboard";
 
 const ProjectDetail = () => {
-  const getVisualizationData = async () => {
-    try {
-      const response = await fetch("/api/v1/project/statistics", {
-        method: "POST",
-        body: JSON.stringify({
-          project: "0",
-          since: "2024-07-8",
-          until: "2024-10-8",
-          string: "l",
-        }),
-      });
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getVisualizationData();
-  }, []);
-  return <div>ProjectDetail</div>;
+  return (
+    <Dashboard>
+      <div className="bg-green-400 border-[1px] border-black col-span-3">
+        board
+      </div>
+    </Dashboard>
+  );
 };
 
 export default ProjectDetail;
