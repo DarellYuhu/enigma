@@ -31,15 +31,17 @@ const Trend = () => {
   //     getGraphs({
   //       type: "tagRelation",
   //       project: "0",
-  //       since: "2024-07-8",
+  //       since: "2024-10-1",
   //       until: "2024-10-8",
   //       string: "",
   //     }),
   // });
-  // if (trends.status === "pending") {
+  // if (graphs.status === "pending") {
   //   return <div>Loading...</div>;
   // }
-  // console.log(graphs.data, "anjay");
+  // if (!graphs.data) {
+  //   return <div>No data</div>;
+  // }
   return (
     <>
       <Dashboard>

@@ -3,8 +3,12 @@ import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
 import { statistics } from "@/datas/statistics";
 import CustomBarChart from "@/componenets/CustomBarChart";
 import CustomPieChart from "@/componenets/CustomPieChart";
+import NetworkGraph from "@/componenets/NetworkGraph";
+import VisNetworkGraph from "@/componenets/VisNetworkGraph";
 
-const Dashboard = ({ children }: { children: React.ReactNode }) => {
+type Props = { children: React.ReactNode; relation?: TNetRelation };
+
+const Dashboard = ({ children }: Props) => {
   return (
     <div className="grid grid-cols-4 gap-3 text-slate-300">
       <div className="col-span-2 grid grid-cols-2 gap-3">
@@ -77,7 +81,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
           />
         </span>
       </div>
-      <div className="col-span-full grid grid-cols-8 gap-3">
+      <div className="col-span-full grid col grid-cols-8 gap-3">
         <div className="card flex flex-col col-span-3">
           <h5>Top Creators</h5>
           <div className="flex flex-1">
@@ -88,7 +92,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             />
           </div>
         </div>
-        <div className="card flex flex-col col-span-5">
+        <div className="card flex flex-col col-span-5 h-[340px]">
           <h5>Daily</h5>
           <div className="flex flex-1">
             <CustomBarChart
@@ -99,7 +103,9 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
       </div>
-      <div className="card col-span-2">hashtag by segment audiens</div>
+      <div className="card col-span-2">
+        <VisNetworkGraph />
+      </div>
       <div className="card col-span-2">interest network</div>
       <div className="card col-span-2">heshtag network</div>
       <div className="card">hashtag info</div>

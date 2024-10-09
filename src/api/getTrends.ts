@@ -15,7 +15,6 @@ export default async function getTrends(payload: Payload) {
     },
   });
   const data = await response.json();
-  console.log(data);
 
   function parseData(data: any) {
     return data.date.map((date: string, index: number) => ({
@@ -49,8 +48,6 @@ export default async function getTrends(payload: Payload) {
       });
     });
   });
-
-  console.log(topUsers, "top user");
 
   return { daily, weekly, monthly, topUsers };
   // return statistics;

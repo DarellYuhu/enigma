@@ -1,38 +1,37 @@
+import { statistics } from "@/datas/statistics";
 import { useEffect, useRef } from "react";
-import { Network } from "vis-network/standalone/esm/vis-network";
+import { Network, Options } from "vis-network/standalone/esm/vis-network";
 
 const VisNetworkGraph = () => {
   const networkRef = useRef(null);
 
   useEffect(() => {
     // Define nodes and edges data
-    const nodes = [
-      { id: 1, label: "Node 1" },
-      { id: 2, label: "Node 2" },
-      { id: 3, label: "Node 3" },
-      { id: 4, label: "Node 4" },
-      { id: 5, label: "Node 5" },
-    ];
+    const nodes = statistics.relation.nodes;
 
-    const edges = [
-      { from: 1, to: 2 },
-      { from: 1, to: 3 },
-      { from: 2, to: 4 },
-      { from: 2, to: 5 },
-    ];
+    const edges = statistics.relation.edges;
 
     const data = { nodes, edges };
-    const options = {
+    const options: Options = {
+      layout: {
+        improvedLayout: false,
+      },
+      physics: {
+        enabled: false,
+        stabilization: {
+          iterations: 500, // Change this to whatever is convenient for you
+        },
+      },
       nodes: {
         shape: "dot",
-        size: 20,
+        size: 15,
         font: {
-          size: 15,
+          size: 12,
           color: "#000",
         },
       },
       edges: {
-        width: 2,
+        width: 5,
         color: {
           color: "#848484",
           highlight: "#848484",
