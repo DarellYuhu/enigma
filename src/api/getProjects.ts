@@ -21,6 +21,5 @@ export default async function getProjects(payload: {
   });
 
   const data = await response.json();
-  console.log(data, "on client");
   return data;
 }
