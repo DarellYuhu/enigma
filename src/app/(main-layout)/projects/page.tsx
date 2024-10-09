@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import getProjects from "@/api/getProjects";
 import {
   Dialog,
@@ -44,7 +44,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
+import postProjects from "@/api/postProjects";
 
 // COLUMNS ======================================
 type Projects = {
@@ -131,9 +131,20 @@ const createFormSchema = z.object({
 });
 
 const Projects = () => {
+  const queryClient = useQueryClient();
   const projectsQuery = useQuery({
     queryKey: ["projects"],
     queryFn: () => getProjects({ type: "listAllProjects" }),
+  });
+  const projectsMutation = useMutation({
+    mutationFn: postProjects,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      alert("success");
+    },
+    onError: () => {
+      alert("error");
+    },
   });
   const table = useReactTable({
     columns,
@@ -149,8 +160,8 @@ const Projects = () => {
   });
 
   const onSubmit = (values: z.infer<typeof createFormSchema>) => {
-    alert("success");
-    console.log(values);
+    projectsMutation.mutate(values);
+    createForm.reset();
   };
 
   if (projectsQuery.status === "pending") {
