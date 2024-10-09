@@ -1,5 +1,3 @@
-import { statistics } from "@/datas/statistics";
-
 type Payload = {
   project: string;
   since: string;
@@ -49,6 +47,13 @@ export default async function getTrends(payload: Payload) {
     });
   });
 
-  return { daily, weekly, monthly, topUsers };
+  const count = {
+    play: monthly.reduce((acc: number, cur: any) => acc + cur.play, 0),
+    like: monthly.reduce((acc: number, cur: any) => acc + cur.like, 0),
+    share: monthly.reduce((acc: number, cur: any) => acc + cur.share, 0),
+    comment: monthly.reduce((acc: number, cur: any) => acc + cur.comment, 0),
+  };
+
+  return { daily, weekly, monthly, topUsers, count };
   // return statistics;
 }

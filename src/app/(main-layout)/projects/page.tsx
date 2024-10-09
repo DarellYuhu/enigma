@@ -1,17 +1,23 @@
 "use client";
 
 import {
+  Cell,
+  ColumnDef,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  Row,
+  RowData,
+  RowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import styles from "./projects.module.css";
 import {
   ALargeSmall,
+  CalendarArrowUp,
   CalendarPlus,
   CircleAlert,
+  Clapperboard,
   Eye,
   ListMinus,
   MonitorCog,
@@ -21,264 +27,195 @@ import EditPanel from "@/componenets/EditPanel";
 import * as Dialog from "@radix-ui/react-dialog";
 import Tooltip from "@/componenets/Tooltip";
 import Link from "next/link";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useQuery } from "@tanstack/react-query";
+import getProjects from "@/api/getProjects";
 
+// COLUMNS ======================================
 type Projects = {
-  id: string;
-  name: string;
-  totalVideos: number;
-  createdAt: Date;
-  keywords: string[];
+  projectId: string;
+  projectName: string;
   status: string;
+  created: Date;
+  lastUpdate: Date;
+  numVideos: number;
 };
 
-const columnHelper = createColumnHelper<Projects>();
-
-const columns = [
-  columnHelper.accessor("name", {
-    sortingFn: "alphanumeric",
-    cell: (info) => info.getValue(),
-    header: () => (
-      <span>
-        <ALargeSmall />
-        Name
-      </span>
-    ),
-  }),
-  columnHelper.accessor("totalVideos", {
-    cell: (info) => info.getValue(),
-    header: () => (
-      <span>
-        <Eye />
-        Total Videos
-      </span>
-    ),
-  }),
-  columnHelper.accessor("createdAt", {
-    cell: (info) => info.getValue().toLocaleDateString(),
-    header: () => (
-      <span>
-        <CalendarPlus />
-        Created At
-      </span>
-    ),
-  }),
-  columnHelper.accessor("keywords", {
-    cell: (info) => (
-      <div className={styles.keyword}>
-        {info.getValue().map((word, index) => (
-          <span key={index}>{word}</span>
-        ))}
-      </div>
-    ),
-    header: () => (
-      <span>
-        <ListMinus />
-        Keywords
-      </span>
-    ),
-  }),
-  columnHelper.accessor("status", {
-    cell: (info) => <span className={styles.status}>{info.getValue()}</span>,
-    header: () => (
-      <span>
-        <CircleAlert />
-        Status
-      </span>
-    ),
-  }),
-  columnHelper.display({
-    id: "actions",
+const columns: ColumnDef<Projects>[] = [
+  {
+    accessorKey: "projectName",
     header: () => {
       return (
-        <span>
-          <MonitorCog />
-          Actions
-        </span>
+        <div className="flex flex-row gap-2 items-center">
+          <ALargeSmall width={20} height={20} /> Name
+        </div>
       );
     },
-    cell: ({
-      row: {
-        original: { id },
-      },
-    }) => (
-      <div className={styles.actionContainer}>
-        <Tooltip text="View Project Details">
-          <Link href={`/projects/${id}`} className={styles.view}>
-            <Eye />
-          </Link>
-        </Tooltip>
-        <Tooltip text="Edit">
-          <Dialog.Trigger asChild>
-            <div className={styles.edit}>
-              <Pencil />
-            </div>
-          </Dialog.Trigger>
-        </Tooltip>
-      </div>
-    ),
-  }),
+  },
+  {
+    accessorKey: "numVideos",
+    header: () => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <Clapperboard width={18} height={18} /> Total Videos
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "created",
+    header: () => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <CalendarPlus width={18} height={18} /> Created At
+        </div>
+      );
+    },
+    cell: ({ row }: any) => {
+      return (
+        <span>{new Date(row.getValue("created")).toLocaleDateString()}</span>
+      );
+    },
+  },
+  {
+    accessorKey: "lastUpdate",
+    header: () => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <CalendarArrowUp width={18} height={18} /> Updated At
+        </div>
+      );
+    },
+    cell: ({ row }: any) => {
+      return (
+        <span>{new Date(row.getValue("lastUpdate")).toLocaleDateString()}</span>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: () => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <CircleAlert width={18} height={18} /> Status
+        </div>
+      );
+    },
+  },
 ];
 
+// interface DataTableProps<TData, TValue> {
+//   columns: ColumnDef<TData, TValue>[];
+//   data: TData[];
+// }
+
 const Projects = () => {
+  const projectsQuery = useQuery({
+    queryKey: ["projects"],
+    queryFn: () => getProjects({ type: "listAllProjects" }),
+  });
   const table = useReactTable({
     columns,
-    data,
+    data: projectsQuery.data?.projects || [],
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
   });
+
+  if (projectsQuery.status === "pending") {
+    return <div>Loading...</div>;
+  }
   return (
-    <Dialog.Root>
-      <table className={styles.table}>
-        <thead className={styles.thead}>
+    // <Dialog.Root>
+    //   <table className={"w-full"}>
+    //     <thead className={""}>
+    //       {table.getHeaderGroups().map((headerGroup) => (
+    //         <tr key={headerGroup.id} className="bg-slate-700 rounded-lg">
+    //           {headerGroup.headers.map((header) => (
+    //             <th key={header.id} className="font-semibold text-base p-2">
+    //               {flexRender(
+    //                 header.column.columnDef.header,
+    //                 header.getContext()
+    //               )}
+    //             </th>
+    //           ))}
+    //         </tr>
+    //       ))}
+    //     </thead>
+    //     <tbody>
+    //       {table.getRowModel().rows.map((row) => (
+    //         <tr key={row.id}>
+    //           {row.getVisibleCells().map((cell) => (
+    //             <td key={cell.id}>
+    //               {flexRender(cell.column.columnDef.cell, cell.getContext())}
+    //             </td>
+    //           ))}
+    //         </tr>
+    //       ))}
+    //     </tbody>
+    //   </table>
+    //   <EditPanel />
+    // </Dialog.Root>
+    <div className="flex flex-col gap-3">
+      <button className="bg-green-500 shadow-md rounded-md p-2 text-slate-200 text-sm hover:bg-green-600 transition-all ease-in-out duration-200 self-end">
+        Create New
+      </button>
+      <Table className="bg-slate-600 rounded-md shadow-lg">
+        <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="hover:bg-slate-700">
               {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </th>
+                <TableHead
+                  key={header.id}
+                  className="text-slate-300 text-nowrap font-semibold"
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </TableHead>
               ))}
-            </tr>
+            </TableRow>
           ))}
-        </thead>
-        <tbody className={styles.tbody}>
+        </TableHeader>
+        <TableBody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <TableRow key={row.id} className="text-white hover:bg-slate-700">
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
+                <TableCell key={cell.id} className="">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+                </TableCell>
               ))}
-            </tr>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
-      <EditPanel />
-    </Dialog.Root>
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 
 const data: Projects[] = [
   {
-    id: "1",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
+    projectId: "1",
+    projectName: "Coding",
+    numVideos: 10,
+    created: new Date(),
+    lastUpdate: new Date(),
     status: "active",
   },
   {
-    id: "2",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "3",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "4",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "5",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "6",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "7",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "8",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "9",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "10",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "11",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "12",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "13",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "14",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
-    status: "active",
-  },
-  {
-    id: "15",
-    name: "Coding",
-    totalVideos: 10,
-    createdAt: new Date(),
-    keywords: ["coding", "programing", "python", "java", "c++"],
+    projectId: "2",
+    projectName: "Coding",
+    numVideos: 10,
+    created: new Date(),
+    lastUpdate: new Date(),
     status: "active",
   },
 ];

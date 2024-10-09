@@ -901,6 +901,12 @@ export const statistics = {
       play: 2477021381,
     },
   ],
+  count: {
+    play: 283748723,
+    like: 234873,
+    share: 849723785,
+    comment: 348372847,
+  },
   topUsers: {
     like: [
       {

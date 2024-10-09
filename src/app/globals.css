@@ -31,3 +31,9 @@ body {
   padding: 0;
   margin: 0;
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
