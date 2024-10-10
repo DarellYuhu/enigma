@@ -167,110 +167,107 @@ const Projects = () => {
     return <div>Loading...</div>;
   }
   return (
-    <Dialog>
-      <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3">
+      <Dialog>
         <DialogTrigger className="bg-blue-500 dark:bg-green-500 shadow-md rounded-md p-2 text-white text-sm dark:hover:bg-green-600 hover:bg-blue-600 transition-all ease-in-out duration-200 self-end">
           Create New
         </DialogTrigger>
-        <div className="bg-white dark:bg-slate-600 rounded-md shadow-md">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  key={headerGroup.id}
-                  className="hover:bg-slate-200 dark:hover:bg-slate-700"
+        <DialogContent className="bg-white dark:bg-slate-800 border-0">
+          <DialogHeader>
+            <DialogTitle>Create New Project</DialogTitle>
+          </DialogHeader>
+          <Form {...createForm}>
+            <form
+              onSubmit={createForm.handleSubmit(onSubmit)}
+              className="flex flex-col gap-3"
+            >
+              <FormField
+                control={createForm.control}
+                name="projectName"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Project Name</FormLabel>
+                    <FormControl className="bg-slate-200 dark:bg-slate-600 text-sm p-2 rounded-sm">
+                      <input placeholder="Type here the name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={createForm.control}
+                name="keywords"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Keywords</FormLabel>
+                    <FormControl className="bg-slate-200 dark:bg-slate-600 text-sm p-2 rounded-sm">
+                      <textarea
+                        rows={4}
+                        placeholder="Type here the keywords"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>Seperate by comma (,)</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter className="text-sm">
+                <button
+                  type="submit"
+                  className="bg-green-400 dark:bg-green-500 rounded-md shadow-md p-2 hover:bg-green-500 dark:hover:bg-green-700 transition-all ease-in-out duration-200"
                 >
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className="text-black dark:text-slate-300 text-nowrap font-semibold"
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-      <DialogContent className="bg-white dark:bg-slate-800 border-0">
-        <DialogHeader>
-          <DialogTitle>Create New Project</DialogTitle>
-        </DialogHeader>
-        <Form {...createForm}>
-          <form
-            onSubmit={createForm.handleSubmit(onSubmit)}
-            className="flex flex-col gap-3"
-          >
-            <FormField
-              control={createForm.control}
-              name="projectName"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Project Name</FormLabel>
-                  <FormControl className="bg-slate-200 dark:bg-slate-600 text-sm p-2 rounded-sm">
-                    <input placeholder="Type here the name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={createForm.control}
-              name="keywords"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Keywords</FormLabel>
-                  <FormControl className="bg-slate-200 dark:bg-slate-600 text-sm p-2 rounded-sm">
-                    <textarea
-                      rows={4}
-                      placeholder="Type here the keywords"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>Seperate by comma (,)</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <DialogFooter className="text-sm">
-              <button
-                type="submit"
-                className="bg-green-400 dark:bg-green-500 rounded-md shadow-md p-2 hover:bg-green-500 dark:hover:bg-green-700 transition-all ease-in-out duration-200"
+                  Submit
+                </button>
+                <DialogClose className="bg-red-400 dark:bg-red-500 rounded-md shadow-md p-2 hover:bg-red-500 dark:hover:bg-red-700 transition-all ease-in-out duration-200">
+                  Cancel
+                </DialogClose>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+      <div className="bg-white dark:bg-slate-600 rounded-md shadow-md">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                className="hover:bg-slate-200 dark:hover:bg-slate-700"
               >
-                Submit
-              </button>
-              <DialogClose className="bg-red-400 dark:bg-red-500 rounded-md shadow-md p-2 hover:bg-red-500 dark:hover:bg-red-700 transition-all ease-in-out duration-200">
-                Cancel
-              </DialogClose>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="text-black dark:text-slate-300 text-nowrap font-semibold"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className="">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   );
 };
 
