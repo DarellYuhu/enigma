@@ -25,7 +25,7 @@ export default function MainLayout({
         <Sidebar menus={menus} />
         <div
           className={
-            "flex flex-col p-4 w-full h-full overflow-y-auto bg-slate-800"
+            "flex flex-col p-4 w-full h-full overflow-y-auto bg-slate-100 dark:bg-slate-800"
           }
         >
           {children}

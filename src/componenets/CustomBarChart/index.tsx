@@ -1,4 +1,6 @@
 import { Column, ColumnConfig } from "@ant-design/charts";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 type Props = {
   data: { [key: string]: any }[];
@@ -7,6 +9,8 @@ type Props = {
 };
 
 const CustomBarChart = ({ data, labelKey, dataKey }: Props) => {
+  const { theme } = useTheme();
+  const [color, setColor] = useState("");
   const config: ColumnConfig = {
     data,
     height: 300,
@@ -36,28 +40,21 @@ const CustomBarChart = ({ data, labelKey, dataKey }: Props) => {
     axis: {
       y: {
         labelFormatter: "~s",
-        labelFill: "#f1f5f9",
+        labelFill: color,
       },
       x: {
         labelAutoRotate: false,
         labelAutoHide: true,
-        labelFill: "#f1f5f9",
+        labelFill: color,
       },
     },
     autoFit: true,
   };
-  return (
-    // <ResponsiveContainer width={"100%"} height={300}>
-    //   <BarChart data={data}>
-    //     <CartesianGrid strokeDasharray="3 3" />
-    //     <XAxis dataKey={labelKey} />
-    //     <YAxis />
-    //     <Tooltip />
-    //     <Bar dataKey={dataKey} fill="#8884d8" />
-    //   </BarChart>
-    // </ResponsiveContainer>
-    <Column {...config} />
-  );
+
+  useEffect(() => {
+    theme === "dark" ? setColor("#f1f5f9") : setColor("#000000");
+  }, [theme]);
+  return <Column {...config} />;
 };
 
 export default CustomBarChart;

@@ -1,12 +1,6 @@
 import { Pie, PieConfig } from "@ant-design/charts";
-import {
-  Cell,
-  Legend,
-  // Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from "recharts";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 type Props = {
   data: any[];
@@ -15,6 +9,9 @@ type Props = {
 };
 
 const CustomPieChart = ({ data, dataKey, labelKey }: Props) => {
+  const { theme } = useTheme();
+  const [color, setColor] = useState("");
+
   const config: PieConfig = {
     data,
     angleField: dataKey,
@@ -40,32 +37,17 @@ const CustomPieChart = ({ data, dataKey, labelKey }: Props) => {
     },
     autoFit: true,
     style: {
-      stroke: "#475569",
+      stroke: color,
       inset: 1,
-      radius: 10,
     },
   };
-  return (
-    // <ResponsiveContainer width={"100%"} height={300}>
-    //   <PieChart>
-    //     <Pie
-    //       data={data}
-    //       innerRadius={50}
-    //       outerRadius={80}
-    //       fill="#8884d8"
-    //       paddingAngle={5}
-    //       dataKey={dataKey}
-    //     >
-    //       {data.map((entry, index) => (
-    //         <Cell key={`cell-${index}`} />
-    //       ))}
-    //     </Pie>
-    //     <Legend layout="vertical" align="center" verticalAlign="bottom" />
-    //     <Tooltip />
-    //   </PieChart>
-    // </ResponsiveContainer>
-    <Pie {...config} />
+
+  useEffect(
+    () => (theme === "dark" ? setColor("#475569") : setColor("#ffffff")),
+    [theme]
   );
+
+  return <Pie {...config} />;
 };
 
 export default CustomPieChart;

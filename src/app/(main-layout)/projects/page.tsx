@@ -46,7 +46,6 @@ import {
 } from "@/components/ui/form";
 import postProjects from "@/api/postProjects";
 
-// COLUMNS ======================================
 type Projects = {
   projectId: string;
   projectName: string;
@@ -170,43 +169,54 @@ const Projects = () => {
   return (
     <Dialog>
       <div className="flex flex-col gap-3">
-        <DialogTrigger className="bg-green-500 shadow-md rounded-md p-2 text-slate-200 text-sm hover:bg-green-600 transition-all ease-in-out duration-200 self-end">
+        <DialogTrigger className="bg-blue-500 dark:bg-green-500 shadow-md rounded-md p-2 text-white text-sm dark:hover:bg-green-600 hover:bg-blue-600 transition-all ease-in-out duration-200 self-end">
           Create New
         </DialogTrigger>
-        <Table className="bg-slate-600 rounded-md shadow-lg">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="hover:bg-slate-700">
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className="text-slate-300 text-nowrap font-semibold"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} className="text-white hover:bg-slate-700">
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <div className="bg-white dark:bg-slate-600 rounded-md shadow-md">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow
+                  key={headerGroup.id}
+                  className="hover:bg-slate-200 dark:hover:bg-slate-700"
+                >
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      className="text-black dark:text-slate-300 text-nowrap font-semibold"
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
-      <DialogContent className="bg-slate-800 text-white border-0">
+      <DialogContent className="bg-white dark:bg-slate-800 border-0">
         <DialogHeader>
           <DialogTitle>Create New Project</DialogTitle>
         </DialogHeader>
@@ -221,7 +231,7 @@ const Projects = () => {
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Project Name</FormLabel>
-                  <FormControl className="bg-slate-600 text-sm p-2 rounded-sm">
+                  <FormControl className="bg-slate-200 dark:bg-slate-600 text-sm p-2 rounded-sm">
                     <input placeholder="Type here the name" {...field} />
                   </FormControl>
                   <FormMessage />
@@ -234,7 +244,7 @@ const Projects = () => {
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Keywords</FormLabel>
-                  <FormControl className="bg-slate-600 text-sm p-2 rounded-sm">
+                  <FormControl className="bg-slate-200 dark:bg-slate-600 text-sm p-2 rounded-sm">
                     <textarea
                       rows={4}
                       placeholder="Type here the keywords"
@@ -249,11 +259,11 @@ const Projects = () => {
             <DialogFooter className="text-sm">
               <button
                 type="submit"
-                className="bg-green-500 rounded-md shadow-md p-2 hover:bg-green-700 transition-all ease-in-out duration-200"
+                className="bg-green-400 dark:bg-green-500 rounded-md shadow-md p-2 hover:bg-green-500 dark:hover:bg-green-700 transition-all ease-in-out duration-200"
               >
                 Submit
               </button>
-              <DialogClose className="bg-red-500 rounded-md shadow-md p-2 hover:bg-red-700 transition-all ease-in-out duration-200">
+              <DialogClose className="bg-red-400 dark:bg-red-500 rounded-md shadow-md p-2 hover:bg-red-500 dark:hover:bg-red-700 transition-all ease-in-out duration-200">
                 Cancel
               </DialogClose>
             </DialogFooter>
