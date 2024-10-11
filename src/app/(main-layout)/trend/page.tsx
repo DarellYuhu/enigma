@@ -1,17 +1,8 @@
 "use client";
 
-import VisNetworkGraph from "@/componenets/VisNetworkGraph";
-import Chip from "@/componenets/Chip";
-import Card from "@/componenets/Card";
-import CustomBarChart from "@/componenets/CustomBarChart";
-import CustomPieChart from "@/componenets/CustomPieChart";
-import Select from "@/componenets/Select";
-import CustomLineChart from "@/componenets/CustomLineChart";
-import VerticalBarChart from "@/componenets/VerticalBarChart";
 import { useQuery } from "@tanstack/react-query";
 import getTrends from "@/api/getTrends";
 import Dashboard from "@/layouts/dashboard";
-import getGraphs from "@/api/getGraphs";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import DateRangePicker from "@/components/ui/date-range-picker";

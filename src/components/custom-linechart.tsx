@@ -38,24 +38,7 @@ const CustomLineChart = ({ data, labelKey, dataKey, height }: Props) => {
     },
     autoFit: true,
   };
-  return (
-    // <ResponsiveContainer width="100%" height={300}>
-    //   <LineChart data={data}>
-    //     <CartesianGrid strokeDasharray="3 3" />
-    //     <XAxis dataKey={labelKey} />
-    //     <YAxis />
-    //     <Tooltip />
-    //     <Legend />
-    //     <Line
-    //       type="monotone"
-    //       dataKey={dataKey}
-    //       stroke="#8884d8"
-    //       activeDot={{ r: 8 }}
-    //     />
-    //   </LineChart>
-    // </ResponsiveContainer>
-    <Area {...config} />
-  );
+  return <Area {...config} />;
 };
 
 export default CustomLineChart;

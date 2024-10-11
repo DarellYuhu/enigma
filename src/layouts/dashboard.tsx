@@ -1,9 +1,8 @@
-import CustomLineChart from "@/componenets/CustomLineChart";
+import CustomLineChart from "@/components/custom-linechart";
 import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
-import CustomBarChart from "@/componenets/CustomBarChart";
-import CustomPieChart from "@/componenets/CustomPieChart";
-import NetworkGraph from "@/componenets/NetworkGraph";
-import VisNetworkGraph from "@/componenets/VisNetworkGraph";
+import CustomBarChart from "@/components/custom-barchart";
+import CustomPieChart from "@/components/custom-piechart";
+import VisNetworkGraph from "@/components/visnetworkgraph";
 import { ReactNode, useState } from "react";
 import { GetTrendsReturn } from "@/api/getTrends";
 

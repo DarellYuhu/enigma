@@ -29,7 +29,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -52,6 +51,8 @@ import { Switch } from "@/components/ui/switch";
 import { useEffect, useMemo, useState } from "react";
 import editProject from "@/api/editProject";
 import getProject from "@/api/getProject";
+import createProjectSchema from "@/schemas/createProjectSchema";
+import updateProjectSchema from "@/schemas/updateProjectSchema";
 
 type Project = {
   projectId: string;
@@ -61,17 +62,6 @@ type Project = {
   lastUpdate: Date;
   numVideos: number;
 };
-
-const createFormSchema = z.object({
-  projectName: z.string().trim().min(1, "Required"),
-  keywords: z
-    .string()
-    .trim()
-    .min(1, "Required")
-    .refine((val) => val.split(",").length > 0, {
-      message: "Keywords must be separated by comma",
-    }),
-});
 
 const Projects = () => {
   const [selected, setSelected] = useState<Project | null>(null);
@@ -186,15 +176,15 @@ const Projects = () => {
     data: projectsQuery.data?.projects || [],
     getCoreRowModel: getCoreRowModel(),
   });
-  const createForm = useForm<z.infer<typeof createFormSchema>>({
-    resolver: zodResolver(createFormSchema),
+  const createForm = useForm<z.infer<typeof createProjectSchema>>({
+    resolver: zodResolver(createProjectSchema),
     defaultValues: {
       projectName: "",
       keywords: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof createFormSchema>) => {
+  const onSubmit = (values: z.infer<typeof createProjectSchema>) => {
     projectsMutation.mutate(values);
     createForm.reset();
   };
@@ -322,15 +312,6 @@ const Projects = () => {
   );
 };
 
-const updateFormSchema = z.object({
-  projectId: z.string().optional(),
-  keywords: z.string().optional(),
-  status: z.boolean().optional(),
-
-  // added for accessibility only
-  currentKeywords: z.string().optional(),
-});
-
 const EditDialog = ({ project }: { project?: Project | null }) => {
   const queryClient = useQueryClient();
   const projectQuery = useQuery({
@@ -345,8 +326,8 @@ const EditDialog = ({ project }: { project?: Project | null }) => {
       alert("success");
     },
   });
-  const updateForm = useForm<z.infer<typeof updateFormSchema>>({
-    resolver: zodResolver(updateFormSchema),
+  const updateForm = useForm<z.infer<typeof updateProjectSchema>>({
+    resolver: zodResolver(updateProjectSchema),
     defaultValues: {
       keywords: "",
       projectId: "",
@@ -357,7 +338,7 @@ const EditDialog = ({ project }: { project?: Project | null }) => {
   const onEditSubmit = ({
     currentKeywords,
     ...values
-  }: z.infer<typeof updateFormSchema>) => {
+  }: z.infer<typeof updateProjectSchema>) => {
     const normalize: EditProjectPayload = {
       ...values,
       projectId: project?.projectId,
