@@ -4,12 +4,16 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
   ALargeSmall,
   CalendarArrowUp,
   CalendarPlus,
+  ChevronLeft,
+  ChevronRight,
   CircleAlert,
   Clapperboard,
   Clipboard,
@@ -19,6 +23,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -70,7 +75,6 @@ const Projects = () => {
     queryKey: ["projects"],
     queryFn: () => getProjects({ type: "listAllProjects" }),
   });
-
   const projectsMutation = useMutation({
     mutationFn: postProjects,
     onSuccess: () => {
@@ -84,6 +88,7 @@ const Projects = () => {
   const columns: ColumnDef<Project>[] = useMemo(
     () => [
       {
+        sortingFn: "text",
         accessorKey: "projectName",
         header: () => {
           return (
@@ -94,6 +99,7 @@ const Projects = () => {
         },
       },
       {
+        sortingFn: "basic",
         accessorKey: "numVideos",
         header: () => {
           return (
@@ -104,6 +110,7 @@ const Projects = () => {
         },
       },
       {
+        sortingFn: "datetime",
         accessorKey: "created",
         header: () => {
           return (
@@ -121,6 +128,7 @@ const Projects = () => {
         },
       },
       {
+        sortingFn: "datetime",
         accessorKey: "lastUpdate",
         header: () => {
           return (
@@ -138,6 +146,7 @@ const Projects = () => {
         },
       },
       {
+        sortingFn: "text",
         accessorKey: "status",
         header: () => {
           return (
@@ -175,6 +184,14 @@ const Projects = () => {
     columns,
     data: projectsQuery.data?.projects || [],
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 5,
+      },
+    },
   });
   const createForm = useForm<z.infer<typeof createProjectSchema>>({
     resolver: zodResolver(createProjectSchema),
@@ -269,7 +286,12 @@ const Projects = () => {
                   {headerGroup.headers.map((header) => (
                     <TableHead
                       key={header.id}
-                      className="text-black dark:text-slate-300 text-nowrap font-semibold"
+                      className={
+                        header.id === "actions"
+                          ? "text-black dark:text-slate-300 text-nowrap font-semibold"
+                          : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
+                      }
+                      onClick={header.column.getToggleSortingHandler()}
                     >
                       {header.isPlaceholder
                         ? null
@@ -300,6 +322,22 @@ const Projects = () => {
               ))}
             </TableBody>
           </Table>
+          <div className="flex flex-1 justify-end p-4 gap-3">
+            <button
+              className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <ChevronLeft width={18} height={18} />
+            </button>
+            <button
+              className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <ChevronRight width={18} height={18} />
+            </button>
+          </div>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Edit Project</DialogTitle>
