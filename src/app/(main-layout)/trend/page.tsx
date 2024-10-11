@@ -19,7 +19,7 @@ import DateRangePicker from "@/components/ui/date-range-picker";
 const Trend = () => {
   const [query, setQuery] = useState("");
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(Date.now() - 1000 * 60 * 60 * 24),
+    from: new Date(Date.now() - 1000 * 60 * 60 * 24 * 90),
     to: new Date(),
   });
   const trends = useQuery({

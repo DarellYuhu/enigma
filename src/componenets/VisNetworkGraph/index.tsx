@@ -10,9 +10,7 @@ import PropTypes from "prop-types";
 import "vis-network/styles/vis-network.css";
 
 const defaultOptions = {
-  physics: {
-    stabilization: false,
-  },
+  physics: false,
   autoResize: false,
   nodes: {
     color: {
@@ -53,8 +51,25 @@ const VisNetworkGraph = ({
 }) => {
   const nodes = useRef(new DataSet(data.nodes));
   const edges = useRef(new DataSet(data.edges));
-  const network = useRef(null);
-  const container = useRef(null);
+  const network = useRef<Network>(null);
+  const container = useRef<HTMLElement>(null);
+
+  // network.current?.on("afterDrawing", () => {
+  //   network.current?.setOptions({
+  //     physics: {
+  //       forceAtlas2Based: {
+  //         theta: 0.8,
+  //         avoidOverlap: 0.0,
+  //         springConstant: 0.04,
+  //         damping: 2.5,
+  //         gravitationalConstant: -20,
+  //       },
+  //       solver: "forceAtlas2Based",
+  //       minVelocity: 0.2,
+  //       stabilization: false,
+  //     },
+  //   });
+  // });
 
   useEffect(() => {
     network.current = new Network(

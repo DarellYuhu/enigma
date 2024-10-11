@@ -1,7 +1,5 @@
-export default async function getProjects(
-  payload: GetProjectsPayload
-): Promise<GetProjectsResult> {
-  const response = await fetch("/api/v1/project/cat", {
+export default async function editProject(payload: EditProjectPayload) {
+  const response = await fetch("/api/v1/project/edit", {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {

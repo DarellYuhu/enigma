@@ -1,36 +1,4 @@
-type Payload = {
-  project: string;
-  since?: string;
-  until?: string;
-  string: string;
-};
-
-type Atom = { user: string[]; value: number[] };
-type TSAtom = {
-  date: Date[];
-  count: number[];
-  play: number[];
-  like: number[];
-  comment: number[];
-  share: number[];
-};
-
-type Data = {
-  topUsers: {
-    count: Atom;
-    play: Atom;
-    like: Atom;
-    comment: Atom;
-    share: Atom;
-  };
-  ts: {
-    daily: TSAtom;
-    monthly: TSAtom;
-    weekly: TSAtom;
-  };
-};
-
-export default async function getTrends(payload: Payload) {
+export default async function getTrends(payload: GetTrendsPayload) {
   const response = await fetch("/api/v1/project/statistics", {
     method: "POST",
     body: JSON.stringify(payload),
@@ -38,9 +6,7 @@ export default async function getTrends(payload: Payload) {
       "Content-Type": "application/json",
     },
   });
-  const data: Data = await response.json();
-
-  console.log(data, "unparsed data");
+  const data: TrendsData = await response.json();
 
   const parseData = (data: TSAtom) =>
     data.date.map((date: Date, index: number) => ({
