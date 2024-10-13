@@ -382,7 +382,6 @@ const EditDialog = ({ project }: { project?: Project | null }) => {
       projectId: project?.projectId,
       status: values.status ? "active" : "inactive",
     };
-    console.log(normalize, "on submit");
     projectMutation.mutate(normalize);
   };
 

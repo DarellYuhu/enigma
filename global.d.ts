@@ -1,17 +1,49 @@
-declare type TNetRelation = {
-  edges: {
-    source: string;
-    isBackbone: number;
-    target: string;
-    value: number;
-  }[];
-  nodes: {
-    authorCount: number;
-    class: number;
-    id: string;
-    isinBackbone: boolean;
-    videoCount: number;
-  }[];
+declare type TagRelationNetwork = {
+  relation: {
+    edges: {
+      from: string;
+      isBackbone: number;
+      to: string;
+      value: number;
+    }[];
+    nodes: {
+      authorCount: number;
+      class: number;
+      id: string;
+      isinBackbone: boolean;
+      videoCount: number;
+    }[];
+  };
+};
+
+type HashTagRecord = {
+  hashtags: string[];
+  values: number[];
+};
+
+declare type InterestNetwork = {
+  hashtags: Record<number, HashTagRecord>;
+  network: {
+    edges: {
+      from: string;
+      to: string;
+      value: number;
+    }[];
+    nodes: {
+      id: string;
+      desc: string;
+      published_at: Date;
+      author_id: string;
+      author_name: string;
+      digg: number;
+      share: number;
+      comment: number;
+      play: number;
+      class: number;
+      tag: number;
+    }[];
+  };
+  tags: Record<number, string>;
 };
 
 declare type EditProjectPayload = {

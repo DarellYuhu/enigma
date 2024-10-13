@@ -1,6 +1,7 @@
-export default async function getGraphs(
-  payload: GetGraphsPayload
-): Promise<TNetRelation> {
+import normalizeInterestNetwork from "@/utils/normalizeInterestNetwork";
+import normalizeTagRelation from "@/utils/normalizeTagRelation";
+
+export default async function getGraphs(payload: GetGraphsPayload) {
   const response = await fetch("/api/v1/project/graphs", {
     method: "POST",
     body: JSON.stringify(payload),
@@ -8,21 +9,10 @@ export default async function getGraphs(
       "Content-Type": "application/json",
     },
   });
-  let data = await response.json();
-
-  // data.relation.edges = data.relation.edges
-  //   .filter((item: any) => item.isBackbone !== 0)
-  //   .map((item: any) => {
-  //     const { from, to, ...rest } = item;
-  //     return {
-  //       ...rest,
-  //       source: from,
-  //       target: to,
-  //     };
-  //   });
-  // data.relation.nodes = data.relation.nodes.filter(
-  //   (item: any) => item.isinBackbone !== 0
-  // );
-
-  return data.relation;
+  const data: TagRelationNetwork | InterestNetwork = await response.json();
+  if (payload.type === "interestNet") {
+    return normalizeInterestNetwork(data as InterestNetwork);
+  } else {
+    return normalizeTagRelation(data as TagRelationNetwork);
+  }
 }
