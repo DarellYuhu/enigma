@@ -6,6 +6,7 @@ import Dashboard from "@/layouts/dashboard";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import DateRangePicker from "@/components/ui/date-range-picker";
+import getGraphs from "@/api/getGraphs";
 
 const Trend = () => {
   const [query, setQuery] = useState("");
@@ -23,23 +24,17 @@ const Trend = () => {
         string: query,
       }),
   });
-  // const graphs = useQuery({
-  //   queryKey: ["trends", "graphs"],
-  //   queryFn: () =>
-  //     getGraphs({
-  //       type: "interestNet",
-  //       project: "0",
-  //       since: "2024-10-09",
-  //       until: "2024-10-11",
-  //       string: "",
-  //     }),
-  // });
-  // if (graphs.status === "pending") {
-  //   return <div>Loading...</div>;
-  // }
-  // if (!graphs.data) {
-  //   return <div>No data</div>;
-  // }
+  const interestNetwork = useQuery({
+    queryKey: ["trends", "graphs", "interestNet"],
+    queryFn: () =>
+      getGraphs({
+        type: "interestNet",
+        project: "0",
+        since: "2024-10-12",
+        until: "2024-10-13",
+        string: "",
+      }),
+  });
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-row gap-2">
@@ -61,7 +56,10 @@ const Trend = () => {
           Submit
         </button>
       </div>
-      <Dashboard statistics={trends.data}>
+      <Dashboard
+        statistics={trends.data}
+        interestNetwork={interestNetwork.data}
+      >
         <div className="bg-green-400 border-[1px] border-black">
           trending topics
         </div>
@@ -69,56 +67,5 @@ const Trend = () => {
     </div>
   );
 };
-
-const pieData = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-
-const statisticData = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-  },
-];
-
-const verticalBarData = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-];
 
 export default Trend;

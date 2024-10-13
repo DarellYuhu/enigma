@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@ant-design/charts": "^2.2.1",
-    "@antv/g6": "^5.0.25",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -36,7 +35,6 @@
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
     "reagraph": "^4.19.3",
-    "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
     "vis-data": "^7.1.9",

@@ -2,19 +2,22 @@ import CustomLineChart from "@/components/custom-linechart";
 import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
 import CustomBarChart from "@/components/custom-barchart";
 import CustomPieChart from "@/components/custom-piechart";
-import VisNetworkGraph from "@/components/visnetworkgraph";
 import { ReactNode, useState } from "react";
 import { GetTrendsReturn } from "@/api/getTrends";
+import { Graph as GraphData } from "reagraph";
+import dynamic from "next/dynamic";
+
+const Graph = dynamic(() => import("@/components/graph"), { ssr: false });
 
 type Props = {
   children: React.ReactNode;
-  relation?: TNetRelation;
   statistics?: GetTrendsReturn;
+  interestNetwork?: GraphData;
 };
 
 type categoryValue = "play" | "like" | "comment" | "share";
 
-const Dashboard = ({ children, statistics }: Props) => {
+const Dashboard = ({ children, statistics, interestNetwork }: Props) => {
   const [category, setCategory] = useState<categoryValue>("play");
   const handleCategory = (value: categoryValue) => {
     setCategory(value);
@@ -97,11 +100,10 @@ const Dashboard = ({ children, statistics }: Props) => {
           </div>
         </div>
       </div>
-      <div className="card col-span-2">
-        {/* <VisNetworkGraph
-            data={statistics.relation}
-            style={{ height: "330px", width: "100%" }}
-          /> */}
+      <div className="card col-span-full">
+        <div className="relative w-full h-80">
+          {interestNetwork ? <Graph graphData={interestNetwork} /> : null}
+        </div>
       </div>
       <div className="card col-span-2">interest network</div>
       <div className="card col-span-2">heshtag network</div>
