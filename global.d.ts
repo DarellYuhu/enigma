@@ -32,7 +32,7 @@ declare type InterestNetwork = {
     nodes: {
       id: string;
       desc: string;
-      published_at: Date;
+      published_at: number;
       author_id: string;
       author_name: string;
       digg: number;

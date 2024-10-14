@@ -30,8 +30,8 @@ const Trend = () => {
       getGraphs({
         type: "interestNet",
         project: "0",
-        since: "2024-10-12",
-        until: "2024-10-13",
+        since: "2024-10-13",
+        until: "2024-10-14",
         string: "",
       }),
   });

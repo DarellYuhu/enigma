@@ -1,3 +1,4 @@
+import interest from "@/data/interest";
 import normalizeInterestNetwork from "@/utils/normalizeInterestNetwork";
 import normalizeTagRelation from "@/utils/normalizeTagRelation";
 
@@ -12,7 +13,8 @@ export default async function getGraphs(payload: GetGraphsPayload) {
   const data: TagRelationNetwork | InterestNetwork = await response.json();
   if (payload.type === "interestNet") {
     return normalizeInterestNetwork(data as InterestNetwork);
+    // return normalizeInterestNetwork(interest as InterestNetwork);
   } else {
-    return normalizeTagRelation(data as TagRelationNetwork);
+    // return normalizeTagRelation(data as TagRelationNetwork);
   }
 }

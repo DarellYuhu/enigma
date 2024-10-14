@@ -4,10 +4,8 @@ import CustomBarChart from "@/components/custom-barchart";
 import CustomPieChart from "@/components/custom-piechart";
 import { ReactNode, useState } from "react";
 import { GetTrendsReturn } from "@/api/getTrends";
-import { Graph as GraphData } from "reagraph";
-import dynamic from "next/dynamic";
-
-const Graph = dynamic(() => import("@/components/graph"), { ssr: false });
+import VisGraph from "@/components/visgraph";
+import { Data as GraphData } from "vis-network/peer/esm/vis-network";
 
 type Props = {
   children: React.ReactNode;
@@ -102,7 +100,7 @@ const Dashboard = ({ children, statistics, interestNetwork }: Props) => {
       </div>
       <div className="card col-span-full">
         <div className="relative w-full h-80">
-          {interestNetwork ? <Graph graphData={interestNetwork} /> : null}
+          {interestNetwork ? <VisGraph data={interestNetwork as any} /> : null}
         </div>
       </div>
       <div className="card col-span-2">interest network</div>

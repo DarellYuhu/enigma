@@ -8,7 +8,7 @@ import {
 
 const Graph = ({ graphData }: { graphData: GraphData }) => {
   const graphRef = useRef<GraphCanvasRef | null>(null);
-  const { onNodePointerOver, actives } = useSelection({
+  const { onNodePointerOver, onNodePointerOut, actives } = useSelection({
     pathHoverType: "all",
     ref: graphRef,
   });
@@ -21,6 +21,7 @@ const Graph = ({ graphData }: { graphData: GraphData }) => {
       edgeInterpolation="curved"
       edgeArrowPosition="none"
       onNodePointerOver={onNodePointerOver}
+      onNodePointerOut={onNodePointerOut}
       animated
       actives={actives}
     />
