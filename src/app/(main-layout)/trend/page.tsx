@@ -30,8 +30,8 @@ const Trend = () => {
       getGraphs({
         type: "interestNet",
         project: "0",
-        since: "2024-10-13",
-        until: "2024-10-14",
+        since: "2024-10-12",
+        until: "2024-10-15",
         string: "",
       }),
   });
@@ -58,7 +58,8 @@ const Trend = () => {
       </div>
       <Dashboard
         statistics={trends.data}
-        interestNetwork={interestNetwork.data}
+        interestNetwork={interestNetwork.data?.network}
+        hashtags={interestNetwork.data?.hashtags}
       >
         <div className="bg-green-400 border-[1px] border-black">
           trending topics

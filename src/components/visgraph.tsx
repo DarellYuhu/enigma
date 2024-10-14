@@ -1,14 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import isEqual from "lodash/isEqual";
-import differenceWith from "lodash/differenceWith";
-import { DataSet } from "vis-data/peer/esm/vis-data";
+import { DataSet } from "vis-data/standalone/umd/vis-data";
 import {
   Edge,
   Network,
   NetworkEvents,
   Node,
   Options,
-} from "vis-network/peer/esm/vis-network";
+} from "vis-network/standalone/umd/vis-network.min";
 
 import "vis-network/styles/vis-network.css";
 
@@ -76,20 +74,22 @@ const VisGraph = ({
   getNodes,
   getEdges,
 }: VisGraphProps) => {
-  const nodes = useRef(new DataSet(data.nodes));
-  const edges = useRef(new DataSet(data.edges));
-  const network = useRef(null);
+  const nodes = useRef<any>(null);
+  const edges = useRef<any>(null);
+  const network = useRef<Network | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    nodes.current = new DataSet(data.nodes);
+    edges.current = new DataSet(data.edges);
     network.current = new Network(
-      container.current,
+      container.current!,
       { nodes: nodes.current, edges: edges.current },
       options
     );
 
     network.current.on("afterDrawing", () => {
-      network.current.setOptions({
+      network.current?.setOptions({
         physics: {
           forceAtlas2Based: {
             theta: 0.8,
@@ -116,81 +116,32 @@ const VisGraph = ({
     if (getEdges) {
       getEdges(edges.current);
     }
+
+    return () => {
+      network.current?.destroy();
+    };
   }, []);
 
   useEffect(() => {
-    const nodesChange = !isEqual(nodes.current, data.nodes);
-    const edgesChange = !isEqual(edges.current, data.edges);
-
-    if (nodesChange) {
-      const idIsEqual = (n1, n2) => n1.id === n2.id;
-      const nodesRemoved = differenceWith(
-        nodes.current.get(),
-        data.nodes,
-        idIsEqual
-      );
-      const nodesAdded = differenceWith(
-        data.nodes,
-        nodes.current.get(),
-        idIsEqual
-      );
-      const nodesChanged = differenceWith(
-        differenceWith(data.nodes, nodes.current.get(), isEqual),
-        nodesAdded
-      );
-
-      nodes.current.remove(nodesRemoved);
-      nodes.current.add(nodesAdded);
-      nodes.current.update(nodesChanged);
-    }
-
-    if (edgesChange) {
-      const edgesRemoved = differenceWith(
-        edges.current.get(),
-        data.edges,
-        isEqual
-      );
-      const edgesAdded = differenceWith(
-        data.edges,
-        edges.current.get(),
-        isEqual
-      );
-      const edgesChanged = differenceWith(
-        differenceWith(data.edges, edges.current.get(), isEqual),
-        edgesAdded
-      );
-      edges.current.remove(edgesRemoved);
-      edges.current.add(edgesAdded);
-      edges.current.update(edgesChanged);
-    }
-
-    if ((nodesChange || edgesChange) && getNetwork) {
-      getNetwork(network.current);
-    }
-
-    if (nodesChange && getNodes) {
-      getNodes(nodes.current);
-    }
-
-    if (edgesChange && getEdges) {
-      getEdges(edges.current);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    network.current.setOptions(options);
+    network.current?.setOptions(options);
   }, [options]);
 
   useEffect(() => {
     // Add user provied events to network
     // eslint-disable-next-line no-restricted-syntax
     for (const eventName of Object.keys(events)) {
-      network.current.on(eventName, events[eventName]);
+      network.current?.on(
+        eventName as NetworkEvents,
+        (events as any)[eventName]
+      );
     }
 
     return () => {
       for (const eventName of Object.keys(events)) {
-        network.current.off(eventName, events[eventName]);
+        network.current?.off(
+          eventName as NetworkEvents,
+          (events as any)[eventName]
+        );
       }
     };
   }, [events]);
