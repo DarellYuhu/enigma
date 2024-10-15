@@ -53,10 +53,9 @@ declare type EditProjectPayload = {
 };
 
 declare type GetGraphsPayload = {
-  type: "interestNet" | "tagRelation";
   project: string;
-  since: string;
-  until: string;
+  since?: string;
+  until?: string;
   string: string;
 };
 
@@ -113,4 +112,21 @@ declare type TrendsData = {
     monthly: TSAtom;
     weekly: TSAtom;
   };
+};
+
+declare type TagInformation = {
+  since: Date;
+  until: Date;
+  name: string;
+  views: number;
+  published: number;
+  viewsTotal: number;
+  publishedTotal: number;
+  audienceAges: {
+    level1: number;
+    level2: number;
+    level3: number;
+  };
+  categories: string[];
+  Status?: string;
 };

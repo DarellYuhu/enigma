@@ -7,10 +7,12 @@ import { format } from "date-fns";
 import { Calendar } from "./calendar";
 
 const DateRangePicker = ({
+  max,
   className,
   date,
   setDate,
 }: {
+  max?: number;
   className?: string;
   date?: DateRange | undefined;
   setDate?: SelectRangeEventHandler;
@@ -50,6 +52,7 @@ const DateRangePicker = ({
             selected={date}
             onSelect={setDate}
             toDate={new Date()}
+            max={max}
           />
         </PopoverContent>
       </Popover>

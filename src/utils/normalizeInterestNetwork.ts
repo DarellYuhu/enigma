@@ -15,18 +15,6 @@ const colors = [
 ];
 
 const normalizeInterestNetwork = (data: InterestNetwork) => {
-  // const edges: GraphEdge[] = data.network.edges.map((edge, index) => ({
-  //   ...edge,
-  //   id: index.toString(),
-  //   source: edge.from,
-  //   target: edge.to,
-  // }));
-  // const nodes: GraphNode[] = data.network.nodes.map((node) => ({
-  //   ...node,
-  //   label: node.author_name,
-  //   size: Math.log(node.digg) * 2,
-  //   fill: colors[node.class],
-  // }));
   const edges: Edge[] = data.network.edges;
   const nodes: Node[] = data.network.nodes.map((node) => ({
     ...node,
@@ -37,7 +25,6 @@ const normalizeInterestNetwork = (data: InterestNetwork) => {
     font: { size: Math.log(node.play) },
   }));
 
-  console.log({ edges, nodes });
   return { edges, nodes };
 };
 

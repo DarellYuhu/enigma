@@ -1,11 +1,11 @@
 import { BASE_API_URL } from "@/constants";
 
 export async function POST(request: Request) {
-  const { type, project, since, until, string } = await request.json();
+  const { project, since, until, string } = await request.json();
   const response = await fetch(`${BASE_API_URL}/api/v1/project/graphs`, {
     method: "POST",
     body: JSON.stringify({
-      type,
+      type: "tagRelation",
       project,
       since,
       until,

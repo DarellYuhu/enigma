@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { DataSet } from "vis-data/standalone/umd/vis-data";
+import { DataSet, DataInterface } from "vis-data/standalone/umd/vis-data";
 import {
   Edge,
   Network,
@@ -7,8 +7,6 @@ import {
   Node,
   Options,
 } from "vis-network/standalone/umd/vis-network.min";
-
-import "vis-network/styles/vis-network.css";
 
 const defaultOptions = {
   nodes: {
@@ -51,6 +49,7 @@ const defaultOptions = {
 };
 
 interface VisGraphProps {
+  type?: "interestNet" | "tagRelation";
   data: {
     nodes: Node[];
     edges: Edge[];
@@ -66,6 +65,7 @@ interface VisGraphProps {
 }
 
 const VisGraph = ({
+  type = "interestNet",
   data,
   options = defaultOptions,
   events = {},
@@ -89,20 +89,34 @@ const VisGraph = ({
     );
 
     network.current.on("afterDrawing", () => {
-      network.current?.setOptions({
-        physics: {
-          forceAtlas2Based: {
-            theta: 0.8,
-            avoidOverlap: 0.0,
-            springConstant: 0.04,
-            damping: 2.5,
-            gravitationalConstant: -20,
+      if (type === "tagRelation") {
+        network.current?.setOptions({
+          physics: {
+            solver: "barnesHut",
+            barnesHut: {
+              gravitationalConstant: -10000,
+              avoidOverlap: 1,
+            },
+            minVelocity: 0.2,
+            stabilization: false,
           },
-          solver: "forceAtlas2Based",
-          minVelocity: 0.2,
-          stabilization: false,
-        },
-      });
+        });
+      } else {
+        network.current?.setOptions({
+          physics: {
+            forceAtlas2Based: {
+              theta: 0.8,
+              avoidOverlap: 0.0,
+              springConstant: 0.04,
+              damping: 2.5,
+              gravitationalConstant: -20,
+            },
+            solver: "forceAtlas2Based",
+            minVelocity: 0.2,
+            stabilization: false,
+          },
+        });
+      }
     });
 
     if (getNetwork) {
@@ -120,7 +134,7 @@ const VisGraph = ({
     return () => {
       network.current?.destroy();
     };
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     network.current?.setOptions(options);
