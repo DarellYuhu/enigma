@@ -58,6 +58,7 @@ import editProject from "@/api/editProject";
 import getProject from "@/api/getProject";
 import createProjectSchema from "@/schemas/createProjectSchema";
 import updateProjectSchema from "@/schemas/updateProjectSchema";
+import { useRouter } from "next/navigation";
 
 type Project = {
   projectId: string;
@@ -69,6 +70,7 @@ type Project = {
 };
 
 const Projects = () => {
+  const router = useRouter();
   const [selected, setSelected] = useState<Project | null>(null);
   const queryClient = useQueryClient();
   const projectsQuery = useQuery({
@@ -206,6 +208,10 @@ const Projects = () => {
     createForm.reset();
   };
 
+  const handleNavigation = (projectId: string) => {
+    router.push(`/projects/${projectId}`);
+  };
+
   const handleSelected = (row: Project) => {
     setSelected(row);
   };
@@ -307,8 +313,9 @@ const Projects = () => {
             <TableBody>
               {table.getRowModel().rows.map((row) => (
                 <TableRow
+                  onClick={() => handleNavigation(row.original.projectId)}
                   key={row.id}
-                  className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
+                  className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="">

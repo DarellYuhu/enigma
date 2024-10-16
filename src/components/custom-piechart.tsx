@@ -1,3 +1,4 @@
+import abbreviateNumber from "@/utils/abbreviateNumber";
 import { Pie, PieConfig } from "@ant-design/charts";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -22,11 +23,7 @@ const CustomPieChart = ({ data, dataKey, labelKey }: Props) => {
       style: {
         fontWeight: "bold",
       },
-      formatter: (_: any, datum: any) =>
-        Intl.NumberFormat("en-US", {
-          notation: "compact",
-          maximumFractionDigits: 1,
-        }).format(datum[dataKey]),
+      formatter: (_: any, datum: any) => abbreviateNumber(datum[dataKey]),
     },
     legend: {
       color: {

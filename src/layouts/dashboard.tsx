@@ -17,8 +17,11 @@ import VerticalBarChart from "@/components/custom-verticalbarchart";
 import { DataSet } from "vis-data";
 import Link from "next/link";
 import TagInformation from "@/components/tag-information";
+import useCategoryStore from "@/store/category-store";
+import abbreviateNumber from "@/utils/abbreviateNumber";
 
 type Props = {
+  board?: React.ReactNode;
   graphSettingsComponent: React.ReactNode;
   statistics?: GetTrendsReturn;
   interestNetwork?: {
@@ -35,13 +38,14 @@ type Props = {
 type categoryValue = "play" | "like" | "comment" | "share";
 
 const Dashboard = ({
+  board,
   graphSettingsComponent,
   statistics,
   interestNetwork,
   tagRelationNetwork,
   hashtags,
 }: Props) => {
-  const [category, setCategory] = useState<categoryValue>("play");
+  const { category, setCategory } = useCategoryStore();
   const [node, setNode] = useState<any>(null);
   const [tagNode, setTagNode] = useState<any>(null);
   const handleCategory = (value: categoryValue) => {
@@ -125,6 +129,7 @@ const Dashboard = ({
           </div>
         </div>
       </div>
+      {board ? <div className="col-span-full">{board}</div> : null}
       <div className="col-span-full">{graphSettingsComponent}</div>
       <div className="card flex flex-col col-span-full gap-3 relative">
         <div className="flex flex-row">
@@ -234,12 +239,7 @@ const CategoryButton = ({
       <h5 className="flex flex-row gap-2 items-center">
         {icon} {label}
       </h5>
-      <span className="text-lg font-semibold">
-        {Intl.NumberFormat("en-US", {
-          notation: "compact",
-          maximumFractionDigits: 1,
-        }).format(value)}
-      </span>
+      <span className="text-lg font-semibold">{abbreviateNumber(value)}</span>
     </button>
   );
 };

@@ -3,6 +3,7 @@ import { Separator } from "./ui/separator";
 import CustomPieChart from "./custom-piechart";
 import { useQuery } from "@tanstack/react-query";
 import getTagInformation from "@/api/getTagInformation";
+import abbreviateNumber from "@/utils/abbreviateNumber";
 
 const TagInformation = ({
   tagNode,
@@ -37,10 +38,9 @@ const TagInformation = ({
             <Eye width={25} height={25} />
             <Separator orientation="vertical" className="h-10" />
             <div className="flex flex-col gap-1">
-              <p>{`Dilihat ${Intl.NumberFormat("en-US", {
-                notation: "compact",
-                maximumFractionDigits: 1,
-              }).format(tagInformation.data?.views)} Kali`}</p>
+              <p>{`Dilihat ${abbreviateNumber(
+                tagInformation.data?.views
+              )} Kali`}</p>
               <Separator />
               <p>{`Atau ${(
                 (tagInformation.data?.views / tagInformation.data?.viewsTotal) *
@@ -53,10 +53,9 @@ const TagInformation = ({
             <Globe width={25} height={25} />
             <Separator orientation="vertical" className="h-10" />
             <div className="flex flex-col gap-1">
-              <p>{`Dipublis ${Intl.NumberFormat("en-US", {
-                notation: "compact",
-                maximumFractionDigits: 1,
-              }).format(tagInformation.data?.published)} Kali`}</p>
+              <p>{`Dipublis ${abbreviateNumber(
+                tagInformation.data?.published
+              )} Kali`}</p>
               <Separator />
               <p>{`Atau ${(
                 (tagInformation.data.published /

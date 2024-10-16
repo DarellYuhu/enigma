@@ -130,3 +130,31 @@ declare type TagInformation = {
   categories: string[];
   Status?: string;
 };
+
+declare type BoardItem = {
+  id: string;
+  desc: string;
+  author_id: string;
+  author_name: string;
+  digg: number;
+  share: number;
+  comment: number;
+  play: number;
+  interval: number;
+  diff: number;
+};
+
+declare type BoardsData = {
+  top: {
+    digg: BoardItem[];
+    share: BoardItem[];
+    comment: BoardItem[];
+    play: BoardItem[];
+  };
+  trending: {
+    digg: BoardItem[];
+    share: BoardItem[];
+    comment: BoardItem[];
+    play: BoardItem[];
+  };
+};
