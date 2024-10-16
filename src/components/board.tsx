@@ -24,12 +24,31 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import getBoards from "@/api/getBoards";
 import { useState } from "react";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import useCategoryStore, { CategoryState } from "@/store/category-store";
 import abbreviateNumber from "@/utils/abbreviateNumber";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import getExportComments from "@/api/getExportComments";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { Input } from "./ui/input";
+import Link from "next/link";
 
 type Props = {
   projectId: string;
@@ -37,6 +56,7 @@ type Props = {
 };
 
 const Board = ({ projectId, string }: Props) => {
+  const [keywords, setKeywords] = useState<string>("");
   const { category } = useCategoryStore();
   const { from, to } = useStatisticDateStore();
   const [type, setType] = useState<"top" | "trending">("top");
@@ -50,12 +70,22 @@ const Board = ({ projectId, string }: Props) => {
         string,
       }),
   });
+  const comments = useMutation({
+    mutationFn: getExportComments,
+    onSuccess(data) {
+      const h = document.createElement("a");
+      h.setAttribute("href", window.URL.createObjectURL(data));
+      h.click();
+      h.remove();
+    },
+  });
   const table = useReactTable({
     columns,
     data: boards.data?.[type as "top" | "trending"][category] || [],
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    enableMultiRowSelection: false,
     initialState: {
       pagination: {
         pageIndex: 0,
@@ -63,52 +93,85 @@ const Board = ({ projectId, string }: Props) => {
       },
     },
   });
-
   return (
-    <div className="bg-white rounded-md">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              className="hover:bg-slate-200 dark:hover:bg-slate-700"
+    <div className="flex flex-col bg-white rounded-md">
+      <div className="flex flex-row items-center justify-between m-2">
+        <h5>Board</h5>
+        <TypeSelection value={type} setValue={setType} />
+      </div>
+      <Dialog>
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                className="hover:bg-slate-200 dark:hover:bg-slate-700"
+              >
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className={
+                      header.id === "actions"
+                        ? "text-black dark:text-slate-300 text-nowrap font-semibold"
+                        : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
+                    }
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className="">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Export Comments into Excel</DialogTitle>
+          </DialogHeader>
+          <div>
+            <Input
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
+              placeholder="Keyword or leave it blank"
+            />
+          </div>
+          <DialogFooter className="text-sm">
+            <button
+              onClick={() =>
+                comments.mutate({
+                  id: table.getSelectedRowModel().rows[0].original.id,
+                  keywords: keywords,
+                })
+              }
+              className="bg-green-400 dark:bg-green-500 rounded-md shadow-md p-2 hover:bg-green-500 dark:hover:bg-green-700 transition-all ease-in-out duration-200"
             >
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  className={
-                    header.id === "actions"
-                      ? "text-black dark:text-slate-300 text-nowrap font-semibold"
-                      : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
-                  }
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id} className="">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+              Export
+            </button>
+            <DialogClose className="bg-red-400 dark:bg-red-500 rounded-md shadow-md p-2 hover:bg-red-500 dark:hover:bg-red-700 transition-all ease-in-out duration-200">
+              Cancel
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <div className="flex flex-1 justify-end p-4 gap-3">
         <button
           className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
@@ -128,6 +191,24 @@ const Board = ({ projectId, string }: Props) => {
     </div>
   );
 };
+
+const TypeSelection = ({
+  value,
+  setValue,
+}: {
+  value: "top" | "trending";
+  setValue: (value: "top" | "trending") => void;
+}) => (
+  <Select onValueChange={setValue} value={value}>
+    <SelectTrigger className="w-[180px]">
+      <SelectValue placeholder="Type" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="top">Top</SelectItem>
+      <SelectItem value="trending">Trending</SelectItem>
+    </SelectContent>
+  </Select>
+);
 
 const columns: ColumnDef<BoardItem>[] = [
   {
@@ -162,7 +243,6 @@ const columns: ColumnDef<BoardItem>[] = [
     id: "actions",
     header: "Actions",
     cell: ({ row }) => {
-      const payment = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -173,28 +253,24 @@ const columns: ColumnDef<BoardItem>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>Extract Comments</DropdownMenuItem>
+            <DialogTrigger onClick={() => row.toggleSelected()}>
+              <DropdownMenuItem>Export Comments</DropdownMenuItem>
+            </DialogTrigger>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Watch</DropdownMenuItem>
-            <DropdownMenuItem>Hide this video</DropdownMenuItem>
+            <Link
+              target="_blank"
+              href={`https://www.tiktok.com/@${row.original.author_name}/video/${row.original.id}`}
+            >
+              <DropdownMenuItem>Watch</DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem onClick={() => row.toggleSelected()}>
+              Hide this video
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
     },
   },
 ];
-
-const dummyData: BoardItem[] = Array.from({ length: 13 }).map((_, index) => ({
-  author_id: (index + 1).toString(),
-  author_name: `User ${index + 1}`,
-  desc: `This is the description of the video from user ${index + 1}`,
-  play: index * 2,
-  digg: index * 3,
-  share: index * 4,
-  comment: index * 5,
-  interval: index * 6,
-  diff: index * 7,
-  id: index.toString(),
-}));
 
 export default Board;

@@ -10,7 +10,6 @@ import useGraphDateStore from "@/store/graph-date-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { DateRange } from "react-day-picker";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const graphDate = useGraphDateStore();

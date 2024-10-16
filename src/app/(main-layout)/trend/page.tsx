@@ -4,29 +4,24 @@ import { useQuery } from "@tanstack/react-query";
 import getTrends from "@/api/getTrends";
 import Dashboard from "@/layouts/dashboard";
 import { useState } from "react";
-import { DateRange } from "react-day-picker";
 import DateRangePicker from "@/components/ui/date-range-picker";
 import getInterestGraphs from "@/api/getInterestGraphs";
 import getTagRelationGraphs from "@/api/getTagRelationGraphs";
+import useStatisticDateStore from "@/store/statistic-date-store";
+import useGraphDateStore from "@/store/graph-date-store";
 
 const Trend = () => {
   const [query, setQuery] = useState("");
   const [graphQuery, setGraphQuery] = useState("");
-  const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(Date.now() - 1000 * 60 * 60 * 24 * 90),
-    to: new Date(),
-  });
-  const [graphDateRange, setGraphDateRange] = useState<DateRange | undefined>({
-    from: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
-    to: new Date(),
-  });
+  const statisticDate = useStatisticDateStore();
+  const graphDate = useGraphDateStore();
   const trends = useQuery({
     queryKey: ["trends", "statistics"],
     queryFn: () =>
       getTrends({
         project: "0",
-        since: dateRange?.from?.toISOString().split("T")[0],
-        until: dateRange?.to?.toISOString().split("T")[0],
+        since: statisticDate?.from?.toISOString().split("T")[0],
+        until: statisticDate?.to?.toISOString().split("T")[0],
         string: query,
       }),
   });
@@ -35,8 +30,8 @@ const Trend = () => {
     queryFn: () =>
       getInterestGraphs({
         project: "0",
-        since: graphDateRange?.from?.toISOString().split("T")[0],
-        until: graphDateRange?.to?.toISOString().split("T")[0],
+        since: graphDate?.from?.toISOString().split("T")[0],
+        until: graphDate?.to?.toISOString().split("T")[0],
         string: graphQuery,
       }),
   });
@@ -45,8 +40,8 @@ const Trend = () => {
     queryFn: () =>
       getTagRelationGraphs({
         project: "0",
-        since: graphDateRange?.from?.toISOString().split("T")[0],
-        until: graphDateRange?.to?.toISOString().split("T")[0],
+        since: graphDate?.from?.toISOString().split("T")[0],
+        until: graphDate?.to?.toISOString().split("T")[0],
         string: graphQuery,
       }),
   });
@@ -54,8 +49,11 @@ const Trend = () => {
     <div className="flex flex-col gap-3">
       <div className="flex flex-row gap-2">
         <DateRangePicker
-          date={dateRange}
-          setDate={setDateRange}
+          date={{ from: statisticDate.from, to: statisticDate.to }}
+          setDate={(value) => {
+            statisticDate.setFrom(value?.from);
+            statisticDate.setTo(value?.to);
+          }}
           className="w-fit"
         />
         <input
@@ -79,8 +77,11 @@ const Trend = () => {
         graphSettingsComponent={
           <div className="flex flex-row gap-2">
             <DateRangePicker
-              date={graphDateRange}
-              setDate={setGraphDateRange}
+              date={{ from: graphDate.from, to: graphDate.to }}
+              setDate={(value) => {
+                graphDate.setFrom(value?.from);
+                graphDate.setTo(value?.to);
+              }}
               max={7}
               className="w-fit"
             />

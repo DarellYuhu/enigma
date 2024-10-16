@@ -71,7 +71,6 @@ type Project = {
 
 const Projects = () => {
   const router = useRouter();
-  const [selected, setSelected] = useState<Project | null>(null);
   const queryClient = useQueryClient();
   const projectsQuery = useQuery({
     queryKey: ["projects"],
@@ -87,107 +86,14 @@ const Projects = () => {
       alert("error");
     },
   });
-  const columns: ColumnDef<Project>[] = useMemo(
-    () => [
-      {
-        sortingFn: "text",
-        accessorKey: "projectName",
-        header: () => {
-          return (
-            <div className="flex flex-row gap-2 items-center">
-              <ALargeSmall width={20} height={20} /> Name
-            </div>
-          );
-        },
-      },
-      {
-        sortingFn: "basic",
-        accessorKey: "numVideos",
-        header: () => {
-          return (
-            <div className="flex flex-row gap-2 items-center">
-              <Clapperboard width={18} height={18} /> Total Videos
-            </div>
-          );
-        },
-      },
-      {
-        sortingFn: "datetime",
-        accessorKey: "created",
-        header: () => {
-          return (
-            <div className="flex flex-row gap-2 items-center">
-              <CalendarPlus width={18} height={18} /> Created At
-            </div>
-          );
-        },
-        cell: ({ row }: any) => {
-          return (
-            <span>
-              {new Date(row.getValue("created")).toLocaleDateString()}
-            </span>
-          );
-        },
-      },
-      {
-        sortingFn: "datetime",
-        accessorKey: "lastUpdate",
-        header: () => {
-          return (
-            <div className="flex flex-row gap-2 items-center">
-              <CalendarArrowUp width={18} height={18} /> Updated At
-            </div>
-          );
-        },
-        cell: ({ row }: any) => {
-          return (
-            <span>
-              {new Date(row.getValue("lastUpdate")).toLocaleDateString()}
-            </span>
-          );
-        },
-      },
-      {
-        sortingFn: "text",
-        accessorKey: "status",
-        header: () => {
-          return (
-            <div className="flex flex-row gap-2 items-center">
-              <CircleAlert width={18} height={18} /> Status
-            </div>
-          );
-        },
-      },
-      {
-        id: "actions",
-        header: () => {
-          return (
-            <div className="flex flex-row gap-2 items-center">
-              <CircleAlert width={18} height={18} /> Action
-            </div>
-          );
-        },
-        cell: ({ row }) => {
-          return (
-            <DialogTrigger
-              className="bg-blue-400 hover:bg-blue-500 text-slate-100 flex flex-row gap-2 items-center p-[3px] rounded-md"
-              onClick={() => handleSelected(row.original)}
-            >
-              <FilePenLine width={16} height={16} />
-              Edit
-            </DialogTrigger>
-          );
-        },
-      },
-    ],
-    []
-  );
+
   const table = useReactTable({
     columns,
     data: projectsQuery.data?.projects || [],
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    enableMultiRowSelection: false,
     initialState: {
       pagination: {
         pageIndex: 0,
@@ -210,10 +116,6 @@ const Projects = () => {
 
   const handleNavigation = (projectId: string) => {
     router.push(`/projects/${projectId}`);
-  };
-
-  const handleSelected = (row: Project) => {
-    setSelected(row);
   };
 
   if (projectsQuery.status === "pending") {
@@ -281,7 +183,7 @@ const Projects = () => {
         </DialogContent>
       </Dialog>
       <div className="bg-white dark:bg-slate-600 rounded-md shadow-md">
-        <Dialog onOpenChange={(open) => !open && setSelected(null)}>
+        <Dialog onOpenChange={(open) => !open && table.resetRowSelection()}>
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -349,7 +251,9 @@ const Projects = () => {
             <DialogHeader>
               <DialogTitle>Edit Project</DialogTitle>
             </DialogHeader>
-            <EditDialog project={selected} />
+            <EditDialog
+              project={table.getSelectedRowModel().rows[0]?.original}
+            />
           </DialogContent>
         </Dialog>
       </div>
@@ -505,5 +409,97 @@ const EditDialog = ({ project }: { project?: Project | null }) => {
     </Form>
   );
 };
+
+const columns: ColumnDef<Project>[] = [
+  {
+    sortingFn: "text",
+    accessorKey: "projectName",
+    header: () => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <ALargeSmall width={20} height={20} /> Name
+        </div>
+      );
+    },
+  },
+  {
+    sortingFn: "basic",
+    accessorKey: "numVideos",
+    header: () => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <Clapperboard width={18} height={18} /> Total Videos
+        </div>
+      );
+    },
+  },
+  {
+    sortingFn: "datetime",
+    accessorKey: "created",
+    header: () => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <CalendarPlus width={18} height={18} /> Created At
+        </div>
+      );
+    },
+    cell: ({ row }: any) => {
+      return (
+        <span>{new Date(row.getValue("created")).toLocaleDateString()}</span>
+      );
+    },
+  },
+  {
+    sortingFn: "datetime",
+    accessorKey: "lastUpdate",
+    header: () => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <CalendarArrowUp width={18} height={18} /> Updated At
+        </div>
+      );
+    },
+    cell: ({ row }: any) => {
+      return (
+        <span>{new Date(row.getValue("lastUpdate")).toLocaleDateString()}</span>
+      );
+    },
+  },
+  {
+    sortingFn: "text",
+    accessorKey: "status",
+    header: () => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <CircleAlert width={18} height={18} /> Status
+        </div>
+      );
+    },
+  },
+  {
+    id: "actions",
+    header: () => {
+      return (
+        <div className="flex flex-row gap-2 items-center">
+          <CircleAlert width={18} height={18} /> Action
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <DialogTrigger
+          className="bg-blue-400 hover:bg-blue-500 text-slate-100 flex flex-row gap-2 items-center p-[3px] rounded-md"
+          onClick={(event) => {
+            event.stopPropagation();
+            row.toggleSelected();
+          }}
+        >
+          <FilePenLine width={16} height={16} />
+          Edit
+        </DialogTrigger>
+      );
+    },
+  },
+];
 
 export default Projects;
