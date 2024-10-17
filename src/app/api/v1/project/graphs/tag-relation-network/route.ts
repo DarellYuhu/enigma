@@ -1,8 +1,8 @@
-import { BASE_API_URL } from "@/constants";
+import { TIKTOK_BASE_API_URL } from "@/constants";
 
 export async function POST(request: Request) {
   const { project, since, until, string } = await request.json();
-  const response = await fetch(`${BASE_API_URL}/api/v1/project/graphs`, {
+  const response = await fetch(`${TIKTOK_BASE_API_URL}/api/v1/project/graphs`, {
     method: "POST",
     body: JSON.stringify({
       type: "tagRelation",

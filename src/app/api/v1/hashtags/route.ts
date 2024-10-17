@@ -1,8 +1,8 @@
-import { BASE_API_URL } from "@/constants";
+import { TIKTOK_BASE_API_URL } from "@/constants";
 
 export async function POST(request: Request) {
   const { hashtag } = await request.json();
-  const response = await fetch(`${BASE_API_URL}/api/v1/hashtags`, {
+  const response = await fetch(`${TIKTOK_BASE_API_URL}/api/v1/hashtags`, {
     method: "POST",
     body: JSON.stringify({ hashtag }),
     headers: {

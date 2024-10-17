@@ -9,13 +9,11 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const Sidebar = ({
-  menus,
-}: {
-  menus: { title: string; link: string; icon: React.ReactNode }[];
-}) => {
+const Sidebar = ({ menus }: { menus: Menus }) => {
   const { setTheme } = useTheme();
+  const pathname = usePathname();
   return (
     <div
       className={
@@ -39,21 +37,32 @@ const Sidebar = ({
           <h4 className="font-semibold text-xs">System Administrator</h4>
         </div>
       </div>
-      <nav>
-        <ul className="flex flex-col gap-y-2 list-none">
-          {menus?.map((menu, index) => (
-            <Link
-              key={index}
-              href={menu.link}
-              style={{ textDecoration: "none" }}
-            >
-              <li className="flex items-center gap-x-3 p-2 rounded-md border-[1px] border-black text-sm dark:border-white">
-                {menu.icon}
-                {menu.title}
-              </li>
-            </Link>
-          ))}
-        </ul>
+      <nav className="flex flex-col gap-y-1">
+        {menus.map((item, index) => (
+          <div key={index}>
+            <h2 className="text-lg font-semibold tracking-tight">
+              {item.title}
+            </h2>
+            <ul className="flex flex-col gap-y-1 list-none">
+              {item.menus?.map((menu, index) => (
+                <Link
+                  key={index}
+                  href={menu.link}
+                  style={{ textDecoration: "none" }}
+                >
+                  <li
+                    className={`flex items-center gap-x-3 p-2 rounded-md hover:bg-slate-200 text-sm ${
+                      menu.link.includes(pathname) && "bg-slate-200"
+                    }`}
+                  >
+                    {menu.icon}
+                    {menu.label}
+                  </li>
+                </Link>
+              ))}
+            </ul>
+          </div>
+        ))}
       </nav>
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="shadow-md w-full">

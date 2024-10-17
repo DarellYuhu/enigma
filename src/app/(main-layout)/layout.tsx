@@ -34,15 +34,35 @@ export default function MainLayout({
   );
 }
 
-const menus: { title: string; link: string; icon: React.ReactNode }[] = [
+const menus: Menus = [
   {
-    title: "Trend",
-    link: "/trend",
-    icon: <ChartNoAxesCombined width={20} height={20} />,
+    title: "Tiktok",
+    menus: [
+      {
+        label: "Trend",
+        link: "/tiktok-trend",
+        icon: <ChartNoAxesCombined width={18} height={18} />,
+      },
+      {
+        label: "Projects",
+        link: "/tiktok-projects",
+        icon: <FolderOpenDot width={18} height={18} />,
+      },
+    ],
   },
   {
-    title: "Projects",
-    link: "/projects",
-    icon: <FolderOpenDot width={20} height={20} />,
+    title: "Youtube",
+    menus: [
+      {
+        label: "Trend",
+        link: "/youtube-trend",
+        icon: <ChartNoAxesCombined width={18} height={18} />,
+      },
+      {
+        label: "Projects",
+        link: "/youtube-projects",
+        icon: <FolderOpenDot width={18} height={18} />,
+      },
+    ],
   },
 ];

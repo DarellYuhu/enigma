@@ -1,4 +1,4 @@
-import { BASE_API_URL } from "@/constants";
+import { TIKTOK_BASE_API_URL } from "@/constants";
 
 export async function POST(request: Request) {
   const { id, keywords } = await request.json();

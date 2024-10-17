@@ -1,3 +1,12 @@
+declare type Menus = {
+  title: string;
+  menus: {
+    label: string;
+    link: string;
+    icon: React.ReactNode;
+  }[];
+}[];
+
 declare type TagRelationNetwork = {
   relation: {
     edges: {
@@ -157,4 +166,17 @@ declare type BoardsData = {
     comment: BoardItem[];
     play: BoardItem[];
   };
+};
+
+declare type YoutubeProject = {
+  projectID: string;
+  projectName: string;
+  createdAt: Date;
+  APIs: string;
+  keywords: string;
+  languageCode: string;
+  regionCode: string;
+  status: string;
+  firstVideo: Date;
+  lastTracking: Date;
 };
