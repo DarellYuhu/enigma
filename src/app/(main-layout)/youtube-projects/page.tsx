@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -25,6 +19,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import CreateDialog from "./components/createdialog";
 import { useQuery } from "@tanstack/react-query";
 import getProjects from "@/api/youtube/getProjects";
+import EditDialog from "./components/editdialog";
 
 const YoutubeProjects = () => {
   const projects = useQuery({
@@ -35,6 +30,7 @@ const YoutubeProjects = () => {
     columns,
     data: projects.data?.projects || [],
     getCoreRowModel: getCoreRowModel(),
+    enableMultiRowSelection: false,
   });
   return (
     <div className="flex flex-col gap-3">
@@ -93,6 +89,9 @@ const YoutubeProjects = () => {
               ))}
             </TableBody>
           </Table>
+          {table.getSelectedRowModel().rows[0]?.original && (
+            <EditDialog item={table.getSelectedRowModel().rows[0].original} />
+          )}
           <div className="flex flex-1 justify-end p-4 gap-3">
             <button
               className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
@@ -109,11 +108,6 @@ const YoutubeProjects = () => {
               <ChevronRight width={18} height={18} />
             </button>
           </div>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Edit Project</DialogTitle>
-            </DialogHeader>
-          </DialogContent>
         </Dialog>
       </div>
     </div>
@@ -160,21 +154,20 @@ const columns: ColumnDef<YoutubeProject>[] = [
     accessorKey: "status",
     header: "Status",
   },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      return (
+        <DialogTrigger
+          onClick={() => row.toggleSelected()}
+          className="border border-blue-300 rounded-sm cursor-pointer hover:bg-blue-300 p-2"
+        >
+          Edit
+        </DialogTrigger>
+      );
+    },
+  },
 ];
-
-const dummyData: YoutubeProject[] = Array.from({ length: 13 }).map(
-  (_, index) => ({
-    projectID: index.toString(),
-    projectName: `Project ${index}`,
-    createdAt: new Date(),
-    APIs: "APIs",
-    keywords: "keywords",
-    languageCode: "languageCode",
-    regionCode: "regionCode",
-    status: "status",
-    firstVideo: new Date(),
-    lastTracking: new Date(),
-  })
-);
 
 export default YoutubeProjects;

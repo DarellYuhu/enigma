@@ -11,22 +11,20 @@ const normalizeTagRelation = (data: TagRelationNetwork) => {
       label: node.id,
       shape: "dot",
       color: colors[node.class],
+      size: Math.log(node.authorCount),
+      font: { size: 5 * Math.log(node.authorCount) },
     }));
 
   return { edges, nodes };
 };
 
 const colors = [
-  "#527BA8",
-  "#EE8C1F",
-  "#DD5657",
-  "#7AB7B2",
-  "#60A04E",
-  "#ECC640",
-  "#AD7BA2",
-  "#FB9CA6",
-  "#9B755F",
-  "#B9AFAB",
+  "#7D89FD",
+  "#E7C400",
+  "#F38200",
+  "#BFE719",
+  "#2CB6AF",
+  "#7BDF66",
 ];
 
 export default normalizeTagRelation;

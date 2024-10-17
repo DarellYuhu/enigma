@@ -96,7 +96,7 @@ const Board = ({ projectId, string }: Props) => {
   return (
     <div className="flex flex-col bg-white rounded-md">
       <div className="flex flex-row items-center justify-between m-2">
-        <h5>Board</h5>
+        <h5>Content Board</h5>
         <TypeSelection value={type} setValue={setType} />
       </div>
       <Dialog>
@@ -133,6 +133,12 @@ const Board = ({ projectId, string }: Props) => {
               <TableRow
                 key={row.id}
                 className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
+                onDoubleClick={() =>
+                  window.open(
+                    `https://www.tiktok.com/@${row.original.author_name}/video/${row.original.id}`,
+                    "_blank"
+                  )
+                }
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="">
@@ -213,15 +219,15 @@ const TypeSelection = ({
 const columns: ColumnDef<BoardItem>[] = [
   {
     accessorKey: "author_name",
-    header: "User",
+    header: "Creator",
   },
   {
     accessorKey: "desc",
-    header: "Description",
+    header: "Caption",
   },
   {
     accessorKey: "play",
-    header: "Play",
+    header: "View",
     cell: ({ row }) => abbreviateNumber(row.original.play),
   },
   {

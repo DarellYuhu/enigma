@@ -19,8 +19,8 @@ const TagInformation = ({
   if (tagInformation.data?.Status === "No Data" || !tagInformation.data)
     return <div>No Data</div>;
   return (
-    <div className="absolute p-2 h-4/5 w-fit backdrop-blur-md border rounded-md shadow-md bottom-0 left-0 m-2">
-      <h6>Tag Information</h6>
+    <>
+      <h6>Hashtag Insights</h6>
       <div className="flex flex-row">
         <div className="flex flex-col gap-1 overflow-y-auto">
           <div className="flex flex-row justify-between gap-6 items-center">
@@ -38,14 +38,14 @@ const TagInformation = ({
             <Eye width={25} height={25} />
             <Separator orientation="vertical" className="h-10" />
             <div className="flex flex-col gap-1">
-              <p>{`Dilihat ${abbreviateNumber(
+              <p>{`Viewed ${abbreviateNumber(
                 tagInformation.data?.views
-              )} Kali`}</p>
+              )} times`}</p>
               <Separator />
-              <p>{`Atau ${(
+              <p>{`${(
                 (tagInformation.data?.views / tagInformation.data?.viewsTotal) *
                 100
-              ).toFixed(2)}% Dari total`}</p>
+              ).toFixed(2)}% Overall`}</p>
             </div>
           </div>
           <Separator />
@@ -53,19 +53,19 @@ const TagInformation = ({
             <Globe width={25} height={25} />
             <Separator orientation="vertical" className="h-10" />
             <div className="flex flex-col gap-1">
-              <p>{`Dipublis ${abbreviateNumber(
+              <p>{`Published ${abbreviateNumber(
                 tagInformation.data?.published
-              )} Kali`}</p>
+              )} times`}</p>
               <Separator />
-              <p>{`Atau ${(
+              <p>{`${(
                 (tagInformation.data.published /
                   tagInformation.data.publishedTotal) *
                 100
-              ).toFixed(2)}% Dari total`}</p>
+              ).toFixed(2)}% Overall`}</p>
             </div>
           </div>
           <div>
-            <h4 className="font-semibold text-sm">Topik</h4>
+            <h4 className="font-semibold text-sm">Topics</h4>
             <div className="text-white flex flex-row gap-2 justify-between">
               <div className="rounded-sm w-full flex justify-center items-center p-1 bg-green-500 text-center text-[10.5px]">
                 {tagInformation.data.categories[0]}
@@ -79,7 +79,8 @@ const TagInformation = ({
             </div>
           </div>
         </div>
-        <div className="h-52 w-52">
+        <div className="flex flex-col h-52 w-52">
+          <h3 className="mx-2 self-center">Age Range</h3>
           <CustomPieChart
             data={tagInformation.data.audienceAges}
             dataKey="value"
@@ -87,7 +88,7 @@ const TagInformation = ({
           />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -23,7 +23,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -115,7 +114,7 @@ const Projects = () => {
   };
 
   const handleNavigation = (projectId: string) => {
-    router.push(`/projects/${projectId}`);
+    router.push(`/tiktok-projects/${projectId}`);
   };
 
   if (projectsQuery.status === "pending") {

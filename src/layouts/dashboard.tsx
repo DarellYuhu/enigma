@@ -19,6 +19,9 @@ import Link from "next/link";
 import TagInformation from "@/components/tag-information";
 import useCategoryStore from "@/store/category-store";
 import abbreviateNumber from "@/utils/abbreviateNumber";
+import tagRelationExport from "@/utils/tagRelationExport";
+import useGraphDateStore from "@/store/graph-date-store";
+import interestNetExport from "@/utils/interestNetExport";
 
 type Props = {
   board?: React.ReactNode;
@@ -47,6 +50,7 @@ const Dashboard = ({
 }: Props) => {
   const { category, setCategory } = useCategoryStore();
   const [node, setNode] = useState<any>(null);
+  const graphDate = useGraphDateStore();
   const [tagNode, setTagNode] = useState<any>(null);
   const handleCategory = (value: categoryValue) => {
     setCategory(value);
@@ -65,7 +69,7 @@ const Dashboard = ({
         <CategoryButton
           categoryState={category}
           label="Like"
-          value={statistics?.count.play || 0}
+          value={statistics?.count.like || 0}
           icon={<Heart width={20} height={20} />}
           category={"like"}
           handleCategory={handleCategory}
@@ -136,20 +140,34 @@ const Dashboard = ({
           <div className="relative   w-full h-80">
             <h5 className="absolute top-0 left-0">Interest Network</h5>
             {interestNetwork ? (
-              <VisGraph
-                data={interestNetwork}
-                events={{
-                  click: (event) => {
-                    const nodes = new DataSet(interestNetwork.nodes as any);
-                    const node = nodes.get(event.nodes[0]);
-                    if (node && !Array.isArray(node)) {
-                      setNode(node);
-                    } else {
-                      setNode(null);
-                    }
-                  },
-                }}
-              />
+              <>
+                <VisGraph
+                  data={interestNetwork}
+                  events={{
+                    click: (event) => {
+                      const nodes = new DataSet(interestNetwork.nodes as any);
+                      const node = nodes.get(event.nodes[0]);
+                      if (node && !Array.isArray(node)) {
+                        setNode(node);
+                      } else {
+                        setNode(null);
+                      }
+                    },
+                  }}
+                />
+                <button
+                  onClick={() =>
+                    interestNetExport(
+                      graphDate.from!,
+                      graphDate.to!,
+                      interestNetwork as any
+                    )
+                  }
+                  className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm"
+                >
+                  Export (.gdf)
+                </button>
+              </>
             ) : null}
             {node ? (
               <div className="absolute bottom-0 left-0 h-3/5 w-64 flex flex-col gap-2 border rounded-md p-2 shadow-lg backdrop-blur-md">
@@ -188,25 +206,43 @@ const Dashboard = ({
         </div>
       </div>
       <div className="card flex flex-col col-span-full h-80 relative">
-        <h5 className="absolute top-2 left-2 bg-white">Tag Relation</h5>
+        <h5 className="absolute top-2 left-2 bg-white">Hashtag Map</h5>
         {tagRelationNetwork ? (
-          <VisGraph
-            type="tagRelation"
-            data={tagRelationNetwork}
-            events={{
-              click: (event) => {
-                const nodes = new DataSet(tagRelationNetwork.nodes as any);
-                const node = nodes.get(event.nodes[0]);
-                if (node && !Array.isArray(node)) {
-                  setTagNode(node);
-                } else {
-                  setTagNode(null);
-                }
-              },
-            }}
-          />
+          <>
+            <VisGraph
+              type="tagRelation"
+              data={tagRelationNetwork}
+              events={{
+                click: (event) => {
+                  const nodes = new DataSet(tagRelationNetwork.nodes as any);
+                  const node = nodes.get(event.nodes[0]);
+                  if (node && !Array.isArray(node)) {
+                    setTagNode(node);
+                  } else {
+                    setTagNode(null);
+                  }
+                },
+              }}
+            />
+            <button
+              onClick={() =>
+                tagRelationExport(
+                  graphDate.from!,
+                  graphDate.to!,
+                  interestNetwork as any
+                )
+              }
+              className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm"
+            >
+              Export (.gdf)
+            </button>
+          </>
         ) : null}
-        {tagNode ? <TagInformation tagNode={tagNode} /> : null}
+        {tagNode ? (
+          <div className="absolute p-2 h-4/5 w-fit backdrop-blur-md border rounded-md shadow-md bottom-0 left-0 m-2">
+            <TagInformation tagNode={tagNode} />
+          </div>
+        ) : null}
       </div>
     </div>
   );

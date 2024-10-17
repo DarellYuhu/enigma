@@ -91,6 +91,16 @@ const VisGraph = ({
     network.current.on("afterDrawing", () => {
       if (type === "tagRelation") {
         network.current?.setOptions({
+          nodes: {
+            opacity: 0.0,
+            borderWidth: 0.1,
+          },
+          edges: {
+            color: {
+              opacity: 0.2,
+            },
+            width: 0.1,
+          },
           physics: {
             solver: "barnesHut",
             barnesHut: {

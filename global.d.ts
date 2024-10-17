@@ -180,3 +180,14 @@ declare type YoutubeProject = {
   firstVideo: Date;
   lastTracking: Date;
 };
+
+declare type YoutubeProjectConfig = {
+  APIs: string;
+  keywords: string;
+  languageCode: string;
+  regionCode: string;
+  runEvery: number;
+  getDetailsAfter: number;
+  monitorTopVideosEvery: number;
+  status: string;
+};

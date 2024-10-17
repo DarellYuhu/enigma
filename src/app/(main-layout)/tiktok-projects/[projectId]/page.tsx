@@ -9,7 +9,7 @@ import Dashboard from "@/layouts/dashboard";
 import useGraphDateStore from "@/store/graph-date-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const graphDate = useGraphDateStore();
@@ -46,6 +46,10 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         string: graphQuery,
       }),
   });
+  useEffect(() => {
+    graphDate.reset;
+    statisticDate.reset;
+  }, []);
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-row gap-2">
@@ -84,7 +88,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
                 graphDate.setFrom(date?.from);
                 graphDate.setTo(date?.to);
               }}
-              max={7}
+              // max={7}
               className="w-fit"
             />
             <input

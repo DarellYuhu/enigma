@@ -1,3 +1,4 @@
+import abbreviateNumber from "@/utils/abbreviateNumber";
 import { Column, ColumnConfig } from "@ant-design/charts";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -39,7 +40,9 @@ const CustomBarChart = ({ data, labelKey, dataKey }: Props) => {
     },
     axis: {
       y: {
-        labelFormatter: "~s",
+        labelFormatter(datum: number) {
+          return abbreviateNumber(datum);
+        },
         labelFill: color,
       },
       x: {
