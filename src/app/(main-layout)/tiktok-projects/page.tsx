@@ -29,7 +29,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import getProjects from "@/api/getProjects";
+import getProjects from "@/api/tiktok/getProjects";
 import {
   Dialog,
   DialogClose,
@@ -51,11 +51,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import postProjects from "@/api/postProjects";
+import postProjects from "@/api/tiktok/postProjects";
 import { Switch } from "@/components/ui/switch";
 import { useEffect, useMemo, useState } from "react";
-import editProject from "@/api/editProject";
-import getProject from "@/api/getProject";
+import editProject from "@/api/tiktok/editProject";
+import getProject from "@/api/tiktok/getProject";
 import createProjectSchema from "@/schemas/createProjectSchema";
 import updateProjectSchema from "@/schemas/updateProjectSchema";
 import { useRouter } from "next/navigation";

@@ -1,12 +1,12 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import getTrends from "@/api/getTrends";
+import getTrends from "@/api/tiktok/getTrends";
 import Dashboard from "@/layouts/dashboard";
 import { useState } from "react";
 import DateRangePicker from "@/components/ui/date-range-picker";
-import getInterestGraphs from "@/api/getInterestGraphs";
-import getTagRelationGraphs from "@/api/getTagRelationGraphs";
+import getInterestGraphs from "@/api/tiktok/getInterestGraphs";
+import getTagRelationGraphs from "@/api/tiktok/getTagRelationGraphs";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import useGraphDateStore from "@/store/graph-date-store";
 

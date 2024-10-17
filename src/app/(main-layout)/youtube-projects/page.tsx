@@ -22,7 +22,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import React from "react";
 import CreateDialog from "./components/createdialog";
 import { useQuery } from "@tanstack/react-query";
 import getProjects from "@/api/youtube/getProjects";

@@ -2,7 +2,7 @@ import { CalendarRange, Eye, Globe } from "lucide-react";
 import { Separator } from "./ui/separator";
 import CustomPieChart from "./custom-piechart";
 import { useQuery } from "@tanstack/react-query";
-import getTagInformation from "@/api/getTagInformation";
+import getTagInformation from "@/api/tiktok/getTagInformation";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 
 const TagInformation = ({

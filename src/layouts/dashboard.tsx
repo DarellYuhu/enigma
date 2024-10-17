@@ -2,8 +2,8 @@ import CustomLineChart from "@/components/custom-linechart";
 import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
 import CustomBarChart from "@/components/custom-barchart";
 import CustomPieChart from "@/components/custom-piechart";
-import React, { ReactNode, useState } from "react";
-import { GetTrendsReturn } from "@/api/getTrends";
+import { ReactNode, useState } from "react";
+import { GetTrendsReturn } from "@/api/tiktok/getTrends";
 import VisGraph from "@/components/visgraph";
 import { Edge, Node } from "vis-network/peer/esm/vis-network";
 import {

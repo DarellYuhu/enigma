@@ -25,7 +25,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import getBoards from "@/api/getBoards";
+import getBoards from "@/api/tiktok/getBoards";
 import { useState } from "react";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import useCategoryStore, { CategoryState } from "@/store/category-store";
@@ -37,7 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import getExportComments from "@/api/getExportComments";
+import getExportComments from "@/api/tiktok/getExportComments";
 import {
   Dialog,
   DialogClose,

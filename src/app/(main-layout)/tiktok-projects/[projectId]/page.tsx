@@ -1,8 +1,8 @@
 "use client";
 
-import getInterestGraphs from "@/api/getInterestGraphs";
-import getTagRelationGraphs from "@/api/getTagRelationGraphs";
-import getTrends from "@/api/getTrends";
+import getInterestGraphs from "@/api/tiktok/getInterestGraphs";
+import getTagRelationGraphs from "@/api/tiktok/getTagRelationGraphs";
+import getTrends from "@/api/tiktok/getTrends";
 import Board from "@/components/board";
 import DateRangePicker from "@/components/ui/date-range-picker";
 import Dashboard from "@/layouts/dashboard";
