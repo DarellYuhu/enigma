@@ -29,6 +29,9 @@ export async function POST(request: Request) {
         regionCode,
         runEvery,
       }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
   const data = await response.json();

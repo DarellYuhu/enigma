@@ -6,10 +6,13 @@ const createYoutube = z.object({
   keywords: z.string().trim().min(1, { message: "Required" }),
   languageCode: z.string().trim().min(1, { message: "Required" }),
   regionCode: z.string().trim().min(1, { message: "Required" }),
-  runEvery: z.number(),
-  backtrackSince: z.number(),
-  getDetailsAfter: z.number(),
-  monitorTopVideosEvery: z.number(),
+  runEvery: z.preprocess((val) => parseInt(val as string), z.number()),
+  backtrackSince: z.preprocess((val) => parseInt(val as string), z.number()),
+  getDetailsAfter: z.preprocess((val) => parseInt(val as string), z.number()),
+  monitorTopVideosEvery: z.preprocess(
+    (val) => parseInt(val as string),
+    z.number()
+  ),
 });
 
 export default createYoutube;

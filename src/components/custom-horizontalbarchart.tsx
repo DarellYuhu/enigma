@@ -7,7 +7,7 @@ type Props = {
   color: string;
 };
 
-const VerticalBarChart = ({ data, dataKey, labelKey, color }: Props) => {
+const HorizontalBarChart = ({ data, dataKey, labelKey, color }: Props) => {
   const config: BarConfig = {
     data,
     xField: labelKey,
@@ -36,4 +36,4 @@ const VerticalBarChart = ({ data, dataKey, labelKey, color }: Props) => {
   return <Bar {...config} />;
 };
 
-export default VerticalBarChart;
+export default HorizontalBarChart;

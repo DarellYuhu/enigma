@@ -13,7 +13,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import VerticalBarChart from "@/components/custom-verticalbarchart";
 import { DataSet } from "vis-data";
 import Link from "next/link";
 import TagInformation from "@/components/tag-information";
@@ -22,6 +21,7 @@ import abbreviateNumber from "@/utils/abbreviateNumber";
 import tagRelationExport from "@/utils/tagRelationExport";
 import useGraphDateStore from "@/store/graph-date-store";
 import interestNetExport from "@/utils/interestNetExport";
+import HorizontalBarChart from "@/components/custom-horizontalbarchart";
 
 type Props = {
   board?: React.ReactNode;
@@ -189,7 +189,7 @@ const Dashboard = ({
                 {hashtags?.map((item, index) => (
                   <CarouselItem key={index}>
                     <div className="h-80 w-full px-7">
-                      <VerticalBarChart
+                      <HorizontalBarChart
                         data={item.data}
                         labelKey="hashtag"
                         dataKey="value"

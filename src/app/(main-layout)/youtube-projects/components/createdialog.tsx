@@ -20,9 +20,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postProject from "@/api/youtube/postProject";
+import { toast } from "sonner";
+import { useRef } from "react";
 
 const CreateDialog = () => {
   const queryClient = useQueryClient();
+  const closeRef = useRef<HTMLButtonElement | null>(null);
   const createForm = useForm<z.infer<typeof createYoutube>>({
     resolver: zodResolver(createYoutube),
     defaultValues: {
@@ -41,6 +44,19 @@ const CreateDialog = () => {
     mutationFn: postProject,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["youtube", "projects"] });
+      toast("Project created!", {
+        position: "bottom-right",
+        duration: 2000,
+        icon: "🚀",
+      });
+      closeRef.current?.click();
+    },
+    onError() {
+      toast.error("Something went wrong!", {
+        position: "bottom-right",
+        duration: 2000,
+        icon: "🚀",
+      });
     },
   });
   const onSubmit = (values: z.infer<typeof createYoutube>) => {
@@ -182,7 +198,10 @@ const CreateDialog = () => {
             >
               Submit
             </button>
-            <DialogClose className="bg-red-400 dark:bg-red-500 rounded-md shadow-md p-2 hover:bg-red-500 dark:hover:bg-red-700 transition-all ease-in-out duration-200">
+            <DialogClose
+              ref={closeRef}
+              className="bg-red-400 dark:bg-red-500 rounded-md shadow-md p-2 hover:bg-red-500 dark:hover:bg-red-700 transition-all ease-in-out duration-200"
+            >
               Cancel
             </DialogClose>
           </DialogFooter>

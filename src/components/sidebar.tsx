@@ -5,7 +5,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Moon, Sun } from "lucide-react";
+import useSidebarStore from "@/store/sidebar-store";
+import { ArrowLeftToLine, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,11 +15,12 @@ import { usePathname } from "next/navigation";
 const Sidebar = ({ menus }: { menus: Menus }) => {
   const { setTheme } = useTheme();
   const pathname = usePathname();
+  const { isSidebarOpen, setIsSidebarOpen } = useSidebarStore();
   return (
-    <div
-      className={
-        "flex flex-col p-4 gap-y-6 min-w-52 text-black bg-white shadow-md border border-white dark:border-slate-900 dark:bg-slate-900 dark:text-white"
-      }
+    <aside
+      className={`absolute top-0 left-0 h-screen z-10 md:static flex flex-col p-4 gap-y-6 min-w-52 text-black bg-white shadow-md border border-white dark:border-slate-900 dark:bg-slate-900 dark:text-white ${
+        !isSidebarOpen ? "hidden" : "visible"
+      } `}
     >
       <div
         className={
@@ -84,7 +86,7 @@ const Sidebar = ({ menus }: { menus: Menus }) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </div>
+    </aside>
   );
 };
 

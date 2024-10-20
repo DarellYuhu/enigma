@@ -1,8 +1,14 @@
 "use client";
 
-import { ChartNoAxesCombined, FolderOpenDot } from "lucide-react";
+import {
+  ArrowLeftToLine,
+  ChartNoAxesCombined,
+  FolderOpenDot,
+} from "lucide-react";
 import Sidebar from "@/components/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import useSidebarStore from "@/store/sidebar-store";
+import { Toaster } from "@/components/ui/sonner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,16 +24,32 @@ export default function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { isSidebarOpen, setIsSidebarOpen } = useSidebarStore();
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex flex-row w-screen h-screen">
         <Sidebar menus={menus} />
         <div
           className={
-            "flex flex-col p-4 w-full h-full overflow-y-auto bg-slate-100 dark:bg-slate-800"
+            "relative flex flex-col p-4 w-full h-full overflow-y-auto bg-slate-100 dark:bg-slate-800"
           }
         >
+          <div>
+            <button
+              className="flex items-center bg-slate-200 p-2 rounded-md hover:bg-slate-300"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+              <ArrowLeftToLine
+                width={18}
+                height={18}
+                className={`transition-all duration-300 ${
+                  !isSidebarOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+          </div>
           {children}
+          <Toaster />
         </div>
       </div>
     </QueryClientProvider>
