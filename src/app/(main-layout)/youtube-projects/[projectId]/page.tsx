@@ -1,10 +1,11 @@
 "use client";
 
+import getTopChannels from "@/api/youtube/getTopChannels";
 import getTopVideos from "@/api/youtube/getTopVideos";
 import getVideoStats from "@/api/youtube/getVideoStats";
 import ComposedBarLine from "@/components/composed-barlinechart";
 import CustomBarChart from "@/components/custom-barchart";
-import HorizontalBarChart from "@/components/custom-horizontalbarchart";
+import HorizontalBarChart from "@/components/horizontalbarchart";
 import VisGraph from "@/components/visgraph";
 import interest from "@/data/interest";
 import useStatisticDateStore from "@/store/statistic-date-store";
@@ -17,10 +18,14 @@ import { useEffect, useState } from "react";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const [selected, setSelected] = useState("a");
+  const [selectedChannel, setSelectedChannel] = useState<
+    YoutubeTopChannels["tc"]["0"] | null
+  >(null);
   const [selectedVideo, setSelectedVideo] = useState<
     YoutubeProjectTopVideos["top"]["0"] | null
   >(null);
   const { reset, from, to } = useStatisticDateStore();
+
   const topVideos = useQuery({
     queryKey: ["youtube", "projects", params.projectId, "top-videos"],
     queryFn: () =>
@@ -31,7 +36,6 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         string: "",
       }),
   });
-
   const videoStats = useQuery({
     queryKey: [
       "youtube",
@@ -49,6 +53,16 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         details: selectedVideo?.id,
       }),
   });
+  const topChannels = useQuery({
+    queryKey: ["youtube", "projects", params.projectId, "top-channels"],
+    queryFn: () =>
+      getTopChannels({
+        projectId: params.projectId,
+        since: from,
+        until: to,
+        string: "",
+      }),
+  });
 
   useEffect(() => {
     if (!!topVideos.data) {
@@ -63,7 +77,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   return (
     <>
       <div>{params.projectId}</div>
-      <div className="grid grid-cols-12 gap-2 ">
+      <div className="grid grid-cols-12 gap-3">
         <div className="card col-span-full flex flex-row flex-nowrap gap-2 overflow-x-auto">
           {topVideos.data?.top.map((item, index) => (
             <Image
@@ -130,15 +144,19 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
             />
           )}
         </div>
-        <div className="card col-span-4">
+        <div className="card flex flex-col col-span-4">
           <h2>Top Publication Channels</h2>
-          <div className="h-[300px]">
-            <HorizontalBarChart
-              data={dummyData}
-              dataKey="value"
-              labelKey="date"
-              color="#c4b5fd"
-            />
+          <div className="flex flex-1">
+            {topChannels.data && (
+              <HorizontalBarChart
+                data={topChannels.data?.tc}
+                dataKey="frac"
+                labelKey="channel_name"
+                label="Frequency"
+                selectedId={selectedChannel?.channel_id}
+                onBarSelect={setSelectedChannel}
+              />
+            )}
           </div>
         </div>
         <div className="card col-span-8">

@@ -243,3 +243,21 @@ declare type NormalizedYTStats = {
     del: number;
   }[];
 };
+
+declare type YoutubeTopChannels = {
+  tc: {
+    channel_id: string;
+    video_count: number;
+    frac: number;
+    channel_name: string;
+  }[];
+  ts: {
+    dates: number[];
+    data: {
+      [key: string]: {
+        count: number[];
+        top_videos: [];
+      };
+    };
+  };
+};
