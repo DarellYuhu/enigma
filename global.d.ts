@@ -213,3 +213,33 @@ declare type YoutubeProjectTopVideos = {
     }
   ];
 };
+
+type YTVSItem = {
+  val: number[];
+  del: number[];
+};
+
+declare type YoutubeVideoStats = {
+  datetime: number[];
+  view: YTVSItem;
+  like: YTVSItem;
+  comment: YTVSItem;
+};
+
+declare type NormalizedYTStats = {
+  view: {
+    date: number;
+    val: number;
+    del: number;
+  }[];
+  like: {
+    date: number;
+    val: number;
+    del: number;
+  }[];
+  comment: {
+    date: number;
+    val: number;
+    del: number;
+  }[];
+};

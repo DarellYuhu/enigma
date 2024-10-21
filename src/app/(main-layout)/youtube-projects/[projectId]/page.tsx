@@ -1,6 +1,8 @@
 "use client";
 
 import getTopVideos from "@/api/youtube/getTopVideos";
+import getVideoStats from "@/api/youtube/getVideoStats";
+import ComposedBarLine from "@/components/composed-barlinechart";
 import CustomBarChart from "@/components/custom-barchart";
 import HorizontalBarChart from "@/components/custom-horizontalbarchart";
 import VisGraph from "@/components/visgraph";
@@ -27,6 +29,24 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         since: from,
         until: to,
         string: "",
+      }),
+  });
+
+  const videoStats = useQuery({
+    queryKey: [
+      "youtube",
+      "projects",
+      params.projectId,
+      "statistics",
+      selectedVideo?.id,
+    ],
+    enabled: !!selectedVideo,
+    queryFn: () =>
+      getVideoStats({
+        projectId: params.projectId,
+        since: from,
+        until: to,
+        details: selectedVideo?.id,
       }),
   });
 
@@ -98,7 +118,17 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
           </div>
         </div>
         <div className="card col-span-7">
-          <CustomBarChart data={dummyData} dataKey="date" labelKey="value" />
+          <h3>Stats Overtime</h3>
+          {videoStats.data && (
+            <ComposedBarLine
+              data={videoStats.data?.comment}
+              barDataKey="del"
+              barLabel="Deletion"
+              lineDataKey="val"
+              lineLabel="Value"
+              labelKey="date"
+            />
+          )}
         </div>
         <div className="card col-span-4">
           <h2>Top Publication Channels</h2>
