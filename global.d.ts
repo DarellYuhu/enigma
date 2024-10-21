@@ -191,3 +191,25 @@ declare type YoutubeProjectConfig = {
   monitorTopVideosEvery: number;
   status: string;
 };
+
+declare type YoutubeProjectTopVideos = {
+  tc: [
+    {
+      channel_id: string;
+      n_top: number;
+      channel_name: string;
+      n_vid: number;
+    }
+  ];
+  top: [
+    {
+      id: string;
+      view: number;
+      like: number;
+      comment: number;
+      pub_date: Date;
+      title: string;
+      channel_title: string;
+    }
+  ];
+};

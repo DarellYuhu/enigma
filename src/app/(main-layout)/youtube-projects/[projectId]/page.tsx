@@ -1,57 +1,99 @@
 "use client";
 
+import getTopVideos from "@/api/youtube/getTopVideos";
 import CustomBarChart from "@/components/custom-barchart";
 import HorizontalBarChart from "@/components/custom-horizontalbarchart";
 import VisGraph from "@/components/visgraph";
 import interest from "@/data/interest";
+import useStatisticDateStore from "@/store/statistic-date-store";
+import abbreviateNumber from "@/utils/abbreviateNumber";
+import imageLoader from "@/utils/imageLoader";
 import { ToggleGroup, ToggleGroupItem } from "@radix-ui/react-toggle-group";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const [selected, setSelected] = useState("a");
+  const [selectedVideo, setSelectedVideo] = useState<
+    YoutubeProjectTopVideos["top"]["0"] | null
+  >(null);
+  const { reset, from, to } = useStatisticDateStore();
+  const topVideos = useQuery({
+    queryKey: ["youtube", "projects", params.projectId, "top-videos"],
+    queryFn: () =>
+      getTopVideos({
+        projectId: params.projectId,
+        since: from,
+        until: to,
+        string: "",
+      }),
+  });
+
+  useEffect(() => {
+    if (!!topVideos.data) {
+      setSelectedVideo(topVideos.data?.top[0]);
+    }
+  }, [topVideos.data]);
+
+  useEffect(() => {
+    reset();
+  }, []);
 
   return (
     <>
       <div>{params.projectId}</div>
       <div className="grid grid-cols-12 gap-2 ">
         <div className="card col-span-full flex flex-row flex-nowrap gap-2 overflow-x-auto">
-          {Array.from({ length: 15 }).map((_, index) => (
+          {topVideos.data?.top.map((item, index) => (
             <Image
               key={index}
-              src={"/avatars/me.jpg"}
+              loader={imageLoader}
+              src={item.id}
               alt="profile_picture"
               className="aspect-[16/9] rounded-lg object-contain bg-slate-200"
               width={300}
               height={300}
+              onClick={() => setSelectedVideo(item)}
             />
           ))}
         </div>
 
-        <div className="card col-span-3 space-y-3">
-          <h3>Lorem ipsum dolor sit amet consectetur</h3>
-          <Image
-            className="aspect-[16/9] rounded-lg object-contain bg-slate-200"
-            width={300}
-            height={300}
-            src={"/avatars/me.jpg"}
-            alt="profile_picture"
-          />
-          <h4 className="text-sm font-light text-slate-500 dark:text-slate-400 text-center">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </h4>
+        <div className="card col-span-3 space-y-3 bg-gray-600 text-white">
+          {selectedVideo && (
+            <>
+              <h3 className="line-clamp-3">{selectedVideo.title}</h3>
+              <Image
+                className="aspect-[16/9] rounded-lg object-contain bg-slate-200"
+                loader={imageLoader}
+                src={selectedVideo.id}
+                width={300}
+                height={300}
+                alt="profile_picture"
+              />
+              <h4 className="text-sm font-light text-center">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </h4>
+            </>
+          )}
         </div>
         <div className="col-span-2 space-y-3">
           <div className="card text-center space-y-2">
-            <h3 className="text-3xl font-semibold">18K</h3>
+            <h3 className="text-3xl font-semibold">
+              {abbreviateNumber(selectedVideo?.like ?? 0)}
+            </h3>
             <p>Likes</p>
           </div>
           <div className="card text-center space-y-2">
-            <h3 className="text-3xl font-semibold">18K</h3>
+            <h3 className="text-3xl font-semibold">
+              {abbreviateNumber(selectedVideo?.view ?? 0)}
+            </h3>
             <p>Views</p>
           </div>
           <div className="card text-center space-y-2">
-            <h3 className="text-3xl font-semibold">18K</h3>
+            <h3 className="text-3xl font-semibold">
+              {abbreviateNumber(selectedVideo?.comment ?? 0)}
+            </h3>
             <p>Comments</p>
           </div>
         </div>
@@ -85,7 +127,6 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
               className="flex flex-col flex-nowrap items-center gap-2"
             >
               {["a", "b", "c"].map((value, index) => {
-                console.log(value);
                 return (
                   <ToggleGroupItem
                     key={index}
