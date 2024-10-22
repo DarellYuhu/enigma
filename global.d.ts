@@ -261,3 +261,20 @@ declare type YoutubeTopChannels = {
     };
   };
 };
+
+declare type YoutubeChannelTopVids = {
+  tv: {
+    view: string[];
+    like: string[];
+    comment: string[];
+  };
+  info: {
+    [key: string]: {
+      pub_date: Date;
+      title: string;
+      view: number;
+      like: number;
+      comment: number;
+    };
+  };
+};
