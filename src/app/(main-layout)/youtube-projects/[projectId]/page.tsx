@@ -3,11 +3,9 @@
 import getTopChannels from "@/api/youtube/getTopChannels";
 import getTopVideos from "@/api/youtube/getTopVideos";
 import getVideoStats from "@/api/youtube/getVideoStats";
+import BarChart2 from "@/components/BarChart2";
 import ComposedBarLine from "@/components/composed-barlinechart";
-import CustomBarChart from "@/components/custom-barchart";
 import HorizontalBarChart from "@/components/horizontalbarchart";
-import VisGraph from "@/components/visgraph";
-import interest from "@/data/interest";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import imageLoader from "@/utils/imageLoader";
@@ -15,6 +13,7 @@ import { ToggleGroup, ToggleGroupItem } from "@radix-ui/react-toggle-group";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import normalizeChannelsStats from "./utils/normalizeChannelsStats";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const [selected, setSelected] = useState("a");
@@ -69,6 +68,12 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
       setSelectedVideo(topVideos.data?.top[0]);
     }
   }, [topVideos.data]);
+
+  useEffect(() => {
+    if (!!topChannels.data) {
+      setSelectedChannel(topChannels.data?.tc[0]);
+    }
+  }, [topChannels.data]);
 
   useEffect(() => {
     reset();
@@ -144,7 +149,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
             />
           )}
         </div>
-        <div className="card flex flex-col col-span-4">
+        <div className="card flex flex-col col-span-4 h-96">
           <h2>Top Publication Channels</h2>
           <div className="flex flex-1">
             {topChannels.data && (
@@ -159,9 +164,23 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
             )}
           </div>
         </div>
-        <div className="card col-span-8">
-          <h2>ANC 24/7</h2>
-          <CustomBarChart data={dummyData} dataKey="date" labelKey="value" />
+        <div className="card col-span-8 flex flex-col h-96">
+          {selectedChannel && topChannels.data && (
+            <>
+              <h2>{selectedChannel.channel_name}</h2>
+              <div className="flex flex-1">
+                <BarChart2
+                  data={normalizeChannelsStats(
+                    selectedChannel.channel_id,
+                    topChannels.data?.ts
+                  )}
+                  dataKey="value"
+                  labelKey="date"
+                  label="Date"
+                />
+              </div>
+            </>
+          )}
         </div>
         <div className="card col-span-4">
           <h2>Top Video Sources</h2>

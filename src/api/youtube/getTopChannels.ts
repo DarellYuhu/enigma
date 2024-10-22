@@ -11,7 +11,6 @@ export default async function getTopChannels(payload: {
       payload.string
     }`
   );
-
   let data: YoutubeTopChannels = await response.json();
   return data;
 }
