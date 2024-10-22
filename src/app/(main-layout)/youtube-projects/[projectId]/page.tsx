@@ -1,5 +1,6 @@
 "use client";
 
+import getChannelTopVideos from "@/api/youtube/getChannelTopVideos";
 import getTopChannels from "@/api/youtube/getTopChannels";
 import getTopVideos from "@/api/youtube/getTopVideos";
 import getVideoStats from "@/api/youtube/getVideoStats";
@@ -63,6 +64,24 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         string: "",
       }),
   });
+  const channelTopVids = useQuery({
+    queryKey: [
+      "youtube",
+      "projects",
+      params.projectId,
+      "top-channels",
+      selectedChannel?.channel_id,
+    ],
+    enabled: !!selectedChannel,
+    queryFn: () =>
+      getChannelTopVideos({
+        projectId: params.projectId,
+        since: from,
+        until: to,
+        details: selectedChannel?.channel_id,
+        string: "",
+      }),
+  });
 
   useEffect(() => {
     if (!!topVideos.data) {
@@ -73,6 +92,10 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   useEffect(() => {
     reset();
   }, []);
+
+  useEffect(() => {
+    console.log(selectedChannel);
+  }, [selectedChannel]);
 
   return (
     <>
@@ -92,7 +115,6 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
             />
           ))}
         </div>
-
         <div className="card col-span-3 space-y-3 bg-gray-600 text-white">
           {selectedVideo && (
             <>
