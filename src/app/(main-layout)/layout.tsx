@@ -31,7 +31,7 @@ export default function MainLayout({
         <Sidebar menus={menus} />
         <div
           className={
-            "relative flex flex-col p-4 w-full h-full overflow-y-auto bg-slate-100 dark:bg-slate-800"
+            "relative flex flex-col p-4 w-full h-full overflow-y-auto bg-slate-100 dark:bg-slate-800 gap-2"
           }
         >
           <div>
