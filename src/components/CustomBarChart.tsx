@@ -3,8 +3,8 @@ import { Column, ColumnConfig } from "@ant-design/charts";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-type Props = {
-  data: { [key: string]: any }[];
+type Props<T = unknown> = {
+  data: { [key: string]: T }[];
   labelKey: string;
   dataKey: string;
 };

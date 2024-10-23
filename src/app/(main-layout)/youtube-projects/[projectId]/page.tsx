@@ -8,16 +8,13 @@ import BarChart2 from "@/components/BarChart2";
 import ComposedBarLine from "@/components/ComposedBarLine";
 import HorizontalBarChart from "@/components/HorizontalBarChart";
 import useStatisticDateStore from "@/store/statistic-date-store";
-import abbreviateNumber from "@/utils/abbreviateNumber";
 import imageLoader from "@/utils/imageLoader";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import normalizeChannelsStats from "./utils/normalizeChannelsStats";
-
 import ChannelTopVideos from "./components/ChannelTopVideos";
 import normalizeChannelVids from "./utils/normalizeChannelsVids";
-import getAudienceNetwork from "@/api/youtube/getAudienceNetwork";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import CategoryButton from "./components/CategoryButton";
 
@@ -87,16 +84,16 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         string: "",
       }),
   });
-  const audienceNetwork = useQuery({
-    queryKey: ["youtube", "projects", params.projectId, "audience-network"],
-    queryFn: () =>
-      getAudienceNetwork({
-        projectId: params.projectId,
-        since: from,
-        until: to,
-        string: "",
-      }),
-  });
+  // const audienceNetwork = useQuery({
+  //   queryKey: ["youtube", "projects", params.projectId, "audience-network"],
+  //   queryFn: () =>
+  //     getAudienceNetwork({
+  //       projectId: params.projectId,
+  //       since: from,
+  //       until: to,
+  //       string: "",
+  //     }),
+  // });
 
   useEffect(() => {
     if (!!topVideos.data) {

@@ -1,4 +1,3 @@
-import CustomLineChart from "@/components/CustomLineChart";
 import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
 import CustomBarChart from "@/components/CustomBarChart";
 import CustomPieChart from "@/components/CustomPieChart";

@@ -1,5 +1,5 @@
 import abbreviateNumber from "@/utils/abbreviateNumber";
-import { Pie, PieConfig, PlotEvent } from "@ant-design/charts";
+import { Pie, PieConfig } from "@ant-design/charts";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 

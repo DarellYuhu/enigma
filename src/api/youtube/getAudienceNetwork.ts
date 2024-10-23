@@ -12,6 +12,6 @@ export default async function getAudienceNetwork(payload: {
     }`
   );
 
-  let data: any = await response.json();
+  const data = await response.json();
   return data;
 }
