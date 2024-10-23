@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const updateProjectSchema = z.object({
+const updateProject = z.object({
   projectId: z.string().optional(),
   keywords: z.string().optional(),
   status: z.boolean().optional(),
@@ -9,4 +9,4 @@ const updateProjectSchema = z.object({
   currentKeywords: z.string().optional(),
 });
 
-export default updateProjectSchema;
+export default updateProject;

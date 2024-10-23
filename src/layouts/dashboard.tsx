@@ -1,10 +1,10 @@
-import CustomLineChart from "@/components/custom-linechart";
+import CustomLineChart from "@/components/CustomLineChart";
 import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
-import CustomBarChart from "@/components/custom-barchart";
+import CustomBarChart from "@/components/CustomBarChart";
 import CustomPieChart from "@/components/custom-piechart";
 import { ReactNode, useState } from "react";
 import { GetTrendsReturn } from "@/api/tiktok/getTrends";
-import VisGraph from "@/components/visgraph";
+import VisGraph from "@/components/VisGraph";
 import { Edge, Node } from "vis-network/peer/esm/vis-network";
 import {
   Carousel,
@@ -15,13 +15,13 @@ import {
 } from "@/components/ui/carousel";
 import { DataSet } from "vis-data";
 import Link from "next/link";
-import TagInformation from "@/components/tag-information";
+import TagInformation from "@/components/TagInformation";
 import useCategoryStore from "@/store/category-store";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import tagRelationExport from "@/utils/tagRelationExport";
 import useGraphDateStore from "@/store/graph-date-store";
 import interestNetExport from "@/utils/interestNetExport";
-import HorizontalBarChart from "@/components/custom-horizontalbarchart";
+import HorizontalBarChart2 from "@/components/HorizontalBarChart2";
 
 type Props = {
   board?: React.ReactNode;
@@ -189,7 +189,7 @@ const Dashboard = ({
                 {hashtags?.map((item, index) => (
                   <CarouselItem key={index}>
                     <div className="h-80 w-full px-7">
-                      <HorizontalBarChart
+                      <HorizontalBarChart2
                         data={item.data}
                         labelKey="hashtag"
                         dataKey="value"

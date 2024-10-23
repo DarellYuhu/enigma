@@ -5,7 +5,7 @@ import {
   ChartNoAxesCombined,
   FolderOpenDot,
 } from "lucide-react";
-import Sidebar from "@/components/sidebar";
+import Sidebar from "@/components/Sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import useSidebarStore from "@/store/sidebar-store";
 import { Toaster } from "@/components/ui/sonner";

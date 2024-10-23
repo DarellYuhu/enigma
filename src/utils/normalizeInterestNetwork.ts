@@ -1,4 +1,3 @@
-import { GraphEdge, GraphNode } from "reagraph";
 import { Edge, Node } from "vis-network/peer/esm/vis-network";
 
 const colors = [

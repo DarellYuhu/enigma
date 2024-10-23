@@ -52,12 +52,12 @@ import {
 } from "@/components/ui/form";
 import postProjects from "@/api/tiktok/postProjects";
 import { Switch } from "@/components/ui/switch";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
 import editProject from "@/api/tiktok/editProject";
 import getProject from "@/api/tiktok/getProject";
-import createProjectSchema from "@/schemas/createProjectSchema";
-import updateProjectSchema from "@/schemas/updateProjectSchema";
+import updateProjectSchema from "@/schemas/tiktok/updateProject";
 import { useRouter } from "next/navigation";
+import createProject from "@/schemas/tiktok/createProject";
 
 type Project = {
   projectId: string;
@@ -100,15 +100,15 @@ const Projects = () => {
       },
     },
   });
-  const createForm = useForm<z.infer<typeof createProjectSchema>>({
-    resolver: zodResolver(createProjectSchema),
+  const createForm = useForm<z.infer<typeof createProject>>({
+    resolver: zodResolver(createProject),
     defaultValues: {
       projectName: "",
       keywords: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof createProjectSchema>) => {
+  const onSubmit = (values: z.infer<typeof createProject>) => {
     projectsMutation.mutate(values);
     createForm.reset();
   };
@@ -283,10 +283,8 @@ const EditDialog = ({ project }: { project?: Project | null }) => {
       currentKeywords: "",
     },
   });
-  const onEditSubmit = ({
-    currentKeywords,
-    ...values
-  }: z.infer<typeof updateProjectSchema>) => {
+  const onEditSubmit = (values: z.infer<typeof updateProjectSchema>) => {
+    delete values.currentKeywords;
     const normalize: EditProjectPayload = {
       ...values,
       projectId: project?.projectId,
@@ -296,7 +294,7 @@ const EditDialog = ({ project }: { project?: Project | null }) => {
   };
 
   useEffect(() => {
-    if (projectQuery?.data) {
+    if (projectQuery.data) {
       updateForm.reset({
         keywords: "",
         projectId: projectQuery.data.projectId,
@@ -304,9 +302,9 @@ const EditDialog = ({ project }: { project?: Project | null }) => {
         currentKeywords: projectQuery.data.keywords,
       });
     }
-  }, [projectQuery.status]);
+  }, [projectQuery.data]);
 
-  if (projectQuery?.status === "pending") {
+  if (projectQuery.status === "pending") {
     return <div>Loading...</div>;
   }
   return (
@@ -442,7 +440,7 @@ const columns: ColumnDef<Project>[] = [
         </div>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       return (
         <span>{new Date(row.getValue("created")).toLocaleDateString()}</span>
       );
@@ -458,7 +456,7 @@ const columns: ColumnDef<Project>[] = [
         </div>
       );
     },
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       return (
         <span>{new Date(row.getValue("lastUpdate")).toLocaleDateString()}</span>
       );

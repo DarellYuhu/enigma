@@ -1,5 +1,5 @@
 import { YOUTUBE_BASE_API_URL } from "@/constants";
-import createYoutube from "@/schemas/createYoutube";
+import createYoutube from "@/schemas/youtube/createProject";
 import { z } from "zod";
 
 export async function POST(request: Request) {
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
   return Response.json(data);
 }
 
-export async function GET(_request: Request) {
+export async function GET() {
   const response = await fetch(`${YOUTUBE_BASE_API_URL}/api/v1/project/cat`, {
     method: "POST",
     body: JSON.stringify({ type: "listAllProjects" }),

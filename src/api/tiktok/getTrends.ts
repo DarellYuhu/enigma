@@ -23,7 +23,7 @@ export default async function getTrends(payload: GetTrendsPayload) {
   const monthly = parseData(data.ts.monthly);
 
   const categories = ["like", "share", "comment", "count", "play"];
-  let topUsers: Record<string, any> = {
+  const topUsers: Record<string, { user: string; value: number }[]> = {
     like: [],
     share: [],
     comment: [],
@@ -31,7 +31,7 @@ export default async function getTrends(payload: GetTrendsPayload) {
     play: [],
   };
 
-  data.topUsers.count.user.forEach((_: any, index: number) => {
+  data.topUsers.count.user.forEach((_, index: number) => {
     categories.forEach((category) => {
       topUsers[category].push({
         user: data.topUsers[category as keyof typeof data.topUsers].user[index],

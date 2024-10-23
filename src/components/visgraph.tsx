@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { DataSet, DataInterface } from "vis-data/standalone/umd/vis-data";
+import { DataSet } from "vis-data/standalone/umd/vis-data";
 import {
   Edge,
   Network,

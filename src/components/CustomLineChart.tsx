@@ -1,13 +1,12 @@
 import { Area, AreaConfig } from "@ant-design/charts";
 
-type Props = {
-  data: { [key: string]: any }[];
+type Props<T = unknown> = {
+  data: { [key: string]: T }[];
   labelKey: string;
   dataKey: string;
-  height?: number;
 };
 
-const CustomLineChart = ({ data, labelKey, dataKey, height }: Props) => {
+const CustomLineChart = ({ data, labelKey, dataKey }: Props) => {
   const config: AreaConfig = {
     data,
     xField: labelKey,

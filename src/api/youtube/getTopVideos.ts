@@ -12,6 +12,6 @@ export default async function getTopVideos(payload: {
     }`
   );
 
-  let data: YoutubeProjectTopVideos = await response.json();
+  const data: YoutubeProjectTopVideos = await response.json();
   return data;
 }

@@ -31,7 +31,7 @@ const ChannelTopVideos = ({ data }: Props) => {
     <Carousel className="w-3/4 flex justify-self-center">
       <CarouselContent>
         {data.map((item, index) => (
-          <CarouselItem>
+          <CarouselItem key={index}>
             <div className="bg-gray-700 text-white p-4 text-sm space-y-3 w-full rounded-md shadow-md">
               <div className="flex flex-row justify-between gap-1">
                 <h4 className="line-clamp-2">{item.title}</h4>

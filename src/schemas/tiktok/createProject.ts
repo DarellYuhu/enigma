@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const createProjectSchema = z.object({
+const createProject = z.object({
   projectName: z.string().trim().min(1, "Required"),
   keywords: z
     .string()
@@ -11,4 +11,4 @@ const createProjectSchema = z.object({
     }),
 });
 
-export default createProjectSchema;
+export default createProject;

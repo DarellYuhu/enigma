@@ -15,7 +15,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
-import createYoutube from "@/schemas/createYoutube";
+import createYoutube from "@/schemas/youtube/createProject";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

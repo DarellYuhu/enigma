@@ -8,8 +8,8 @@ import {
 } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart";
 
-type Props = {
-  data: { [key: string]: any }[];
+type Props<T = unknown> = {
+  data: { [key: string]: T }[];
   label: string;
   labelKey: string;
   dataKey: string;

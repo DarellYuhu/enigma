@@ -8,13 +8,13 @@ import {
   YAxis,
 } from "recharts";
 
-type Props = {
+type Props<T = unknown> = {
   labelKey: string;
   barLabel: string;
   lineLabel: string;
   barDataKey: string;
   lineDataKey: string;
-  data: { [key: string]: any }[];
+  data: { [key: string]: T }[];
 };
 
 const ComposedBarLine = ({

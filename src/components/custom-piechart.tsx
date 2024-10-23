@@ -3,8 +3,8 @@ import { Pie, PieConfig } from "@ant-design/charts";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-type Props = {
-  data: any[];
+type Props<T = unknown> = {
+  data: { [key: string]: T }[];
   dataKey: string;
   labelKey: string;
 };

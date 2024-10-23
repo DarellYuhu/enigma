@@ -12,7 +12,7 @@ export default async function getVideoStats(payload: {
 
   const data: YoutubeVideoStats = await response.json();
 
-  let normalized: NormalizedYTStats = {
+  const normalized: NormalizedYTStats = {
     comment: [],
     like: [],
     view: [],

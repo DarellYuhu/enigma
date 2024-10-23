@@ -1,4 +1,4 @@
-import updateYoutube from "@/schemas/updateYoutube";
+import updateYoutube from "@/schemas/youtube/updateProject";
 import { z } from "zod";
 
 const patchProjectConfig = async (payload: z.infer<typeof updateYoutube>) => {

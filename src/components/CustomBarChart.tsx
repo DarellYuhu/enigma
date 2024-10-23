@@ -17,12 +17,6 @@ const CustomBarChart = ({ data, labelKey, dataKey }: Props) => {
     height: 300,
     xField: dataKey,
     yField: labelKey,
-    // tooltip: {
-    //   // Tooltip customization
-    //   formatter: (datum: ) => {
-    //     return { name: datum.category, value: datum.value };
-    //   },
-    // },
     interactions: [{ type: "active-region" }],
     slider: {
       x: {
@@ -55,7 +49,11 @@ const CustomBarChart = ({ data, labelKey, dataKey }: Props) => {
   };
 
   useEffect(() => {
-    theme === "dark" ? setColor("#f1f5f9") : setColor("#000000");
+    if (theme === "dark") {
+      setColor("#f1f5f9");
+    } else {
+      setColor("#000000");
+    }
   }, [theme]);
   return <Column {...config} />;
 };

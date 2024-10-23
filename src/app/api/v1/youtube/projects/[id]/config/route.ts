@@ -1,5 +1,5 @@
 import { YOUTUBE_BASE_API_URL } from "@/constants";
-import updateYoutube from "@/schemas/updateYoutube";
+import updateYoutube from "@/schemas/youtube/updateProject";
 import { z } from "zod";
 
 export async function GET(

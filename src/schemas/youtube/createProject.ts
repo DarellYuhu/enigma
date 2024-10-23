@@ -1,6 +1,6 @@
-import { string, z } from "zod";
+import { z } from "zod";
 
-const createYoutube = z.object({
+const createProject = z.object({
   projectName: z.string().trim().min(1, { message: "Required" }),
   APIs: z.string().trim().min(1, { message: "Required" }),
   keywords: z.string().trim().min(1, { message: "Required" }),
@@ -15,4 +15,4 @@ const createYoutube = z.object({
   ),
 });
 
-export default createYoutube;
+export default createProject;

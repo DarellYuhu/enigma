@@ -3,13 +3,13 @@
 import getInterestGraphs from "@/api/tiktok/getInterestGraphs";
 import getTagRelationGraphs from "@/api/tiktok/getTagRelationGraphs";
 import getTrends from "@/api/tiktok/getTrends";
-import Board from "@/components/board";
 import DateRangePicker from "@/components/ui/date-range-picker";
-import Dashboard from "@/layouts/dashboard";
 import useGraphDateStore from "@/store/graph-date-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import Dashboard from "@/layouts/Dashboard";
+import Board from "./components/Board";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const graphDate = useGraphDateStore();
@@ -47,8 +47,9 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
       }),
   });
   useEffect(() => {
-    graphDate.reset;
-    statisticDate.reset;
+    graphDate.reset();
+    statisticDate.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="flex flex-col gap-3">

@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import getTrends from "@/api/tiktok/getTrends";
-import Dashboard from "@/layouts/dashboard";
+import Dashboard from "@/layouts/Dashboard";
 import { useEffect, useState } from "react";
 import DateRangePicker from "@/components/ui/date-range-picker";
 import getInterestGraphs from "@/api/tiktok/getInterestGraphs";
@@ -47,8 +47,9 @@ const Trend = () => {
   });
 
   useEffect(() => {
-    graphDate.reset;
-    statisticDate.reset;
+    graphDate.reset();
+    statisticDate.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="flex flex-col gap-3">

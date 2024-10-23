@@ -1,4 +1,4 @@
-import createYoutube from "@/schemas/createYoutube";
+import createYoutube from "@/schemas/youtube/createProject";
 import { z } from "zod";
 
 const postProject = async (paylaod: z.infer<typeof createYoutube>) => {

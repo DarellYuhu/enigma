@@ -5,8 +5,8 @@ import getTopChannels from "@/api/youtube/getTopChannels";
 import getTopVideos from "@/api/youtube/getTopVideos";
 import getVideoStats from "@/api/youtube/getVideoStats";
 import BarChart2 from "@/components/BarChart2";
-import ComposedBarLine from "@/components/composed-barlinechart";
-import HorizontalBarChart from "@/components/horizontalbarchart";
+import ComposedBarLine from "@/components/ComposedBarLine";
+import HorizontalBarChart from "@/components/HorizontalBarChart";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import imageLoader from "@/utils/imageLoader";
@@ -97,6 +97,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
 
   useEffect(() => {
     reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

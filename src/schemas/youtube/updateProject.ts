@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const updateYoutube = z.object({
+const updateProject = z.object({
   projectId: z.string().trim().min(1, "Required"),
   APIs: z.string().trim().min(1, "Required"),
   keywords: z.string().trim().min(1, "Required"),
@@ -12,4 +12,4 @@ const updateYoutube = z.object({
   status: z.boolean(),
 });
 
-export default updateYoutube;
+export default updateProject;

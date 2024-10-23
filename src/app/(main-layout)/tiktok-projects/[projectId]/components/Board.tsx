@@ -1,3 +1,8 @@
+import getBoards from "@/api/tiktok/getBoards";
+import getExportComments from "@/api/tiktok/getExportComments";
+import useCategoryStore from "@/store/category-store";
+import useStatisticDateStore from "@/store/statistic-date-store";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
   flexRender,
@@ -6,38 +11,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./ui/table";
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import getBoards from "@/api/tiktok/getBoards";
 import { useState } from "react";
-import useStatisticDateStore from "@/store/statistic-date-store";
-import useCategoryStore, { CategoryState } from "@/store/category-store";
-import abbreviateNumber from "@/utils/abbreviateNumber";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
-import getExportComments from "@/api/tiktok/getExportComments";
+import TypeSelection from "./TypeSelection";
 import {
   Dialog,
   DialogClose,
@@ -46,8 +21,27 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import abbreviateNumber from "@/utils/abbreviateNumber";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 type Props = {
@@ -197,24 +191,6 @@ const Board = ({ projectId, string }: Props) => {
     </div>
   );
 };
-
-const TypeSelection = ({
-  value,
-  setValue,
-}: {
-  value: "top" | "trending";
-  setValue: (value: "top" | "trending") => void;
-}) => (
-  <Select onValueChange={setValue} value={value}>
-    <SelectTrigger className="w-[180px]">
-      <SelectValue placeholder="Type" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="top">Top</SelectItem>
-      <SelectItem value="trending">Trending</SelectItem>
-    </SelectContent>
-  </Select>
-);
 
 const columns: ColumnDef<BoardItem>[] = [
   {
