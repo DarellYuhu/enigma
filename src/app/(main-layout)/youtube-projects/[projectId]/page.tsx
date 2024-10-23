@@ -17,6 +17,7 @@ import normalizeChannelsStats from "./utils/normalizeChannelsStats";
 
 import ChannelTopVideos from "./components/ChannelTopVideos";
 import normalizeChannelVids from "./utils/normalizeChannelsVids";
+import getAudienceNetwork from "@/api/youtube/getAudienceNetwork";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const [selectedChannel, setSelectedChannel] = useState<
@@ -79,6 +80,16 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         since: from,
         until: to,
         details: selectedChannel?.channel_id,
+        string: "",
+      }),
+  });
+  const audienceNetwork = useQuery({
+    queryKey: ["youtube", "projects", params.projectId, "audience-network"],
+    queryFn: () =>
+      getAudienceNetwork({
+        projectId: params.projectId,
+        since: from,
+        until: to,
         string: "",
       }),
   });

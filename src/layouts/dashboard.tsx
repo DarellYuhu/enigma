@@ -1,7 +1,7 @@
 import CustomLineChart from "@/components/CustomLineChart";
 import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
 import CustomBarChart from "@/components/CustomBarChart";
-import CustomPieChart from "@/components/custom-piechart";
+import CustomPieChart from "@/components/CustomPieChart";
 import { ReactNode, useState } from "react";
 import { GetTrendsReturn } from "@/api/tiktok/getTrends";
 import VisGraph from "@/components/VisGraph";
@@ -22,6 +22,7 @@ import tagRelationExport from "@/utils/tagRelationExport";
 import useGraphDateStore from "@/store/graph-date-store";
 import interestNetExport from "@/utils/interestNetExport";
 import HorizontalBarChart2 from "@/components/HorizontalBarChart2";
+import AreaChart2 from "@/components/AreaChart2";
 
 type Props = {
   board?: React.ReactNode;
@@ -94,20 +95,22 @@ const Dashboard = ({
       <div className="card p-0 block">
         <span className="h-32">
           <h5 className="p-2">Weekly</h5>
-          <CustomLineChart
+          <AreaChart2
             data={statistics?.weekly || []}
-            labelKey="date"
             dataKey={category}
+            label="Comments"
+            labelKey="date"
           />
         </span>
       </div>
       <div className="card p-0 block">
         <h5 className="p-2">Monthly</h5>
         <span className="h-32">
-          <CustomLineChart
+          <AreaChart2
             data={statistics?.monthly || []}
-            labelKey="date"
             dataKey={category}
+            label="Comments"
+            labelKey="date"
           />
         </span>
       </div>

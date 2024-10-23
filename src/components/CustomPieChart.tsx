@@ -1,5 +1,5 @@
 import abbreviateNumber from "@/utils/abbreviateNumber";
-import { Pie, PieConfig } from "@ant-design/charts";
+import { Pie, PieConfig, PlotEvent } from "@ant-design/charts";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -37,6 +37,14 @@ const CustomPieChart = ({ data, dataKey, labelKey }: Props) => {
       stroke: color,
       inset: 1,
     },
+    onEvent(chart, event) {
+      if (event.type === "click" && event.data !== undefined) {
+        window.open(
+          `https://www.tiktok.com/@${event.data.data.user}`,
+          "_blank"
+        );
+      }
+    },
   };
 
   useEffect(
@@ -44,7 +52,7 @@ const CustomPieChart = ({ data, dataKey, labelKey }: Props) => {
     [theme]
   );
 
-  return <Pie {...config} />;
+  return <Pie {...config} on />;
 };
 
 export default CustomPieChart;
