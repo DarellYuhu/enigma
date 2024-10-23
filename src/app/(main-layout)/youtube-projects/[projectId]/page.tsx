@@ -18,8 +18,12 @@ import normalizeChannelsStats from "./utils/normalizeChannelsStats";
 import ChannelTopVideos from "./components/ChannelTopVideos";
 import normalizeChannelVids from "./utils/normalizeChannelsVids";
 import getAudienceNetwork from "@/api/youtube/getAudienceNetwork";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import CategoryButton from "./components/CategoryButton";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
+  const [category, setCategory] = useState<"view" | "like" | "comment">("view");
+  const [selectedTopChannel, setSelectedTopChannel] = useState<string>();
   const [selectedChannel, setSelectedChannel] = useState<
     YoutubeTopChannels["tc"]["0"] | null
   >(null);
@@ -71,15 +75,15 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
       "projects",
       params.projectId,
       "top-channels",
-      selectedChannel?.channel_id,
+      selectedTopChannel,
     ],
-    enabled: !!selectedChannel,
+    enabled: !!selectedTopChannel,
     queryFn: () =>
       getChannelTopVideos({
         projectId: params.projectId,
         since: from,
         until: to,
-        details: selectedChannel?.channel_id,
+        details: selectedTopChannel,
         string: "",
       }),
   });
@@ -97,6 +101,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   useEffect(() => {
     if (!!topVideos.data) {
       setSelectedVideo(topVideos.data?.top[0]);
+      setSelectedTopChannel(topVideos.data?.tc[0]?.channel_id);
     }
   }, [topVideos.data]);
 
@@ -130,7 +135,9 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
       <div className="card col-span-3 space-y-3 bg-gray-600 text-white">
         {selectedVideo && (
           <>
-            <h3 className="line-clamp-3">{selectedVideo.title}</h3>
+            <h3 className="line-clamp-3">{`${
+              selectedVideo.channel_title
+            } | ${new Date(selectedVideo.pub_date).toLocaleDateString()}`}</h3>
             <Image
               className="aspect-[16/9] rounded-lg object-contain bg-slate-200"
               loader={imageLoader}
@@ -139,51 +146,53 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
               height={300}
               alt="profile_picture"
             />
-            <h4 className="text-sm font-light text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            <h4 className="text-sm font-light text-center overflow-y-auto">
+              {`${selectedVideo.title}`}
             </h4>
           </>
         )}
       </div>
       <div className="col-span-2 space-y-3">
-        <div className="card text-center space-y-2">
-          <h3 className="text-3xl font-semibold">
-            {abbreviateNumber(selectedVideo?.like ?? 0)}
-          </h3>
-          <p>Likes</p>
-        </div>
-        <div className="card text-center space-y-2">
-          <h3 className="text-3xl font-semibold">
-            {abbreviateNumber(selectedVideo?.view ?? 0)}
-          </h3>
-          <p>Views</p>
-        </div>
-        <div className="card text-center space-y-2">
-          <h3 className="text-3xl font-semibold">
-            {abbreviateNumber(selectedVideo?.comment ?? 0)}
-          </h3>
-          <p>Comments</p>
-        </div>
+        <CategoryButton
+          dataKey="view"
+          selected={category}
+          onClick={setCategory}
+          value={selectedVideo?.view}
+        />
+        <CategoryButton
+          dataKey="like"
+          selected={category}
+          onClick={setCategory}
+          value={selectedVideo?.like}
+        />
+        <CategoryButton
+          dataKey="comment"
+          selected={category}
+          onClick={setCategory}
+          value={selectedVideo?.comment}
+        />
       </div>
-      <div className="card col-span-7">
+      <div className="flex flex-col card col-span-7 h-80">
         <h3>Stats Overtime</h3>
-        {videoStats.data && (
-          <ComposedBarLine
-            data={videoStats.data?.comment}
-            barDataKey="del"
-            barLabel="Deletion"
-            lineDataKey="val"
-            lineLabel="Value"
-            labelKey="date"
-          />
-        )}
+        <div className="flex flex-1">
+          {videoStats.data && (
+            <ComposedBarLine
+              data={videoStats.data?.[category]}
+              barDataKey="del"
+              barLabel="Growth"
+              lineDataKey="val"
+              lineLabel="Metric"
+              labelKey="date"
+            />
+          )}
+        </div>
       </div>
       <div className="card flex flex-col col-span-4 h-96">
         <h2>Top Publication Channels</h2>
         <div className="flex flex-1">
           {topChannels.data && (
             <HorizontalBarChart
-              data={topChannels.data?.tc}
+              data={topChannels.data.tc}
               dataKey="frac"
               labelKey="channel_name"
               label="Frequency"
@@ -213,45 +222,40 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
       </div>
       <div className="card col-span-5 space-y-4 pb-7">
         <h2>Top Video Sources</h2>
-        {/* <div className="space-y-2">
+        <div className="space-y-2">
+          {topVideos.data && (
             <ToggleGroup
               type="single"
-              value={selected}
+              value={selectedTopChannel}
               onValueChange={(value) => {
-                if (value) setSelected(value);
+                if (value) setSelectedTopChannel(value);
               }}
-              className="flex flex-col flex-nowrap items-center gap-2"
             >
-              {["a", "b", "c"].map((value, index) => {
+              {topVideos.data.tc.map((value, index) => {
                 return (
                   <ToggleGroupItem
                     key={index}
-                    value={value}
-                    className={` bg-slate-300 w-full p-1 text-sm rounded-md transition-all duration-300 ${
-                      selected === value ? "bg-red-700 text-white" : ""
-                    }`}
+                    value={value.channel_id}
+                    className={` bg-slate-300 w-full p-1 text-sm rounded-md transition-all duration-300 hover:bg-red-500 hover:text-white`}
                   >
-                    {value}
+                    {value.channel_name}
                   </ToggleGroupItem>
                 );
               })}
             </ToggleGroup>
-            <button className="bg-slate-300 py-1 px-4 text-xs flex justify-self-center rounded-md  transition-all duration-300 hover:bg-red-600 hover:text-white">
-              VIEW
-            </button>
-            <div className="flex flex-row flex-nowrap gap-2 overflow-x-auto">
-              {Array.from({ length: 15 }).map((_, index) => (
-                <Image
-                  key={index}
-                  src={"/avatars/me.jpg"}
-                  alt="profile_picture"
-                  className="aspect-[16/9] rounded-lg object-contain bg-slate-200"
-                  width={200}
-                  height={200}
-                />
-              ))}
-            </div>
-          </div> */}
+          )}
+          <button
+            className="bg-slate-300 py-1 px-4 text-xs flex justify-self-center rounded-md  transition-all duration-300 hover:bg-red-600 hover:text-white"
+            onClick={() =>
+              window.open(
+                `https://www.youtube.com/channel/${selectedTopChannel}`,
+                "_blank"
+              )
+            }
+          >
+            VIEW
+          </button>
+        </div>
         {channelTopVids.data && (
           <ChannelTopVideos
             data={normalizeChannelVids(

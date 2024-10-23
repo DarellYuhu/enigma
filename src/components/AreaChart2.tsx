@@ -25,14 +25,7 @@ const AreaChart2 = ({ data, dataKey, label, labelKey }: Props) => {
         } satisfies ChartConfig
       }
     >
-      <AreaChart
-        accessibilityLayer
-        data={data}
-        margin={{
-          left: 12,
-          right: 12,
-        }}
-      >
+      <AreaChart accessibilityLayer data={data}>
         <XAxis dataKey={labelKey} hide={true} />
         <ChartTooltip
           cursor={false}

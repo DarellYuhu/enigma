@@ -76,11 +76,6 @@ const menus: Menus = [
     title: "Youtube",
     menus: [
       {
-        label: "Trend",
-        link: "/youtube-trend",
-        icon: <ChartNoAxesCombined width={18} height={18} />,
-      },
-      {
         label: "Projects",
         link: "/youtube-projects",
         icon: <FolderOpenDot width={18} height={18} />,

@@ -200,6 +200,13 @@ const columns: ColumnDef<BoardItem>[] = [
   {
     accessorKey: "desc",
     header: "Caption",
+    cell: ({ row }) => {
+      return (
+        <span className="line-clamp-3 text-wrap hover:line-clamp-none break-all">
+          {row.original.desc}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "play",
