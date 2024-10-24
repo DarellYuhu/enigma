@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["omitApi"]
 }
 
 datasource db {
@@ -23,8 +24,21 @@ model User {
   updatedAt   DateTime @updatedAt
 }
 
+model ApiUrl {
+  id        Int      @id @default(autoincrement())
+  url       String
+  type      Type
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Role {
   USER
   CONTENT_MANAGER
   ADMIN
+}
+
+enum Type {
+  YOUTUBE
+  TIKTOK
 }

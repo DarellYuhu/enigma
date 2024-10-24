@@ -165,7 +165,10 @@ const columns: ColumnDef<YoutubeProject>[] = [
     cell: ({ row }) => {
       return (
         <DialogTrigger
-          onClick={() => row.toggleSelected()}
+          onClick={(event) => {
+            row.toggleSelected();
+            event.stopPropagation();
+          }}
           className="border border-blue-300 rounded-sm cursor-pointer hover:bg-blue-300 p-2"
         >
           Edit

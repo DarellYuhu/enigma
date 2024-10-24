@@ -149,7 +149,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
           </>
         )}
       </div>
-      <div className="col-span-2 space-y-3">
+      <div className="col-span-2 flex-col flex justify-between">
         <CategoryButton
           dataKey="view"
           selected={category}
