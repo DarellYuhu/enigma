@@ -1,11 +1,25 @@
 declare type Menus = {
-  title: string;
-  menus: {
-    label: string;
-    link: string;
-    icon: React.ReactNode;
+  user: {
+    name: string;
+    email: string;
+    avatar: string;
+  };
+  navMain: {
+    title: string;
+    url: string;
+    icon: any;
+    isActive: boolean;
+    items: {
+      title: string;
+      url: string;
+    }[];
   }[];
-}[];
+  projects: {
+    name: string;
+    url: string;
+    icon: any;
+  }[];
+};
 
 declare type TagRelationNetwork = {
   relation: {

@@ -1,15 +1,21 @@
 "use client";
 
-import {
-  ArrowLeftToLine,
-  ChartNoAxesCombined,
-  FolderOpenDot,
-  UserCog,
-} from "lucide-react";
-import Sidebar from "@/components/Sidebar";
+import { Clapperboard, UserCog, Youtube } from "lucide-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import useSidebarStore from "@/store/sidebar-store";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { Separator } from "@/components/ui/separator";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,72 +31,75 @@ export default function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isSidebarOpen, setIsSidebarOpen } = useSidebarStore();
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex flex-row w-screen h-screen">
-        <Sidebar menus={menus} />
-        <div
-          className={
-            "relative flex flex-col p-4 w-full h-full overflow-y-auto bg-slate-100 dark:bg-slate-800 gap-2"
-          }
-        >
-          <div>
-            <button
-              className="flex items-center bg-slate-200 p-2 rounded-md hover:bg-slate-300"
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            >
-              <ArrowLeftToLine
-                width={18}
-                height={18}
-                className={`transition-all duration-300 ${
-                  !isSidebarOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+      <SidebarProvider>
+        <AppSidebar data={data} />
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+            <div className="flex items-center gap-2 px-4">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 h-4" />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Engima</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            </div>
+          </header>
+          <div className="flex flex-1 flex-col p-4">
+            {children}
+            <Toaster />
           </div>
-          {children}
-          <Toaster />
-        </div>
-      </div>
+        </SidebarInset>
+      </SidebarProvider>
     </QueryClientProvider>
   );
 }
 
-const menus: Menus = [
-  {
-    title: "Tiktok",
-    menus: [
-      {
-        label: "Trend",
-        link: "/tiktok-trend",
-        icon: <ChartNoAxesCombined width={18} height={18} />,
-      },
-      {
-        label: "Projects",
-        link: "/tiktok-projects",
-        icon: <FolderOpenDot width={18} height={18} />,
-      },
-    ],
+const data = {
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
   },
-  {
-    title: "Youtube",
-    menus: [
-      {
-        label: "Projects",
-        link: "/youtube-projects",
-        icon: <FolderOpenDot width={18} height={18} />,
-      },
-    ],
-  },
-  {
-    title: "Management",
-    menus: [
-      {
-        label: "Accounts",
-        link: "/accounts",
-        icon: <UserCog width={18} height={18} />,
-      },
-    ],
-  },
-];
+  navMain: [
+    {
+      title: "Tiktok",
+      url: "#",
+      icon: Clapperboard,
+      isActive: true,
+      items: [
+        {
+          title: "Trend",
+          url: "/tiktok-trend",
+        },
+        {
+          title: "Projects",
+          url: "/tiktok-projects",
+        },
+      ],
+    },
+    {
+      title: "Youtube",
+      url: "#",
+      icon: Youtube,
+      isActive: true,
+      items: [
+        {
+          title: "Projects",
+          url: "/youtube-projects",
+        },
+      ],
+    },
+  ],
+  projects: [
+    {
+      name: "Accounts",
+      url: "/accounts",
+      icon: UserCog,
+    },
+  ],
+};
