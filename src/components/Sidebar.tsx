@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useSidebarStore from "@/store/sidebar-store";
 import { Moon, Sun } from "lucide-react";
+import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
@@ -86,6 +87,14 @@ const Sidebar = ({ menus }: { menus: Menus }) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <Button
+        type="submit"
+        variant={"outline"}
+        className="hover:bg-red-400 hover:text-white"
+        onClick={() => signOut({ redirectTo: "/sign-in" })}
+      >
+        Sign Out
+      </Button>
     </aside>
   );
 };

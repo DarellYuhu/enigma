@@ -4,6 +4,7 @@ import {
   ArrowLeftToLine,
   ChartNoAxesCombined,
   FolderOpenDot,
+  UserCog,
 } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -79,6 +80,16 @@ const menus: Menus = [
         label: "Projects",
         link: "/youtube-projects",
         icon: <FolderOpenDot width={18} height={18} />,
+      },
+    ],
+  },
+  {
+    title: "Management",
+    menus: [
+      {
+        label: "Accounts",
+        link: "/accounts",
+        icon: <UserCog width={18} height={18} />,
       },
     ],
   },

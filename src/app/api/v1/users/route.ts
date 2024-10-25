@@ -1,10 +1,12 @@
-import { User } from "@prisma/client";
+import * as bcrypt from "bcrypt";
+import { Prisma, User } from "@prisma/client";
 import prisma from "../../database";
 
 export async function POST(request: Request) {
-  const payload = await request.json();
+  const payload: Prisma.UserCreateInput = await request.json();
+  const password = await bcrypt.hash(payload.password, 10);
   const user = await prisma.user.create({
-    data: payload,
+    data: { ...payload, password },
     omit: {
       password: true,
     },
