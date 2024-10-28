@@ -1,4 +1,4 @@
-import { YOUTUBE_BASE_API_URL } from "@/constants";
+import { getYoutubeApi } from "@/app/api/utils";
 import { auth } from "@/lib/auth";
 import YoutubeSchema from "@/schemas/youtube";
 import { z } from "zod";
@@ -18,7 +18,7 @@ export const POST = auth(async function POST(request) {
     runEvery,
   }: z.infer<typeof YoutubeSchema.create> = await request.json();
   const response = await fetch(
-    `${YOUTUBE_BASE_API_URL}/api/v1/project/create`,
+    `${await getYoutubeApi()}/api/v1/project/create`,
     {
       method: "POST",
       body: JSON.stringify({
@@ -42,7 +42,7 @@ export const POST = auth(async function POST(request) {
 });
 
 export async function GET() {
-  const response = await fetch(`${YOUTUBE_BASE_API_URL}/api/v1/project/cat`, {
+  const response = await fetch(`${await getYoutubeApi()}/api/v1/project/cat`, {
     method: "POST",
     body: JSON.stringify({ type: "listAllProjects" }),
     headers: {

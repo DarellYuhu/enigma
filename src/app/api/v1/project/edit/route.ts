@@ -1,18 +1,18 @@
-import { TIKTOK_BASE_API_URL } from "@/constants";
+import { getTiktokApi } from "@/app/api/utils";
 import { auth } from "@/lib/auth";
 
 export const POST = auth(async function POST(request) {
   if (request.auth?.user.role === "USER")
     return Response.json({ message: "Unauthorized" }, { status: 403 });
   const { projectId, keywords, status } = await request.json();
-  const response1 = fetch(`${TIKTOK_BASE_API_URL}/api/v1/project/edit`, {
+  const response1 = fetch(`${await getTiktokApi()}/api/v1/project/edit`, {
     method: "POST",
     body: JSON.stringify({ projectId, keywords }),
     headers: {
       "Content-Type": "application/json",
     },
   });
-  const response2 = fetch(`${TIKTOK_BASE_API_URL}/api/v1/project/activation`, {
+  const response2 = fetch(`${await getTiktokApi()}/api/v1/project/activation`, {
     method: "POST",
     body: JSON.stringify({ projectId, status }),
     headers: {

@@ -1,4 +1,4 @@
-import { YOUTUBE_BASE_API_URL } from "@/constants";
+import { getYoutubeApi } from "@/app/api/utils";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -9,7 +9,7 @@ export async function GET(
   const since = searchParams.get("since");
   const until = searchParams.get("until");
 
-  const response = await fetch(`${YOUTUBE_BASE_API_URL}/api/v1/project/data`, {
+  const response = await fetch(`${await getYoutubeApi()}/api/v1/project/data`, {
     method: "POST",
     body: JSON.stringify({
       type: "video-stats",

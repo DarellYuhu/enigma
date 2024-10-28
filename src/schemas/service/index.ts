@@ -1,0 +1,21 @@
+import { Type } from "@prisma/client";
+import { z } from "zod";
+
+const putServices = z.object({
+  youtube: z.object({
+    id: z.enum(["youtube", "tiktok"]),
+    url: z.string().url("Invalid URL").min(1, "Required"),
+    type: z.nativeEnum(Type),
+  }),
+  tiktok: z.object({
+    id: z.enum(["youtube", "tiktok"]),
+    url: z.string().url("Invalid URL").min(1, "Required"),
+    type: z.nativeEnum(Type),
+  }),
+});
+
+const ServiceSchema = {
+  putServices,
+};
+
+export default ServiceSchema;

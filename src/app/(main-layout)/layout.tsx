@@ -1,6 +1,6 @@
 "use client";
 
-import { Clapperboard, UserCog, Youtube } from "lucide-react";
+import { Clapperboard, ServerCrash, UserCog, Youtube } from "lucide-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
 import {
@@ -103,6 +103,11 @@ const data = {
       name: "Accounts",
       url: "/accounts",
       icon: UserCog,
+    },
+    {
+      name: "Serivces",
+      url: "/services",
+      icon: ServerCrash,
     },
   ],
 };

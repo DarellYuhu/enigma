@@ -25,8 +25,8 @@ model User {
 }
 
 model ApiUrl {
-  id        Int      @id @default(autoincrement())
-  url       String
+  id        String   @id
+  url       String   @unique
   type      Type
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

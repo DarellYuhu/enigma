@@ -1,4 +1,4 @@
-import { YOUTUBE_BASE_API_URL } from "@/constants";
+import { getYoutubeApi } from "@/app/api/utils";
 import { auth } from "@/lib/auth";
 import YoutubeSchema from "@/schemas/youtube";
 import { z } from "zod";
@@ -7,7 +7,7 @@ export async function GET(
   _request: Request,
   { params }: { params: { id: string } }
 ) {
-  const response = await fetch(`${YOUTUBE_BASE_API_URL}/api/v1/project/cat`, {
+  const response = await fetch(`${await getYoutubeApi()}/api/v1/project/cat`, {
     method: "POST",
     body: JSON.stringify({ type: "getProjectConfig", projectId: params.id }),
     headers: {
@@ -32,7 +32,7 @@ export const PATCH = auth(async function PATCH(req) {
   }: z.infer<typeof YoutubeSchema.update> = await req.json();
   if (req.auth?.user.role === "USER")
     return Response.json({ message: "Unauthorized" }, { status: 403 });
-  const response = await fetch(`${YOUTUBE_BASE_API_URL}/api/v1/project/edit`, {
+  const response = await fetch(`${await getYoutubeApi()}/api/v1/project/edit`, {
     method: "POST",
     body: JSON.stringify({
       APIs,

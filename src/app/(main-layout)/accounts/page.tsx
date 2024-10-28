@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Role, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import {
   ColumnDef,
   flexRender,
@@ -31,8 +31,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import UpdateSheet from "./components/UpdateSheet";
-import useDeleteUser from "@/hooks/useDeleteUser";
-import { useState } from "react";
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import DeleteAlert from "./components/DeleteAlert";
 

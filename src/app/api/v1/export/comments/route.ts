@@ -1,9 +1,9 @@
-import { TIKTOK_BASE_API_URL } from "@/constants";
+import { getTiktokApi } from "@/app/api/utils";
 
 export async function POST(request: Request) {
   const { id, keywords } = await request.json();
   const response = await fetch(
-    `${TIKTOK_BASE_API_URL}/api/v1/export/comments`,
+    `${await getTiktokApi()}/api/v1/export/comments`,
     {
       method: "POST",
       body: JSON.stringify({ id, keywords }),

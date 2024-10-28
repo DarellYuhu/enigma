@@ -1,11 +1,11 @@
-import { TIKTOK_BASE_API_URL } from "@/constants";
+import { getTiktokApi } from "@/app/api/utils";
 
 export async function POST(request: Request) {
   const payload: {
     type: "listAllProjects" | "listActiveProjects" | "getProjectInfo";
     projectId?: string;
   } = await request.json();
-  const response = await fetch(`${TIKTOK_BASE_API_URL}/api/v1/project/cat`, {
+  const response = await fetch(`${await getTiktokApi()}/api/v1/project/cat`, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
