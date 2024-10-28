@@ -1,8 +1,5 @@
-import getBoards from "@/api/tiktok/getBoards";
-import getExportComments from "@/api/tiktok/getExportComments";
 import useCategoryStore from "@/store/category-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
   flexRender,
@@ -43,6 +40,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useTiktokBoards } from "@/hooks/useTiktokBoards";
+import { useTiktokComments } from "@/hooks/useTiktokComments";
 
 type Props = {
   projectId: string;
@@ -54,25 +53,8 @@ const Board = ({ projectId, string }: Props) => {
   const { category } = useCategoryStore();
   const { from, to } = useStatisticDateStore();
   const [type, setType] = useState<"top" | "trending">("top");
-  const boards = useQuery({
-    queryKey: ["boards", projectId],
-    queryFn: () =>
-      getBoards({
-        project: projectId,
-        since: from?.toISOString().split("T")[0],
-        until: to?.toISOString().split("T")[0],
-        string,
-      }),
-  });
-  const comments = useMutation({
-    mutationFn: getExportComments,
-    onSuccess(data) {
-      const h = document.createElement("a");
-      h.setAttribute("href", window.URL.createObjectURL(data));
-      h.click();
-      h.remove();
-    },
-  });
+  const boards = useTiktokBoards({ projectId, string, from, to });
+  const comments = useTiktokComments();
   const table = useReactTable({
     columns,
     data: boards.data?.[type as "top" | "trending"][category] || [],

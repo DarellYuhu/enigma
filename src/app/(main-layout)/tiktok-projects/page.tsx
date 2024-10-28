@@ -27,8 +27,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import getProjects from "@/api/tiktok/getProjects";
 import {
   Dialog,
   DialogClose,
@@ -50,15 +48,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import postProjects from "@/api/tiktok/postProjects";
 import { Switch } from "@/components/ui/switch";
 import { useEffect } from "react";
-import editProject from "@/api/tiktok/editProject";
-import getProject from "@/api/tiktok/getProject";
-import updateProjectSchema from "@/schemas/tiktok/updateProject";
 import { useRouter } from "next/navigation";
-import createProject from "@/schemas/tiktok/createProject";
-import { toast } from "sonner";
+import { useTiktokProjects } from "@/hooks/useTiktokProjects";
+import { useCreateTTProject } from "@/hooks/useCreateTTProject";
+import { useTiktokProject } from "@/hooks/useTiktokProject";
+import { useEditTTProject } from "@/hooks/useEditTTProject";
+import TiktokSchema from "@/schemas/tiktok";
 
 type Project = {
   projectId: string;
@@ -71,30 +68,8 @@ type Project = {
 
 const Projects = () => {
   const router = useRouter();
-  const queryClient = useQueryClient();
-  const projectsQuery = useQuery({
-    queryKey: ["projects"],
-    queryFn: () => getProjects({ type: "listAllProjects" }),
-  });
-  const projectsMutation = useMutation({
-    mutationFn: postProjects,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["projects"] });
-      toast.success("Project created!", {
-        position: "bottom-right",
-        duration: 2000,
-        icon: "🚀",
-      });
-    },
-    onError: (e) => {
-      toast.error(e.message ?? "Something went wrong!", {
-        position: "bottom-right",
-        duration: 5000,
-        icon: "🚀",
-      });
-    },
-  });
-
+  const projectsQuery = useTiktokProjects();
+  const projectsMutation = useCreateTTProject();
   const table = useReactTable({
     columns,
     data: projectsQuery.data?.projects || [],
@@ -109,15 +84,15 @@ const Projects = () => {
       },
     },
   });
-  const createForm = useForm<z.infer<typeof createProject>>({
-    resolver: zodResolver(createProject),
+  const createForm = useForm<z.infer<typeof TiktokSchema.create>>({
+    resolver: zodResolver(TiktokSchema.create),
     defaultValues: {
       projectName: "",
       keywords: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof createProject>) => {
+  const onSubmit = (values: z.infer<typeof TiktokSchema.create>) => {
     projectsMutation.mutate(values);
     createForm.reset();
   };
@@ -270,28 +245,10 @@ const Projects = () => {
 };
 
 const EditDialog = ({ project }: { project?: Project | null }) => {
-  const queryClient = useQueryClient();
-  const projectQuery = useQuery({
-    queryKey: ["project", project?.projectId],
-    queryFn: () => getProject({ projectId: project?.projectId }),
-    enabled: !!project?.projectId,
-  });
-  const projectMutation = useMutation({
-    mutationFn: editProject,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["projects"] });
-      toast.success("Project updated successfully");
-    },
-    onError(e) {
-      toast.error(e.message ?? "Something went wrong!", {
-        position: "bottom-right",
-        duration: 5000,
-        icon: "🚀",
-      });
-    },
-  });
-  const updateForm = useForm<z.infer<typeof updateProjectSchema>>({
-    resolver: zodResolver(updateProjectSchema),
+  const projectQuery = useTiktokProject({ project });
+  const projectMutation = useEditTTProject();
+  const updateForm = useForm<z.infer<typeof TiktokSchema.update>>({
+    resolver: zodResolver(TiktokSchema.update),
     defaultValues: {
       keywords: "",
       projectId: "",
@@ -299,7 +256,7 @@ const EditDialog = ({ project }: { project?: Project | null }) => {
       currentKeywords: "",
     },
   });
-  const onEditSubmit = (values: z.infer<typeof updateProjectSchema>) => {
+  const onEditSubmit = (values: z.infer<typeof TiktokSchema.update>) => {
     delete values.currentKeywords;
     const normalize: EditProjectPayload = {
       ...values,

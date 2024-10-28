@@ -1,50 +1,30 @@
 "use client";
 
-import getInterestGraphs from "@/api/tiktok/getInterestGraphs";
-import getTagRelationGraphs from "@/api/tiktok/getTagRelationGraphs";
-import getTrends from "@/api/tiktok/getTrends";
 import DateRangePicker from "@/components/ui/date-range-picker";
 import useGraphDateStore from "@/store/graph-date-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Dashboard from "@/layouts/Dashboard";
 import Board from "./components/Board";
+import { useTiktokTrends } from "@/hooks/useTiktokTrends";
+import { useTiktokInterestNet } from "@/hooks/useTiktokInterestNet";
+import { useTiktokHashtagNet } from "@/hooks/useTiktokHashtagNet";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const graphDate = useGraphDateStore();
   const statisticDate = useStatisticDateStore();
   const [query, setQuery] = useState("");
   const [graphQuery, setGraphQuery] = useState("");
-  const trends = useQuery({
-    queryKey: ["trends", "statistics", params.projectId],
-    queryFn: () =>
-      getTrends({
-        project: params.projectId,
-        since: statisticDate?.from?.toISOString().split("T")[0],
-        until: statisticDate?.to?.toISOString().split("T")[0],
-        string: query,
-      }),
+  const trends = useTiktokTrends({ params, query, statisticDate });
+  const interestNetwork = useTiktokInterestNet({
+    params,
+    graphQuery,
+    graphDate,
   });
-  const interestNetwork = useQuery({
-    queryKey: ["trends", "graphs", "interestNet", params.projectId],
-    queryFn: () =>
-      getInterestGraphs({
-        project: params.projectId,
-        since: graphDate.from?.toISOString().split("T")[0],
-        until: graphDate.to?.toISOString().split("T")[0],
-        string: graphQuery,
-      }),
-  });
-  const hashtagsNetwork = useQuery({
-    queryKey: ["trends", "graphs", "hashtagsNet", params.projectId],
-    queryFn: () =>
-      getTagRelationGraphs({
-        project: params.projectId,
-        since: graphDate.from?.toISOString().split("T")[0],
-        until: graphDate.to?.toISOString().split("T")[0],
-        string: graphQuery,
-      }),
+  const hashtagsNetwork = useTiktokHashtagNet({
+    params,
+    graphDate,
+    graphQuery,
   });
   useEffect(() => {
     graphDate.reset();

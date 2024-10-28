@@ -1,20 +1,15 @@
 import { CalendarRange, Eye, Globe } from "lucide-react";
 import { Separator } from "./ui/separator";
 import CustomPieChart from "./CustomPieChart";
-import { useQuery } from "@tanstack/react-query";
-import getTagInformation from "@/api/tiktok/getTagInformation";
 import abbreviateNumber from "@/utils/abbreviateNumber";
+import { useTiktokTagInfo } from "@/hooks/useTiktokTagInfo";
 
 const TagInformation = ({
   tagNode,
 }: {
   tagNode: TagRelationNetwork["relation"]["nodes"][number];
 }) => {
-  const tagInformation = useQuery({
-    queryKey: ["tagInformation", tagNode.id],
-    enabled: !!tagNode.id,
-    queryFn: () => getTagInformation({ hashtag: tagNode.id }),
-  });
+  const tagInformation = useTiktokTagInfo({ tagNode });
   if (tagInformation.isLoading) return <div>Loading...</div>;
   if (tagInformation.data?.Status === "No Data" || !tagInformation.data)
     return <div>No Data</div>;
