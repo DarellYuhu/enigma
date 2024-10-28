@@ -18,7 +18,6 @@ export const createProject = async (
     throw new Error("Failed to create project");
   }
 
-  console.log("pass huhi");
   const data = await response.json();
   return data;
 };

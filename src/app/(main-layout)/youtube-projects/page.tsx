@@ -20,12 +20,15 @@ import CreateDialog from "./components/createdialog";
 import EditDialog from "./components/editdialog";
 import { useRouter } from "next/navigation";
 import { useYoutubeProjects } from "@/hooks/useYoutubeProjects";
+import { useSession } from "next-auth/react";
 
 const YoutubeProjects = () => {
+  const { data: session } = useSession();
   const router = useRouter();
   const projects = useYoutubeProjects();
+  [];
   const table = useReactTable({
-    columns,
+    columns: columns(session?.user.role === "USER"),
     data: projects.data?.projects || [],
     getCoreRowModel: getCoreRowModel(),
     enableMultiRowSelection: false,
@@ -36,7 +39,10 @@ const YoutubeProjects = () => {
   return (
     <div className="flex flex-col gap-3">
       <Dialog>
-        <DialogTrigger className="bg-blue-500 dark:bg-green-500 shadow-md rounded-md p-2 text-white text-sm dark:hover:bg-green-600 hover:bg-blue-600 transition-all ease-in-out duration-200 self-end">
+        <DialogTrigger
+          disabled={session?.user.role === "USER"}
+          className="bg-blue-500 dark:bg-green-500 shadow-md rounded-md p-2 text-white text-sm dark:hover:bg-green-600 hover:bg-blue-600 transition-all ease-in-out duration-200 self-end"
+        >
           Create New
         </DialogTrigger>
         <CreateDialog />
@@ -115,63 +121,66 @@ const YoutubeProjects = () => {
   );
 };
 
-const columns: ColumnDef<YoutubeProject>[] = [
-  {
-    accessorKey: "projectName",
-    header: "Project Name",
-  },
-  {
-    accessorKey: "keywords",
-    header: "Keywords",
-  },
-  {
-    accessorKey: "createdAt",
-    header: "Created At",
-    cell({ row }) {
-      return (
-        <span>{new Date(row.original.createdAt).toLocaleDateString()}</span>
-      );
+const columns = (isDisabled: boolean): ColumnDef<YoutubeProject>[] => {
+  return [
+    {
+      accessorKey: "projectName",
+      header: "Project Name",
     },
-  },
-  {
-    accessorKey: "firstVideo",
-    header: "First Video",
-    cell({ row }) {
-      return (
-        <span>{new Date(row.original.createdAt).toLocaleDateString()}</span>
-      );
+    {
+      accessorKey: "keywords",
+      header: "Keywords",
     },
-  },
-  {
-    accessorKey: "lastTracking",
-    header: "Last Tracking",
-    cell({ row }) {
-      return (
-        <span>{new Date(row.original.createdAt).toLocaleDateString()}</span>
-      );
+    {
+      accessorKey: "createdAt",
+      header: "Created At",
+      cell({ row }) {
+        return (
+          <span>{new Date(row.original.createdAt).toLocaleDateString()}</span>
+        );
+      },
     },
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => {
-      return (
-        <DialogTrigger
-          onClick={(event) => {
-            row.toggleSelected();
-            event.stopPropagation();
-          }}
-          className="border border-blue-300 rounded-sm cursor-pointer hover:bg-blue-300 p-2"
-        >
-          Edit
-        </DialogTrigger>
-      );
+    {
+      accessorKey: "firstVideo",
+      header: "First Video",
+      cell({ row }) {
+        return (
+          <span>{new Date(row.original.createdAt).toLocaleDateString()}</span>
+        );
+      },
     },
-  },
-];
+    {
+      accessorKey: "lastTracking",
+      header: "Last Tracking",
+      cell({ row }) {
+        return (
+          <span>{new Date(row.original.createdAt).toLocaleDateString()}</span>
+        );
+      },
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => {
+        return (
+          <DialogTrigger
+            disabled={isDisabled}
+            onClick={(event) => {
+              row.toggleSelected();
+              event.stopPropagation();
+            }}
+            className="border border-blue-300 rounded-sm cursor-pointer hover:bg-blue-300 p-2"
+          >
+            Edit
+          </DialogTrigger>
+        );
+      },
+    },
+  ];
+};
 
 export default YoutubeProjects;

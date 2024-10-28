@@ -24,8 +24,6 @@ export async function GET(
     },
   });
 
-  console.log(response);
-
   const data = await response.text();
   return Response.json(data);
 }

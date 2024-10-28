@@ -56,6 +56,7 @@ import { useCreateTTProject } from "@/hooks/useCreateTTProject";
 import { useTiktokProject } from "@/hooks/useTiktokProject";
 import { useEditTTProject } from "@/hooks/useEditTTProject";
 import TiktokSchema from "@/schemas/tiktok";
+import { useSession } from "next-auth/react";
 
 type Project = {
   projectId: string;
@@ -67,11 +68,12 @@ type Project = {
 };
 
 const Projects = () => {
+  const { data: session } = useSession();
   const router = useRouter();
   const projectsQuery = useTiktokProjects();
   const projectsMutation = useCreateTTProject();
   const table = useReactTable({
-    columns,
+    columns: columns(session?.user.role === "USER"),
     data: projectsQuery.data?.projects || [],
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -107,7 +109,10 @@ const Projects = () => {
   return (
     <div className="flex flex-col gap-3">
       <Dialog>
-        <DialogTrigger className="bg-blue-500 dark:bg-green-500 shadow-md rounded-md p-2 text-white text-sm dark:hover:bg-green-600 hover:bg-blue-600 transition-all ease-in-out duration-200 self-end">
+        <DialogTrigger
+          disabled={session?.user.role === "USER"}
+          className="bg-blue-500 dark:bg-green-500 shadow-md rounded-md p-2 text-white text-sm dark:hover:bg-green-600 hover:bg-blue-600 transition-all ease-in-out duration-200 self-end"
+        >
           Create New
         </DialogTrigger>
         <DialogContent className="bg-white dark:bg-slate-800 border-0">
@@ -380,7 +385,7 @@ const EditDialog = ({ project }: { project?: Project | null }) => {
   );
 };
 
-const columns: ColumnDef<Project>[] = [
+const columns: (isDisabled: boolean) => ColumnDef<Project>[] = (isDisabled) => [
   {
     sortingFn: "text",
     accessorKey: "projectName",
@@ -463,6 +468,7 @@ const columns: ColumnDef<Project>[] = [
             event.stopPropagation();
             row.toggleSelected();
           }}
+          disabled={isDisabled}
         >
           <FilePenLine width={16} height={16} />
           Edit

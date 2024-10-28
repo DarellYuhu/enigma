@@ -16,6 +16,8 @@ import { useYoutubeTopVideos } from "@/hooks/useYoutubeTopVideos";
 import { useYoutubeVideoStats } from "@/hooks/useYoutubeVideoStats";
 import { useYoutubeTopChannels } from "@/hooks/useYoutubeTopChannels";
 import { useYTChannelTopVids } from "@/hooks/useYTChannelTopVids";
+import { useQuery } from "@tanstack/react-query";
+import { getAudienceNetwork } from "@/api/youtubeApi";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const [category, setCategory] = useState<"view" | "like" | "comment">("view");
@@ -37,16 +39,16 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
     params,
     selectedTopChannel,
   });
-  // const audienceNetwork = useQuery({
-  //   queryKey: ["youtube", "projects", params.projectId, "audience-network"],
-  //   queryFn: () =>
-  //     getAudienceNetwork({
-  //       projectId: params.projectId,
-  //       since: from,
-  //       until: to,
-  //       string: "",
-  //     }),
-  // });
+  const audienceNetwork = useQuery({
+    queryKey: ["youtube", "projects", params.projectId, "audience-network"],
+    queryFn: () =>
+      getAudienceNetwork({
+        projectId: params.projectId,
+        since: from,
+        until: to,
+        string: "",
+      }),
+  });
 
   useEffect(() => {
     if (!!topVideos.data) {

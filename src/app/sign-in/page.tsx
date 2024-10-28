@@ -37,7 +37,7 @@ const SignIn = async () => {
               await signIn("credentials", {
                 username: formData.get("username"),
                 password: formData.get("password"),
-                redirectTo: "/accounts",
+                redirectTo: "/",
               });
             }}
           >
