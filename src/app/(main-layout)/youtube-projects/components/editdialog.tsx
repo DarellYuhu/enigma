@@ -21,6 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const EditDialog = ({ item }: { item: YoutubeProject }) => {
@@ -48,30 +49,35 @@ const EditDialog = ({ item }: { item: YoutubeProject }) => {
     mutationFn: patchProjectConfig,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["youtube", "projects"] });
+      toast("Project created!", {
+        position: "bottom-right",
+        duration: 4000,
+        icon: "🚀",
+      });
+    },
+    onError(e) {
+      toast.error(e.message ?? "Something went wrong!", {
+        position: "bottom-right",
+        duration: 5000,
+        icon: "🚀",
+      });
     },
   });
   const onSubmit = (values: z.infer<typeof updateYoutube>) =>
     mutation.mutate(values);
   useEffect(() => {
     if (projectConfig.data) {
-      updateForm.setValue("projectId", item.projectID);
-      updateForm.setValue("APIs", projectConfig.data.APIs);
-      updateForm.setValue(
-        "getDetailsAfter",
-        projectConfig.data.getDetailsAfter
-      );
-      updateForm.setValue("keywords", projectConfig.data.keywords);
-      updateForm.setValue("languageCode", projectConfig.data.languageCode);
-      updateForm.setValue(
-        "monitorTopVideosEvery",
-        projectConfig.data.monitorTopVideosEvery
-      );
-      updateForm.setValue("regionCode", projectConfig.data.regionCode);
-      updateForm.setValue("runEvery", projectConfig.data.runEvery);
-      updateForm.setValue(
-        "status",
-        projectConfig.data.status === "active" ? true : false
-      );
+      updateForm.reset({
+        projectId: item.projectID,
+        APIs: projectConfig.data.APIs,
+        getDetailsAfter: projectConfig.data.getDetailsAfter,
+        keywords: projectConfig.data.keywords,
+        languageCode: projectConfig.data.languageCode,
+        monitorTopVideosEvery: projectConfig.data.monitorTopVideosEvery,
+        regionCode: projectConfig.data.regionCode,
+        runEvery: projectConfig.data.runEvery,
+        status: projectConfig.data.status === "active" ? true : false,
+      });
     }
   }, [projectConfig.data]);
   return (
@@ -87,12 +93,11 @@ const EditDialog = ({ item }: { item: YoutubeProject }) => {
           <FormField
             control={updateForm.control}
             name="projectId"
-            disabled
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Project Id</FormLabel>
                 <FormControl className="bg-slate-200 dark:bg-slate-600 text-sm p-2 rounded-sm">
-                  <input {...field} />
+                  <input {...field} disabled />
                 </FormControl>
                 <FormMessage />
               </FormItem>

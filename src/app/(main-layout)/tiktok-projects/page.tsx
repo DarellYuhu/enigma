@@ -58,6 +58,7 @@ import getProject from "@/api/tiktok/getProject";
 import updateProjectSchema from "@/schemas/tiktok/updateProject";
 import { useRouter } from "next/navigation";
 import createProject from "@/schemas/tiktok/createProject";
+import { toast } from "sonner";
 
 type Project = {
   projectId: string;
@@ -79,10 +80,18 @@ const Projects = () => {
     mutationFn: postProjects,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
-      alert("success");
+      toast.success("Project created!", {
+        position: "bottom-right",
+        duration: 2000,
+        icon: "🚀",
+      });
     },
-    onError: () => {
-      alert("error");
+    onError: (e) => {
+      toast.error(e.message ?? "Something went wrong!", {
+        position: "bottom-right",
+        duration: 5000,
+        icon: "🚀",
+      });
     },
   });
 
@@ -271,7 +280,14 @@ const EditDialog = ({ project }: { project?: Project | null }) => {
     mutationFn: editProject,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
-      alert("success");
+      toast.success("Project updated successfully");
+    },
+    onError(e) {
+      toast.error(e.message ?? "Something went wrong!", {
+        position: "bottom-right",
+        duration: 5000,
+        icon: "🚀",
+      });
     },
   });
   const updateForm = useForm<z.infer<typeof updateProjectSchema>>({

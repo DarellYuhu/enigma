@@ -1,6 +1,9 @@
 import { TIKTOK_BASE_API_URL } from "@/constants";
+import { auth } from "@/lib/auth";
 
-export async function POST(request: Request) {
+export const POST = auth(async function POST(request) {
+  if (request.auth?.user.role === "USER")
+    return Response.json({ message: "Unauthorized" }, { status: 403 });
   const { projectId, keywords, status } = await request.json();
   const response1 = fetch(`${TIKTOK_BASE_API_URL}/api/v1/project/edit`, {
     method: "POST",
@@ -22,4 +25,4 @@ export async function POST(request: Request) {
     ...(await data2.json()),
   };
   return Response.json(data);
-}
+});

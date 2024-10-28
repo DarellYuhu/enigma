@@ -9,7 +9,14 @@ const postProject = async (paylaod: z.infer<typeof createYoutube>) => {
       "Content-Type": "application/json",
     },
   });
+  if (!response.ok) {
+    if (response.status === 403) {
+      throw new Error("You don't have permission to create project");
+    }
+    throw new Error("Failed to create project");
+  }
 
+  console.log("pass huhi");
   const data = await response.json();
   return data;
 };

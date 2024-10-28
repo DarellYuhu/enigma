@@ -1,8 +1,11 @@
 import { YOUTUBE_BASE_API_URL } from "@/constants";
+import { auth } from "@/lib/auth";
 import createYoutube from "@/schemas/youtube/createProject";
 import { z } from "zod";
 
-export async function POST(request: Request) {
+export const POST = auth(async function POST(request) {
+  if (request.auth?.user.role === "USER")
+    return Response.json({ message: "Unauthorized" }, { status: 403 });
   const {
     APIs,
     backtrackSince,
@@ -36,7 +39,7 @@ export async function POST(request: Request) {
   );
   const data = await response.json();
   return Response.json(data);
-}
+});
 
 export async function GET() {
   const response = await fetch(`${YOUTUBE_BASE_API_URL}/api/v1/project/cat`, {

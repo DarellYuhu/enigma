@@ -12,6 +12,12 @@ const patchProjectConfig = async (payload: z.infer<typeof updateYoutube>) => {
       },
     }
   );
+  if (!response.ok) {
+    if (response.status === 403) {
+      throw new Error("You don't have permission to update project config");
+    }
+    throw new Error("Failed to update project config");
+  }
   const data = await response.json();
   return data;
 };

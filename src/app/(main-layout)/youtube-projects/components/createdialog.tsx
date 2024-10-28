@@ -51,10 +51,10 @@ const CreateDialog = () => {
       });
       closeRef.current?.click();
     },
-    onError() {
-      toast.error("Something went wrong!", {
+    onError(e) {
+      toast.error(e.message ?? "Something went wrong!", {
         position: "bottom-right",
-        duration: 2000,
+        duration: 5000,
         icon: "🚀",
       });
     },
