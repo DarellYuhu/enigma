@@ -1,15 +1,10 @@
 "use client";
 
-import getChannelTopVideos from "@/api/youtube/getChannelTopVideos";
-import getTopChannels from "@/api/youtube/getTopChannels";
-import getTopVideos from "@/api/youtube/getTopVideos";
-import getVideoStats from "@/api/youtube/getVideoStats";
 import BarChart2 from "@/components/BarChart2";
 import ComposedBarLine from "@/components/ComposedBarLine";
 import HorizontalBarChart from "@/components/HorizontalBarChart";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import imageLoader from "@/utils/imageLoader";
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import normalizeChannelsStats from "./utils/normalizeChannelsStats";
@@ -17,6 +12,10 @@ import ChannelTopVideos from "./components/ChannelTopVideos";
 import normalizeChannelVids from "./utils/normalizeChannelsVids";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import CategoryButton from "./components/CategoryButton";
+import { useYoutubeTopVideos } from "@/hooks/useYoutubeTopVideos";
+import { useYoutubeVideoStats } from "@/hooks/useYoutubeVideoStats";
+import { useYoutubeTopChannels } from "@/hooks/useYoutubeTopChannels";
+import { useYTChannelTopVids } from "@/hooks/useYTChannelTopVids";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const [category, setCategory] = useState<"view" | "like" | "comment">("view");
@@ -29,60 +28,14 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   >(null);
   const { reset, from, to } = useStatisticDateStore();
 
-  const topVideos = useQuery({
-    queryKey: ["youtube", "projects", params.projectId, "top-videos"],
-    queryFn: () =>
-      getTopVideos({
-        projectId: params.projectId,
-        since: from,
-        until: to,
-        string: "",
-      }),
-  });
-  const videoStats = useQuery({
-    queryKey: [
-      "youtube",
-      "projects",
-      params.projectId,
-      "statistics",
-      selectedVideo?.id,
-    ],
-    enabled: !!selectedVideo,
-    queryFn: () =>
-      getVideoStats({
-        projectId: params.projectId,
-        since: from,
-        until: to,
-        details: selectedVideo?.id,
-      }),
-  });
-  const topChannels = useQuery({
-    queryKey: ["youtube", "projects", params.projectId, "top-channels"],
-    queryFn: () =>
-      getTopChannels({
-        projectId: params.projectId,
-        since: from,
-        until: to,
-        string: "",
-      }),
-  });
-  const channelTopVids = useQuery({
-    queryKey: [
-      "youtube",
-      "projects",
-      params.projectId,
-      "top-channels",
-      selectedTopChannel,
-    ],
-    enabled: !!selectedTopChannel,
-    queryFn: () =>
-      getChannelTopVideos({
-        projectId: params.projectId,
-        since: from,
-        until: to,
-        details: selectedTopChannel,
-        string: "",
-      }),
+  const topVideos = useYoutubeTopVideos({ from, to, params });
+  const videoStats = useYoutubeVideoStats({ from, to, params, selectedVideo });
+  const topChannels = useYoutubeTopChannels({ from, to, params });
+  const channelTopVids = useYTChannelTopVids({
+    from,
+    to,
+    params,
+    selectedTopChannel,
   });
   // const audienceNetwork = useQuery({
   //   queryKey: ["youtube", "projects", params.projectId, "audience-network"],

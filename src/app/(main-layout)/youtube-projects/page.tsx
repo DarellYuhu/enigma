@@ -17,17 +17,13 @@ import {
 } from "@tanstack/react-table";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import CreateDialog from "./components/createdialog";
-import { useQuery } from "@tanstack/react-query";
-import getProjects from "@/api/youtube/getProjects";
 import EditDialog from "./components/editdialog";
 import { useRouter } from "next/navigation";
+import { useYoutubeProjects } from "@/hooks/useYoutubeProjects";
 
 const YoutubeProjects = () => {
   const router = useRouter();
-  const projects = useQuery({
-    queryKey: ["youtube", "projects"],
-    queryFn: getProjects,
-  });
+  const projects = useYoutubeProjects();
   const table = useReactTable({
     columns,
     data: projects.data?.projects || [],

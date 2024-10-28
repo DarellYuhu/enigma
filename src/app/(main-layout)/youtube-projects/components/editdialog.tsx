@@ -1,5 +1,3 @@
-import getProjectConfig from "@/api/youtube/getProjectConfig";
-import patchProjectConfig from "@/api/youtube/patchProjectConfig";
 import {
   DialogContent,
   DialogFooter,
@@ -16,18 +14,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import updateYoutube from "@/schemas/youtube/updateProject";
+import { useEditYTProject } from "@/hooks/useEditYTProject";
+import { useYTProjectConfig } from "@/hooks/useYTProjectConfig";
+import YoutubeSchema from "@/schemas/youtube";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 const EditDialog = ({ item }: { item: YoutubeProject }) => {
-  const queryClient = useQueryClient();
-  const updateForm = useForm<z.infer<typeof updateYoutube>>({
-    resolver: zodResolver(updateYoutube),
+  const updateForm = useForm<z.infer<typeof YoutubeSchema.update>>({
+    resolver: zodResolver(YoutubeSchema.update),
     defaultValues: {
       projectId: "",
       APIs: "",
@@ -40,30 +37,9 @@ const EditDialog = ({ item }: { item: YoutubeProject }) => {
       status: false,
     },
   });
-  const projectConfig = useQuery({
-    enabled: !!item.projectID,
-    queryKey: ["youtube", "projects", item.projectID],
-    queryFn: () => getProjectConfig(item.projectID),
-  });
-  const mutation = useMutation({
-    mutationFn: patchProjectConfig,
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["youtube", "projects"] });
-      toast("Project created!", {
-        position: "bottom-right",
-        duration: 4000,
-        icon: "🚀",
-      });
-    },
-    onError(e) {
-      toast.error(e.message ?? "Something went wrong!", {
-        position: "bottom-right",
-        duration: 5000,
-        icon: "🚀",
-      });
-    },
-  });
-  const onSubmit = (values: z.infer<typeof updateYoutube>) =>
+  const projectConfig = useYTProjectConfig({ item });
+  const mutation = useEditYTProject();
+  const onSubmit = (values: z.infer<typeof YoutubeSchema.update>) =>
     mutation.mutate(values);
   useEffect(() => {
     if (projectConfig.data) {

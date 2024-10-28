@@ -15,19 +15,16 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
-import createYoutube from "@/schemas/youtube/createProject";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import postProject from "@/api/youtube/postProject";
-import { toast } from "sonner";
 import { useRef } from "react";
+import { useCreateYTProject } from "@/hooks/useCreateYTProject";
+import YoutubeSchema from "@/schemas/youtube";
 
 const CreateDialog = () => {
-  const queryClient = useQueryClient();
   const closeRef = useRef<HTMLButtonElement | null>(null);
-  const createForm = useForm<z.infer<typeof createYoutube>>({
-    resolver: zodResolver(createYoutube),
+  const createForm = useForm<z.infer<typeof YoutubeSchema.create>>({
+    resolver: zodResolver(YoutubeSchema.create),
     defaultValues: {
       APIs: "",
       keywords: "",
@@ -40,26 +37,8 @@ const CreateDialog = () => {
       monitorTopVideosEvery: 0,
     },
   });
-  const mutation = useMutation({
-    mutationFn: postProject,
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["youtube", "projects"] });
-      toast("Project created!", {
-        position: "bottom-right",
-        duration: 2000,
-        icon: "🚀",
-      });
-      closeRef.current?.click();
-    },
-    onError(e) {
-      toast.error(e.message ?? "Something went wrong!", {
-        position: "bottom-right",
-        duration: 5000,
-        icon: "🚀",
-      });
-    },
-  });
-  const onSubmit = (values: z.infer<typeof createYoutube>) => {
+  const mutation = useCreateYTProject({ closeRef });
+  const onSubmit = (values: z.infer<typeof YoutubeSchema.create>) => {
     mutation.mutate(values);
   };
   return (

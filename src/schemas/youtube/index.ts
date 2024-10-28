@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const createProject = z.object({
+const create = z.object({
   projectName: z.string().trim().min(1, { message: "Required" }),
   APIs: z.string().trim().min(1, { message: "Required" }),
   keywords: z.string().trim().min(1, { message: "Required" }),
@@ -15,4 +15,21 @@ const createProject = z.object({
   ),
 });
 
-export default createProject;
+const update = z.object({
+  projectId: z.string().trim().min(1, "Required"),
+  APIs: z.string().trim().min(1, "Required"),
+  keywords: z.string().trim().min(1, "Required"),
+  languageCode: z.string().trim().min(1, "Required"),
+  regionCode: z.string().trim().min(1, "Required"),
+  runEvery: z.number(),
+  getDetailsAfter: z.number(),
+  monitorTopVideosEvery: z.number(),
+  status: z.boolean(),
+});
+
+const YoutubeSchema = {
+  create,
+  update,
+};
+
+export default YoutubeSchema;

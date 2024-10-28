@@ -1,6 +1,6 @@
 import { YOUTUBE_BASE_API_URL } from "@/constants";
 import { auth } from "@/lib/auth";
-import createYoutube from "@/schemas/youtube/createProject";
+import YoutubeSchema from "@/schemas/youtube";
 import { z } from "zod";
 
 export const POST = auth(async function POST(request) {
@@ -16,7 +16,7 @@ export const POST = auth(async function POST(request) {
     projectName,
     regionCode,
     runEvery,
-  }: z.infer<typeof createYoutube> = await request.json();
+  }: z.infer<typeof YoutubeSchema.create> = await request.json();
   const response = await fetch(
     `${YOUTUBE_BASE_API_URL}/api/v1/project/create`,
     {
