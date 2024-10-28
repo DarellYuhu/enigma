@@ -1,4 +1,4 @@
-import { signIn } from "@/lib/auth";
+import { auth, signIn } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +10,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
+import { redirect } from "next/navigation";
 
-const SignIn = () => {
+const SignIn = async () => {
+  const session = await auth();
+  if (session?.user) redirect("/");
   return (
     <div
       className="w-screen h-screen flex justify-center items-center"

@@ -1,8 +1,15 @@
 import prisma from "@/app/api/database";
 import loginSchema from "@/schemas/auth/loginSchema";
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
+import { User } from "@prisma/client";
+
+declare module "next-auth" {
+  interface Session {
+    user: Omit<User, "password">;
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -15,17 +22,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const { username, password } = await loginSchema.parseAsync(
           credentials
         );
-        const user = await prisma.user.findUnique({
+        const userPayload = await prisma.user.findUnique({
           where: { username },
         });
-        if (!user) return null;
-        const valid = await bcrypt.compare(password, user.password);
+        if (!userPayload) return null;
+        const valid = await bcrypt.compare(password, userPayload.password);
         if (!valid) return null;
-        else {
-          const { password, ...rest } = user;
-          return rest;
-        }
+        const { password: huhi, ...user } = userPayload;
+        return user;
       },
     }),
   ],
+  callbacks: {
+    async session({ session, token }) {
+      session.user = token.user;
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+  },
+  pages: {
+    signIn: "/sign-in",
+  },
 });

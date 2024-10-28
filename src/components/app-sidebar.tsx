@@ -20,21 +20,32 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { useTheme } from "next-themes";
+import { auth } from "@/lib/auth";
+import { useSession } from "next-auth/react";
 
 export function AppSidebar({
   data,
   ...props
 }: { data: Menus } & React.ComponentProps<typeof Sidebar>) {
   const { setTheme } = useTheme();
+  const { data: session } = useSession();
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <NavUser user={data.user} />
+        <NavUser
+          user={{
+            name: session?.user.displayName || "",
+            email: session?.user.role || "",
+            avatar: "/avatars/me.jpg",
+          }}
+        />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {session?.user.role === "ADMIN" && (
+          <NavProjects projects={data.projects} />
+        )}
       </SidebarContent>
       <SidebarFooter>
         <DropdownMenu>
