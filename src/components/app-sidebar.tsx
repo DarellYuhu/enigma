@@ -20,7 +20,6 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { useTheme } from "next-themes";
-import { auth } from "@/lib/auth";
 import { useSession } from "next-auth/react";
 
 export function AppSidebar({

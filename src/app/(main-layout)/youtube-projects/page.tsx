@@ -26,7 +26,6 @@ const YoutubeProjects = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const projects = useYoutubeProjects();
-  [];
   const table = useReactTable({
     columns: columns(session?.user.role === "USER"),
     data: projects.data?.projects || [],

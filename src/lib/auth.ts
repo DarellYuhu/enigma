@@ -1,6 +1,6 @@
 import prisma from "@/app/api/database";
 import loginSchema from "@/schemas/auth/loginSchema";
-import NextAuth, { DefaultSession } from "next-auth";
+import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import * as bcrypt from "bcryptjs";
 import { User } from "@prisma/client";
@@ -12,13 +12,15 @@ declare module "next-auth" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {
         username: {},
         password: {},
       },
-      async authorize(credentials, request) {
+      // @ts-ignore
+      async authorize(credentials) {
         const { username, password } = await loginSchema.parseAsync(
           credentials
         );
@@ -28,13 +30,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!userPayload) return null;
         const valid = await bcrypt.compare(password, userPayload.password);
         if (!valid) return null;
-        const { password: huhi, ...user } = userPayload;
+        const { password: _, ...user } = userPayload;
         return user;
       },
     }),
   ],
   callbacks: {
     async session({ session, token }) {
+      // @ts-ignore
       session.user = token.user;
       return session;
     },

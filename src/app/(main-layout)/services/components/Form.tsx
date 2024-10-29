@@ -44,7 +44,11 @@ const Form = () => {
     if (services.data) {
       form.reset(
         services.data.reduce((acc: { [key: string]: any }, curr) => {
-          const { createdAt, updatedAt, ...rest } = curr;
+          const {
+            createdAt: _createdAt,
+            updatedAt: _updatedAt,
+            ...rest
+          } = curr;
           acc[curr.id] = rest;
           return acc;
         }, {})

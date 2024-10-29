@@ -1,5 +1,5 @@
 import create from "@/schemas/account/create";
-import { Prisma, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import { z } from "zod";
 
 export async function createUser(

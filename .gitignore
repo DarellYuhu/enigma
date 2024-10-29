@@ -15,6 +15,7 @@
 
 # production
 /build
+*docker.tar.gz
 
 # misc
 .DS_Store

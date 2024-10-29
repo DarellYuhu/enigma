@@ -7,7 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev:db:migrate": "dotenv -e .env.development prisma migrate dev"
+    "dev:db:migrate": "dotenv -e .env.development prisma migrate dev",
+    "db:migrate": "dotenv -e .env.production prisma migrate deploy",
+    "db:seed": "dotenv -e .env.production npx prisma db seed",
+    "docker:build": "docker build -t enigma .",
+    "docker:up": "docker compose up --wait"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@ant-design/charts": "^2.2.1",
@@ -60,7 +67,7 @@
     "@faker-js/faker": "^9.0.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/lodash": "^4.17.10",
-    "@types/node": "^20",
+    "@types/node": "^20.17.2",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.20",
@@ -69,6 +76,7 @@
     "postcss": "^8.4.47",
     "prisma": "^5.21.1",
     "tailwindcss": "^3.4.13",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }

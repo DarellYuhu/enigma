@@ -98,8 +98,10 @@ const UpdateSheet = ({ user }: { user?: Omit<User, "password"> }) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {Object.values(Role).map((role) => (
-                      <SelectItem value={role}>{role}</SelectItem>
+                    {Object.values(Role).map((role, index) => (
+                      <SelectItem key={index} value={role}>
+                        {role}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

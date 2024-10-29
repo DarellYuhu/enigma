@@ -11,8 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
 import { redirect } from "next/navigation";
+import { AuthError } from "next-auth";
 
-const SignIn = async () => {
+const SignIn = async (props: {
+  searchParams: { callbackUrl: string | undefined; error: string | undefined };
+}) => {
   const session = await auth();
   if (session?.user) redirect("/");
   return (
@@ -34,11 +37,18 @@ const SignIn = async () => {
           <form
             action={async (formData) => {
               "use server";
-              await signIn("credentials", {
-                username: formData.get("username"),
-                password: formData.get("password"),
-                redirectTo: "/",
-              });
+              try {
+                await signIn("credentials", {
+                  username: formData.get("username"),
+                  password: formData.get("password"),
+                  redirectTo: "/",
+                });
+              } catch (error) {
+                if (error instanceof AuthError) {
+                  return redirect(`/sign-in?error=${error.type}`);
+                }
+                throw error;
+              }
             }}
           >
             <div className="space-y-4">
@@ -53,6 +63,11 @@ const SignIn = async () => {
               <Button type="submit" className="w-full">
                 Login
               </Button>
+              {props.searchParams.error && (
+                <p className="text-red-500 text-sm">
+                  Wrong username or password
+                </p>
+              )}
             </div>
           </form>
         </CardContent>

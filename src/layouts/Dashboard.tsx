@@ -2,7 +2,7 @@ import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
 import CustomBarChart from "@/components/CustomBarChart";
 import CustomPieChart from "@/components/CustomPieChart";
 import { ReactNode, useState } from "react";
-import { GetTrendsReturn } from "@/api/tiktok/getTrends";
+import { GetTrendsReturn } from "@/api/tiktokApi";
 import VisGraph from "@/components/VisGraph";
 import { Edge, Node } from "vis-network/peer/esm/vis-network";
 import {

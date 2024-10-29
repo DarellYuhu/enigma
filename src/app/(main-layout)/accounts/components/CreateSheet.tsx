@@ -26,7 +26,6 @@ import useCreateUser from "@/hooks/useCreateUser";
 import create from "@/schemas/account/create";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Role } from "@prisma/client";
-import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -42,7 +41,7 @@ const CreateSheet = () => {
     },
   });
   const onSubmit = (values: z.infer<typeof create>) => {
-    const { confirmPassword, ...rest } = values;
+    const { confirmPassword: _, ...rest } = values;
     mutate(rest);
   };
   return (
@@ -121,8 +120,10 @@ const CreateSheet = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {Object.values(Role).map((role) => (
-                      <SelectItem value={role}>{role}</SelectItem>
+                    {Object.values(Role).map((role, index) => (
+                      <SelectItem key={index} value={role}>
+                        {role}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

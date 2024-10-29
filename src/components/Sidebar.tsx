@@ -41,7 +41,7 @@ const Sidebar = ({ menus }: { menus: Menus }) => {
         </div>
       </div>
       <nav className="flex flex-col gap-y-1">
-        {menus.map((item, index) => (
+        {/* {menus.map((item, index) => (
           <div key={index}>
             <h2 className="text-lg font-semibold tracking-tight">
               {item.title}
@@ -65,7 +65,7 @@ const Sidebar = ({ menus }: { menus: Menus }) => {
               ))}
             </ul>
           </div>
-        ))}
+        ))} */}
       </nav>
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="shadow-md w-full">
