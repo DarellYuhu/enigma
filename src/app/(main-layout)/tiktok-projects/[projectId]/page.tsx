@@ -9,6 +9,7 @@ import Board from "./components/Board";
 import { useTiktokTrends } from "@/hooks/useTiktokTrends";
 import { useTiktokInterestNet } from "@/hooks/useTiktokInterestNet";
 import { useTiktokHashtagNet } from "@/hooks/useTiktokHashtagNet";
+import { useTiktokBoards } from "@/hooks/useTiktokBoards";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const graphDate = useGraphDateStore();
@@ -16,6 +17,12 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const [query, setQuery] = useState("");
   const [graphQuery, setGraphQuery] = useState("");
   const trends = useTiktokTrends({ params, query, statisticDate });
+  const boards = useTiktokBoards({
+    from: statisticDate.from,
+    to: statisticDate.to,
+    projectId: params.projectId,
+    string: query,
+  });
   const interestNetwork = useTiktokInterestNet({
     params,
     graphQuery,
@@ -49,7 +56,10 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
           className="border-[1px]  rounded-md p-2 text-sm"
         />
         <button
-          onClick={() => trends.refetch()}
+          onClick={() => {
+            trends.refetch();
+            boards.refetch();
+          }}
           className="bg-blue-400 hover:bg-blue-500 text-white border rounded-md p-2 text-sm"
         >
           Submit

@@ -1,5 +1,5 @@
 services:
-  # UNCOMMENT THIS TO USE IN DEVELOPMENT
+  # # UNCOMMENT THIS TO USE IN DEVELOPMENT
   # dev-db:
   #   image: postgres:latest
   #   env_file:
