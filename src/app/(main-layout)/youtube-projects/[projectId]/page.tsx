@@ -16,8 +16,11 @@ import { useYoutubeTopVideos } from "@/hooks/useYoutubeTopVideos";
 import { useYoutubeVideoStats } from "@/hooks/useYoutubeVideoStats";
 import { useYoutubeTopChannels } from "@/hooks/useYoutubeTopChannels";
 import { useYTChannelTopVids } from "@/hooks/useYTChannelTopVids";
+import { useYoutubeAudienceNet } from "@/hooks/useYoutubeAudienceNet";
+import Graph from "@/components/Graph";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
+  const [netCategory, setNetCategory] = useState<"vn" | "cn">("vn");
   const [category, setCategory] = useState<"view" | "like" | "comment">("view");
   const [selectedTopChannel, setSelectedTopChannel] = useState<string>();
   const [selectedChannel, setSelectedChannel] = useState<
@@ -31,22 +34,13 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const topVideos = useYoutubeTopVideos({ from, to, params });
   const videoStats = useYoutubeVideoStats({ from, to, params, selectedVideo });
   const topChannels = useYoutubeTopChannels({ from, to, params });
+  const audienceNetwork = useYoutubeAudienceNet({ params, from, to });
   const channelTopVids = useYTChannelTopVids({
     from,
     to,
     params,
     selectedTopChannel,
   });
-  // const audienceNetwork = useQuery({
-  //   queryKey: ["youtube", "projects", params.projectId, "audience-network"],
-  //   queryFn: () =>
-  //     getAudienceNetwork({
-  //       projectId: params.projectId,
-  //       since: from,
-  //       until: to,
-  //       string: "",
-  //     }),
-  // });
 
   useEffect(() => {
     if (!!topVideos.data) {
@@ -170,7 +164,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
           </>
         )}
       </div>
-      <div className="card col-span-5 space-y-4 pb-7">
+      <div className="card col-span-5 space-y-4 pb-7 h-[500px]">
         <h2>Top Video Sources</h2>
         <div className="space-y-2">
           {topVideos.data && (
@@ -181,17 +175,19 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
                 if (value) setSelectedTopChannel(value);
               }}
             >
-              {topVideos.data.tc.map((value, index) => {
-                return (
-                  <ToggleGroupItem
-                    key={index}
-                    value={value.channel_id}
-                    className={` bg-slate-300 w-full p-1 text-sm rounded-md transition-all duration-300 hover:bg-red-500 hover:text-white`}
-                  >
-                    {value.channel_name}
-                  </ToggleGroupItem>
-                );
-              })}
+              <div className="flex flex-row overflow-x-auto gap-2">
+                {topVideos.data.tc.map((value, index) => {
+                  return (
+                    <ToggleGroupItem
+                      key={index}
+                      value={value.channel_id}
+                      className={` bg-slate-300 w-full p-1 text-sm rounded-md transition-all duration-300 hover:bg-red-500 hover:text-white text-nowrap`}
+                    >
+                      {value.channel_name}
+                    </ToggleGroupItem>
+                  );
+                })}
+              </div>
             </ToggleGroup>
           )}
           <button
@@ -215,8 +211,23 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
           />
         )}
       </div>
-      <div className="card col-span-7">
-        {/* <VisGraph data={interest.network} /> */}
+      <div className="card col-span-7 h-[500px] relative">
+        {audienceNetwork.data && (
+          <Graph data={audienceNetwork.data[netCategory]} />
+        )}
+        <ToggleGroup
+          className="absolute top-2 right-2"
+          type="single"
+          value={netCategory}
+          onValueChange={(value: "cn" | "vn") => setNetCategory(value)}
+        >
+          <ToggleGroupItem variant={"outline"} value="cn">
+            Channel
+          </ToggleGroupItem>
+          <ToggleGroupItem variant={"outline"} value="vn">
+            Video
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
       {/* <div className="card col-span-4">1items</div>
         <div className="card col-span-8">items</div>

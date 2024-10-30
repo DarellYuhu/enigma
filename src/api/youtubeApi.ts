@@ -1,4 +1,7 @@
+import { CosmosLink, CosmosNode } from "@/components/Graph";
+import { COLORS } from "@/constants";
 import YoutubeSchema from "@/schemas/youtube";
+import { CosmographData } from "@cosmograph/react";
 import { z } from "zod";
 
 export const createProject = async (
@@ -165,7 +168,40 @@ export const getAudienceNetwork = async (payload: {
   );
 
   const data = await response.json();
-  return data;
+  const parsed: YoutubeAudienceNet = JSON.parse(data);
+  const normalizedChannels: CosmographData<CosmosNode, CosmosLink> = {
+    nodes: parsed.cn.nodes.map((node) => ({
+      id: node.id,
+      label: node.channel_title,
+      fill: COLORS[node.class],
+      data: node,
+    })),
+    links: parsed.cn.edges.map((edge) => ({
+      source: edge.from,
+      target: edge.to,
+      data: edge,
+    })),
+  };
+  const normalizedVideos: CosmographData<CosmosNode, CosmosLink> = {
+    nodes: parsed.vn.nodes.map((node) => ({
+      id: node.id,
+      label: node.title,
+      fill: COLORS[node.class],
+      data: node,
+    })),
+    links: parsed.vn.edges.map((edge) => ({
+      source: edge.from,
+      target: edge.to,
+      data: edge,
+    })),
+  };
+
+  return {
+    cn: normalizedChannels,
+    vn: normalizedVideos,
+    end: parsed.end,
+    start: parsed.start,
+  };
 };
 
 type Data = {

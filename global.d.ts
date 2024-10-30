@@ -292,3 +292,33 @@ declare type YoutubeChannelTopVids = {
     };
   };
 };
+
+declare type YoutubeAudienceNet = {
+  vn: {
+    nodes: {
+      id: sring;
+      title: string;
+      channel_title: string;
+      class: number;
+    }[];
+    edges: {
+      from: string;
+      to: string;
+      value: number;
+    }[];
+  };
+  cn: {
+    nodes: {
+      id: string;
+      channel_title: string;
+      class: number;
+    }[];
+    edges: {
+      from: string;
+      to: string;
+      value: number;
+    }[];
+  };
+  start: string;
+  end: string;
+};

@@ -32,6 +32,10 @@
   }
 }
 
+.style_module_watermark__6b4371ae {
+  display: none;
+}
+
 @layer components {
   .card {
     @apply p-2 bg-white dark:bg-slate-600 rounded-md shadow-md;

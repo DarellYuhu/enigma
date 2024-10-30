@@ -1,7 +1,8 @@
 import { COLORS } from "@/constants";
 import extractAgeLabel from "@/utils/extractAgeLabel";
-import normalizeInterestNetwork from "@/utils/normalizeInterestNetwork";
 import normalizeTagRelation from "@/utils/normalizeTagRelation";
+import { CosmographData } from "@cosmograph/react";
+import { CosmosLink, CosmosNode } from "@/components/Graph";
 
 export const createProject = async (payload: {
   projectName: string;
@@ -128,11 +129,23 @@ export const getInterestGraphs = async (payload: GetGraphsPayload) => {
       })),
     };
   });
-  return {
-    ...data,
-    hashtags,
-    network: normalizeInterestNetwork(data),
+  const normalized: CosmographData<CosmosNode, CosmosLink> = {
+    nodes: data.network.nodes.map((node) => ({
+      id: node.id,
+      label: node.author_name,
+      fill: COLORS[node.class],
+      size: Math.log(node.digg),
+      data: node,
+    })),
+    links: data.network.edges.map((edge, index) => ({
+      id: index.toString(),
+      source: edge.from,
+      target: edge.to,
+      data: edge,
+    })),
   };
+
+  return { network: normalized, hashtags };
 };
 
 export const getTagInformation = async (payload: { hashtag: string }) => {

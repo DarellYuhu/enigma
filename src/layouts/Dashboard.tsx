@@ -22,15 +22,14 @@ import useGraphDateStore from "@/store/graph-date-store";
 import interestNetExport from "@/utils/interestNetExport";
 import HorizontalBarChart2 from "@/components/HorizontalBarChart2";
 import AreaChart2 from "@/components/AreaChart2";
+import Graph, { CosmosLink, CosmosNode } from "@/components/Graph";
+import { CosmographData } from "@cosmograph/react";
 
 type Props = {
   board?: React.ReactNode;
   graphSettingsComponent: React.ReactNode;
   statistics?: GetTrendsReturn;
-  interestNetwork?: {
-    nodes: Node[];
-    edges: Edge[];
-  };
+  interestNetwork?: CosmographData<CosmosNode, CosmosLink>;
   tagRelationNetwork?: {
     nodes: Node[];
     edges: Edge[];
@@ -143,18 +142,14 @@ const Dashboard = ({
             <h5 className="absolute top-0 left-0">Interest Network</h5>
             {interestNetwork ? (
               <>
-                <VisGraph
+                <Graph
                   data={interestNetwork}
-                  events={{
-                    click: (event) => {
-                      const nodes = new DataSet(interestNetwork.nodes as any);
-                      const node = nodes.get(event.nodes[0]);
-                      if (node && !Array.isArray(node)) {
-                        setNode(node);
-                      } else {
-                        setNode(null);
-                      }
-                    },
+                  onClick={(node) => {
+                    if (node) {
+                      setNode(node.data);
+                    } else {
+                      setNode(null);
+                    }
                   }}
                 />
                 <button
