@@ -6,11 +6,13 @@ export function useYTChannelTopVids({
   from,
   to,
   selectedTopChannel,
+  string,
 }: {
   params: { projectId: string };
   from?: Date;
   to?: Date;
   selectedTopChannel: string | undefined;
+  string: string;
 }) {
   return useQuery({
     queryKey: [
@@ -27,7 +29,7 @@ export function useYTChannelTopVids({
         since: from,
         until: to,
         details: selectedTopChannel,
-        string: "",
+        string,
       }),
   });
 }

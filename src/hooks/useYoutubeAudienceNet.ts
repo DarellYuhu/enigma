@@ -5,10 +5,12 @@ export function useYoutubeAudienceNet({
   params,
   from,
   to,
+  string,
 }: {
   params: { projectId: string };
   from?: Date;
   to?: Date;
+  string: string;
 }) {
   return useQuery({
     queryKey: ["youtube", "projects", params.projectId, "audience-network"],
@@ -17,7 +19,7 @@ export function useYoutubeAudienceNet({
         projectId: params.projectId,
         since: from,
         until: to,
-        string: "",
+        string,
       }),
   });
 }
