@@ -30,7 +30,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   });
   const hashtagsNetwork = useTiktokHashtagNet({
     params,
-    graphDate,
+    graphDate: statisticDate,
     graphQuery,
   });
   useEffect(() => {
@@ -59,6 +59,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
           onClick={() => {
             trends.refetch();
             boards.refetch();
+            hashtagsNetwork.refetch();
           }}
           className="bg-blue-400 hover:bg-blue-500 text-white border rounded-md p-2 text-sm"
         >
@@ -91,7 +92,6 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
             <button
               onClick={() => {
                 interestNetwork.refetch();
-                hashtagsNetwork.refetch();
               }}
               className="bg-blue-400 hover:bg-blue-500 text-white border rounded-md p-2 text-sm"
             >

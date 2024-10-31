@@ -36,11 +36,11 @@ const Graph = ({ data, onClick }: Props) => {
       nodeLabelAccessor={(node) => `${node.label}`}
       nodeLabelColor={"#fff"}
       linkArrows={false}
-      // linkColor={"#00000008"}
+      linkColor={"#00000008"}
       simulationGravity={0.38}
       simulationLinkSpring={0.03}
       simulationRepulsion={0.4}
-      simulationDecay={100}
+      // simulationDecay={100}
       // simulationLinkDistance={8}
       onClick={onClick}
     />

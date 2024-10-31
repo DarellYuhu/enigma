@@ -200,9 +200,11 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
                     selectedChannel.channel_id,
                     topChannels.data?.ts
                   )}
-                  dataKey="value"
-                  labelKey="date"
-                  label="Date"
+                  labelKey={"date"}
+                  dataKey={"value"}
+                  label={"Count"}
+                  topLabel={false}
+                  yAxis={false}
                 />
               </div>
             </>
@@ -257,7 +259,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         </div>
         <div className="card col-span-7 h-[500px] relative">
           {audienceNetwork.data && (
-            <Graph data={audienceNetwork.data[netCategory]} />
+            <Graph data={audienceNetwork.data[netCategory] || []} />
           )}
           <ToggleGroup
             className="absolute top-2 right-2"

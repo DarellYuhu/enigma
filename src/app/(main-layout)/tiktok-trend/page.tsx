@@ -26,7 +26,7 @@ const Trend = () => {
   });
   const hashtagsNetwork = useTiktokHashtagNet({
     params: { projectId: "0" },
-    graphDate,
+    graphDate: statisticDate,
     graphQuery,
   });
 
@@ -53,7 +53,10 @@ const Trend = () => {
           className="border-[1px]  rounded-md p-2 text-sm"
         />
         <button
-          onClick={() => trends.refetch()}
+          onClick={() => {
+            trends.refetch();
+            hashtagsNetwork.refetch();
+          }}
           className="bg-blue-400 hover:bg-blue-500 text-white border rounded-md p-2 text-sm"
         >
           Submit
@@ -82,10 +85,7 @@ const Trend = () => {
               className="border-[1px]  rounded-md p-2 text-sm"
             />
             <button
-              onClick={() => {
-                interestNetwork.refetch();
-                hashtagsNetwork.refetch();
-              }}
+              onClick={() => interestNetwork.refetch()}
               className="bg-blue-400 hover:bg-blue-500 text-white border rounded-md p-2 text-sm"
             >
               Submit

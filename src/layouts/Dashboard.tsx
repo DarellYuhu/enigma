@@ -24,6 +24,7 @@ import HorizontalBarChart2 from "@/components/HorizontalBarChart2";
 import AreaChart2 from "@/components/AreaChart2";
 import Graph, { CosmosLink, CosmosNode } from "@/components/Graph";
 import { CosmographData } from "@cosmograph/react";
+import BarChart2 from "@/components/BarChart2";
 
 type Props = {
   board?: React.ReactNode;
@@ -126,15 +127,63 @@ const Dashboard = ({
         <div className="card flex flex-col col-span-5 h-[340px]">
           <h5>Daily</h5>
           <div className="flex flex-1">
-            <CustomBarChart
+            {/* <CustomBarChart
               data={statistics?.daily || []}
               labelKey={category}
               dataKey="date"
+            /> */}
+            <BarChart2
+              data={statistics?.daily || []}
+              labelKey={"date"}
+              dataKey={category}
+              label={category}
+              topLabel={false}
+              brush
+              fill="rgba(16,185,129,1)"
             />
           </div>
         </div>
       </div>
-      {board ? <div className="col-span-full">{board}</div> : null}
+      {board ? <div className="col-span-full card">{board}</div> : null}
+      <div className="card flex flex-col col-span-full h-80 relative">
+        <h5 className="absolute top-2 left-2 bg-white">Hashtag Map</h5>
+        {tagRelationNetwork ? (
+          <>
+            <VisGraph
+              type="tagRelation"
+              data={tagRelationNetwork}
+              events={{
+                click: (event) => {
+                  const nodes = new DataSet(tagRelationNetwork.nodes as any);
+                  const node = nodes.get(event.nodes[0]);
+                  if (node && !Array.isArray(node)) {
+                    setTagNode(node);
+                  } else {
+                    setTagNode(null);
+                  }
+                },
+              }}
+            />
+            <button
+              onClick={() =>
+                tagRelationExport(
+                  graphDate.from!,
+                  graphDate.to!,
+                  interestNetwork as any
+                )
+              }
+              className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm"
+            >
+              Export (.gdf)
+            </button>
+          </>
+        ) : null}
+        {tagNode ? (
+          <div className="absolute p-2 h-4/5 w-fit backdrop-blur-md border rounded-md shadow-md bottom-0 left-0 m-2">
+            <TagInformation tagNode={tagNode} />
+          </div>
+        ) : null}
+      </div>
       <div className="col-span-full">{graphSettingsComponent}</div>
       <div className="card flex flex-col col-span-full gap-3 relative">
         <div className="flex flex-row">
@@ -201,45 +250,6 @@ const Dashboard = ({
             </Carousel>
           </div>
         </div>
-      </div>
-      <div className="card flex flex-col col-span-full h-80 relative">
-        <h5 className="absolute top-2 left-2 bg-white">Hashtag Map</h5>
-        {tagRelationNetwork ? (
-          <>
-            <VisGraph
-              type="tagRelation"
-              data={tagRelationNetwork}
-              events={{
-                click: (event) => {
-                  const nodes = new DataSet(tagRelationNetwork.nodes as any);
-                  const node = nodes.get(event.nodes[0]);
-                  if (node && !Array.isArray(node)) {
-                    setTagNode(node);
-                  } else {
-                    setTagNode(null);
-                  }
-                },
-              }}
-            />
-            <button
-              onClick={() =>
-                tagRelationExport(
-                  graphDate.from!,
-                  graphDate.to!,
-                  interestNetwork as any
-                )
-              }
-              className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm"
-            >
-              Export (.gdf)
-            </button>
-          </>
-        ) : null}
-        {tagNode ? (
-          <div className="absolute p-2 h-4/5 w-fit backdrop-blur-md border rounded-md shadow-md bottom-0 left-0 m-2">
-            <TagInformation tagNode={tagNode} />
-          </div>
-        ) : null}
       </div>
     </div>
   );
