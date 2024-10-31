@@ -33,11 +33,20 @@ import { Button } from "@/components/ui/button";
 import UpdateSheet from "./components/UpdateSheet";
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import DeleteAlert from "./components/DeleteAlert";
+import ResetPassAlert from "./components/ResetPassAlert";
+import React, { useState } from "react";
 
 const Account = () => {
+  const [resetAlert, setResetAlert] = useState(false);
+  const [deleteAlert, setDeleteAlert] = useState(false);
   const users = useUsers();
   const table = useReactTable({
-    columns,
+    columns: columns({
+      resetAlert,
+      setResetAlert,
+      deleteAlert,
+      setDeleteAlert,
+    }),
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -53,59 +62,66 @@ const Account = () => {
         <CreateSheet />
       </Sheet>
       <div className="bg-white">
-        <AlertDialog>
-          <Sheet>
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow
-                    key={headerGroup.id}
-                    className="hover:bg-slate-200 dark:hover:bg-slate-700"
-                  >
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        key={header.id}
-                        className={
-                          header.id === "actions"
-                            ? "text-black dark:text-slate-300 text-nowrap font-semibold"
-                            : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
-                        }
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <UpdateSheet user={table.getSelectedRowModel().rows[0]?.original} />
-            <DeleteAlert
-              id={table.getSelectedRowModel().rows[0]?.original.id}
-            />
-          </Sheet>
+        <AlertDialog open={resetAlert} onOpenChange={setResetAlert}>
+          <AlertDialog open={deleteAlert} onOpenChange={setDeleteAlert}>
+            <Sheet>
+              <Table>
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow
+                      key={headerGroup.id}
+                      className="hover:bg-slate-200 dark:hover:bg-slate-700"
+                    >
+                      {headerGroup.headers.map((header) => (
+                        <TableHead
+                          key={header.id}
+                          className={
+                            header.id === "actions"
+                              ? "text-black dark:text-slate-300 text-nowrap font-semibold"
+                              : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
+                          }
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className="">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <UpdateSheet
+                user={table.getSelectedRowModel().rows[0]?.original}
+              />
+              <DeleteAlert
+                id={table.getSelectedRowModel().rows[0]?.original.id}
+              />
+            </Sheet>
+          </AlertDialog>
+          <ResetPassAlert
+            id={table.getSelectedRowModel().rows[0]?.original.id}
+          />
         </AlertDialog>
         <div className="flex flex-1 justify-end p-4 gap-3">
           <button
@@ -128,65 +144,99 @@ const Account = () => {
   );
 };
 
-const columns: ColumnDef<Omit<User, "password">>[] = [
-  {
-    accessorKey: "displayName",
-    header: "Name",
-  },
-  {
-    accessorKey: "username",
-    header: "Username",
-  },
-  {
-    accessorKey: "role",
-    header: "Role",
-  },
-  {
-    accessorKey: "createdAt",
-    header: "Created At",
-    cell: ({ row }) => (
-      <span>
-        {new Date(row.getValue<Date>("createdAt")).toLocaleDateString()}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "updatedAt",
-    header: "Updated At",
-    cell: ({ row }) => (
-      <span>
-        {new Date(row.getValue<Date>("updatedAt")).toLocaleDateString()}
-      </span>
-    ),
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <SheetTrigger asChild onClick={() => row.toggleSelected()}>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-            </SheetTrigger>
-            <AlertDialogTrigger asChild onClick={() => row.toggleSelected()}>
-              <DropdownMenuItem>
-                <span>Delete Account</span>
-              </DropdownMenuItem>
-            </AlertDialogTrigger>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+const columns: ({
+  resetAlert,
+  setResetAlert,
+  deleteAlert,
+  setDeleteAlert,
+}: {
+  resetAlert: boolean;
+  setResetAlert: React.Dispatch<React.SetStateAction<boolean>>;
+  deleteAlert: boolean;
+  setDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>;
+}) => ColumnDef<Omit<User, "password">>[] = ({
+  resetAlert,
+  setResetAlert,
+  deleteAlert,
+  setDeleteAlert,
+}) => {
+  return [
+    {
+      accessorKey: "displayName",
+      header: "Name",
     },
-  },
-];
+    {
+      accessorKey: "username",
+      header: "Username",
+    },
+    {
+      accessorKey: "role",
+      header: "Role",
+    },
+    {
+      accessorKey: "createdAt",
+      header: "Created At",
+      cell: ({ row }) => (
+        <span>
+          {new Date(row.getValue<Date>("createdAt")).toLocaleDateString()}
+        </span>
+      ),
+    },
+    {
+      accessorKey: "updatedAt",
+      header: "Updated At",
+      cell: ({ row }) => (
+        <span>
+          {new Date(row.getValue<Date>("updatedAt")).toLocaleDateString()}
+        </span>
+      ),
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <SheetTrigger asChild onClick={() => row.toggleSelected()}>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
+              </SheetTrigger>
+              <AlertDialogTrigger
+                asChild
+                onClick={() => {
+                  row.toggleSelected();
+                  setDeleteAlert(!deleteAlert);
+                }}
+              >
+                <DropdownMenuItem>
+                  <span>Delete Account</span>
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
+              <AlertDialogTrigger>
+                <DropdownMenuItem
+                  onClick={(event) => {
+                    setResetAlert(!resetAlert);
+                    event.stopPropagation();
+                    row.toggleSelected();
+                  }}
+                >
+                  <span>Reset Password</span>
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
+};
 
 export default Account;

@@ -34,6 +34,7 @@ export function AppSidebar({
       <SidebarHeader>
         <NavUser
           user={{
+            id: session?.user.id || 0,
             name: session?.user.displayName || "",
             email: session?.user.role || "",
             avatar: "/avatars/me.jpg",
