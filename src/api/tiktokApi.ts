@@ -129,18 +129,21 @@ export const getInterestGraphs = async (payload: GetGraphsPayload) => {
       })),
     };
   });
+  const nodes = data.network.nodes.map((node) => ({
+    id: node.id,
+    label: node.author_name,
+    fill: COLORS[node.class],
+    size: Math.log(node.digg),
+    data: node,
+  }));
+
   const normalized: CosmographData<CosmosNode, CosmosLink> = {
-    nodes: data.network.nodes.map((node) => ({
-      id: node.id,
-      label: node.author_name,
-      fill: COLORS[node.class],
-      size: Math.log(node.digg),
-      data: node,
-    })),
+    nodes,
     links: data.network.edges.map((edge, index) => ({
       id: index.toString(),
       source: edge.from,
       target: edge.to,
+      fill: nodes.find((node) => node.id === edge.from)?.fill,
       data: edge,
     })),
   };

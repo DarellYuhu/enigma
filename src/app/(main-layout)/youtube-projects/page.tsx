@@ -144,7 +144,7 @@ const columns = (isDisabled: boolean): ColumnDef<YoutubeProject>[] => {
       header: "First Video",
       cell({ row }) {
         return (
-          <span>{new Date(row.original.createdAt).toLocaleDateString()}</span>
+          <span>{new Date(row.original.firstVideo).toLocaleDateString()}</span>
         );
       },
     },
@@ -153,7 +153,9 @@ const columns = (isDisabled: boolean): ColumnDef<YoutubeProject>[] => {
       header: "Last Tracking",
       cell({ row }) {
         return (
-          <span>{new Date(row.original.createdAt).toLocaleDateString()}</span>
+          <span>
+            {new Date(row.original.lastTracking).toLocaleDateString()}
+          </span>
         );
       },
     },
