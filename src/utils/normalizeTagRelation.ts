@@ -1,21 +1,29 @@
-import { Edge, Node } from "vis-network/declarations/entry-esnext";
+import { CosmosLink, CosmosNode } from "@/components/Graph";
+import { CosmographData } from "@cosmograph/react";
 
-const normalizeTagRelation = (data: TagRelationNetwork) => {
-  const edges: Edge[] = data.relation.edges.filter(
-    (edge) => edge.isBackbone !== 0
-  );
-  const nodes: Node[] = data.relation.nodes
+const normalizeTagRelation: (
+  data: TagRelationNetwork
+) => CosmographData<CosmosNode, CosmosLink> = (data) => {
+  const nodes: CosmosNode[] = data.relation.nodes
     .filter((node) => node.isinBackbone)
     .map((node) => ({
-      ...node,
+      id: node.id,
       label: node.id,
-      shape: "dot",
-      color: colors[node.class],
+      fill: colors[node.class],
       size: Math.log(node.authorCount),
-      font: { size: 5 * Math.log(node.authorCount) },
+      data: node,
     }));
 
-  return { edges, nodes };
+  const links: CosmosLink[] = data.relation.edges
+    .filter((edge) => edge.isBackbone !== 0)
+    .map((link) => ({
+      source: link.from,
+      target: link.to,
+      data: link,
+      fill: nodes.find((node) => node.id === link.from)?.fill,
+    }));
+
+  return { links, nodes };
 };
 
 const colors = [

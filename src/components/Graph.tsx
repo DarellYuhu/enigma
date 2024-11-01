@@ -17,6 +17,9 @@ export type CosmosLink = CosmosInputLink & {
 type Props = {
   linkVisibilityDistanceRange?: [number, number];
   showDynamicLabel?: boolean;
+  simulationGravity?: number;
+  simulationLinkSpring?: number;
+  simulationRepulsion?: number;
   data: CosmographData<CosmosNode, CosmosLink>;
   onClick?:
     | ((
@@ -32,6 +35,9 @@ const Graph = ({
   data,
   showDynamicLabel = true,
   linkVisibilityDistanceRange = [90, 90],
+  simulationGravity = 0.38,
+  simulationLinkSpring = 0.03,
+  simulationRepulsion = 0.4,
   onClick,
 }: Props) => {
   const ref = useRef(null);
@@ -51,11 +57,9 @@ const Graph = ({
       linkColor={(link) => link.fill || "#fff"}
       linkVisibilityDistanceRange={linkVisibilityDistanceRange}
       linkGreyoutOpacity={0.9}
-      simulationGravity={0.38}
-      simulationLinkSpring={0.03}
-      simulationRepulsion={0.4}
-      // simulationDecay={100}
-      // simulationLinkDistance={8}
+      simulationGravity={simulationGravity}
+      simulationLinkSpring={simulationLinkSpring}
+      simulationRepulsion={simulationRepulsion}
       onClick={onClick}
     />
   );

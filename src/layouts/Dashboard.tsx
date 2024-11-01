@@ -1,10 +1,7 @@
 import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
-import CustomBarChart from "@/components/CustomBarChart";
 import CustomPieChart from "@/components/CustomPieChart";
 import { ReactNode, useState } from "react";
 import { GetTrendsReturn } from "@/api/tiktokApi";
-import VisGraph from "@/components/VisGraph";
-import { Edge, Node } from "vis-network/peer/esm/vis-network";
 import {
   Carousel,
   CarouselContent,
@@ -12,7 +9,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { DataSet } from "vis-data";
 import Link from "next/link";
 import TagInformation from "@/components/TagInformation";
 import useCategoryStore from "@/store/category-store";
@@ -31,10 +27,7 @@ type Props = {
   graphSettingsComponent: React.ReactNode;
   statistics?: GetTrendsReturn;
   interestNetwork?: CosmographData<CosmosNode, CosmosLink>;
-  tagRelationNetwork?: {
-    nodes: Node[];
-    edges: Edge[];
-  };
+  tagRelationNetwork?: CosmographData<CosmosNode, CosmosLink>;
   hashtags?: { color: string; data: { hashtag: string; value: number }[] }[];
 };
 
@@ -149,7 +142,7 @@ const Dashboard = ({
         <h5 className="absolute top-2 left-2 bg-white">Hashtag Map</h5>
         {tagRelationNetwork ? (
           <>
-            <VisGraph
+            {/* <VisGraph
               type="tagRelation"
               data={tagRelationNetwork}
               events={{
@@ -162,6 +155,19 @@ const Dashboard = ({
                     setTagNode(null);
                   }
                 },
+              }}
+            /> */}
+            <Graph
+              simulationGravity={0.0}
+              simulationRepulsion={1}
+              simulationLinkSpring={0.4}
+              data={tagRelationNetwork}
+              onClick={(node) => {
+                if (node) {
+                  setTagNode(node.data);
+                } else {
+                  setTagNode(null);
+                }
               }}
             />
             <button
