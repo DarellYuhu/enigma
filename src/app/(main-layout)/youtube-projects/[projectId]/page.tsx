@@ -118,7 +118,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
             />
           ))}
         </div>
-        <div className="card col-span-3 space-y-3 bg-gray-600 text-white">
+        <div className="card col-span-6 md:col-span-3 space-y-3 bg-gray-600 text-white">
           {selectedVideo && (
             <>
               <h3 className="line-clamp-3">{`${
@@ -140,7 +140,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
             </>
           )}
         </div>
-        <div className="col-span-2 flex-col flex justify-between">
+        <div className="col-span-6 gap-4 md:col-span-2 flex-col flex justify-between">
           <CategoryButton
             dataKey="view"
             selected={category}
@@ -160,7 +160,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
             value={selectedVideo?.comment}
           />
         </div>
-        <div className="flex flex-col card col-span-7 h-80">
+        <div className="flex flex-col card col-span-full md:col-span-7 h-80">
           <h3>Stats Overtime</h3>
           <div className="flex flex-1">
             {videoStats.data && (
@@ -210,7 +210,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
             </>
           )}
         </div>
-        <div className="card col-span-5 space-y-4 pb-7 h-[500px]">
+        <div className="card col-span-full md:col-span-5 space-y-4 pb-7 h-[500px]">
           <h2>Top Video Sources</h2>
           <div className="space-y-2">
             {topVideos.data && (
@@ -257,7 +257,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
             />
           )}
         </div>
-        <div className="card col-span-7 h-[500px] relative">
+        <div className="card col-span-full md:col-span-7 h-[500px] relative">
           {audienceNetwork.data && (
             <Graph
               data={audienceNetwork.data[netCategory] || []}

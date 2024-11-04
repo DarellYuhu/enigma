@@ -40,7 +40,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   }, []);
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row flex-wrap gap-2">
         <DateRangePicker
           date={{ from: statisticDate.from, to: statisticDate.to }}
           setDate={(value) => {
@@ -73,7 +73,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         hashtags={interestNetwork.data?.hashtags}
         tagRelationNetwork={hashtagsNetwork.data}
         graphSettingsComponent={
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row flex-wrap gap-2">
             <DateRangePicker
               date={{ from: graphDate.from, to: graphDate.to }}
               setDate={(date) => {

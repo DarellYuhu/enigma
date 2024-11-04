@@ -50,7 +50,7 @@ const Dashboard = ({
   };
   return (
     <div className="grid grid-cols-4 gap-3 text-slate-800 dark:text-slate-300">
-      <div className="col-span-2 grid grid-cols-2 gap-3">
+      <div className="col-span-full md:col-span-2 grid grid-cols-2 gap-3">
         <CategoryButton
           categoryState={category}
           label="Play"
@@ -84,7 +84,7 @@ const Dashboard = ({
           handleCategory={handleCategory}
         />
       </div>
-      <div className="card p-0 block">
+      <div className="card col-span-2 md:col-span-1 p-0 block">
         <span className="h-32">
           <h5 className="p-2">Weekly</h5>
           <AreaChart2
@@ -95,7 +95,7 @@ const Dashboard = ({
           />
         </span>
       </div>
-      <div className="card p-0 block">
+      <div className="card col-span-2 md:col-span-1 p-0 block">
         <h5 className="p-2">Monthly</h5>
         <span className="h-32">
           <AreaChart2
@@ -107,7 +107,7 @@ const Dashboard = ({
         </span>
       </div>
       <div className="col-span-full grid col grid-cols-8 gap-3">
-        <div className="card flex flex-col col-span-3">
+        <div className="card flex flex-col col-span-full md:col-span-3">
           <h5>Top Creators</h5>
           <div className="flex flex-1">
             <CustomPieChart
@@ -117,7 +117,7 @@ const Dashboard = ({
             />
           </div>
         </div>
-        <div className="card flex flex-col col-span-5 h-[340px]">
+        <div className="card flex flex-col col-span-full md:col-span-5 h-[340px]">
           <h5>Daily</h5>
           <div className="flex flex-1">
             {/* <CustomBarChart
@@ -178,7 +178,7 @@ const Dashboard = ({
                   interestNetwork as any
                 )
               }
-              className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm"
+              className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm bg-white"
             >
               Export (.gdf)
             </button>
@@ -191,70 +191,68 @@ const Dashboard = ({
         ) : null}
       </div>
       <div className="col-span-full">{graphSettingsComponent}</div>
-      <div className="card flex flex-col col-span-full gap-3 relative">
-        <div className="flex flex-row">
-          <div className="relative   w-full h-80">
-            <h5 className="absolute top-0 left-0">Interest Network</h5>
-            {interestNetwork ? (
-              <>
-                <Graph
-                  data={interestNetwork}
-                  onClick={(node) => {
-                    if (node) {
-                      setNode(node.data);
-                    } else {
-                      setNode(null);
-                    }
-                  }}
-                />
-                <button
-                  onClick={() =>
-                    interestNetExport(
-                      graphDate.from!,
-                      graphDate.to!,
-                      interestNetwork as any
-                    )
+      <div className=" card flex flex-row col-span-full gap-3 relative flex-wrap md:flex-nowrap">
+        <div className="relative w-full flex-1 h-80">
+          <h5 className="absolute top-0 left-0">Interest Network</h5>
+          {interestNetwork ? (
+            <>
+              <Graph
+                data={interestNetwork}
+                onClick={(node) => {
+                  if (node) {
+                    setNode(node.data);
+                  } else {
+                    setNode(null);
                   }
-                  className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm"
-                >
-                  Export (.gdf)
-                </button>
-              </>
-            ) : null}
-            {node ? (
-              <div className="absolute bottom-0 left-0 h-3/5 w-64 flex flex-col gap-2 border rounded-md p-2 shadow-lg backdrop-blur-md">
-                <h6 className="text-wrap">{node.author_name}</h6>
-                <Link
-                  target="_blank"
-                  href={`https://www.tiktok.com/@${node.author_name}/video/${node.id}`}
-                  className="bg-green-300 hover:bg-green-400 rounded-md p-1.5 text-sm text-center justify-center items-center"
-                >
-                  View Video
-                </Link>
-                <span className="text-xs overflow-y-auto">{node.desc}</span>
-              </div>
-            ) : null}
-          </div>
-          <div className="w-56 bg-slate-100 rounded-md">
-            <Carousel>
-              <CarouselContent>
-                {hashtags?.map((item, index) => (
-                  <CarouselItem key={index}>
-                    <div className="h-80 w-full px-7">
-                      <HorizontalBarChart2
-                        data={item.data}
-                        labelKey="hashtag"
-                        dataKey="value"
-                        color={item.color}
-                      />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="absolute left-0" />
-              <CarouselNext className="absolute right-0" />
-            </Carousel>
-          </div>
+                }}
+              />
+              <button
+                onClick={() =>
+                  interestNetExport(
+                    graphDate.from!,
+                    graphDate.to!,
+                    interestNetwork as any
+                  )
+                }
+                className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm bg-white"
+              >
+                Export (.gdf)
+              </button>
+            </>
+          ) : null}
+          {node ? (
+            <div className="absolute bottom-0 left-0 h-3/5 w-64 flex flex-col gap-2 border rounded-md p-2 shadow-lg backdrop-blur-md">
+              <h6 className="text-wrap">{node.author_name}</h6>
+              <Link
+                target="_blank"
+                href={`https://www.tiktok.com/@${node.author_name}/video/${node.id}`}
+                className="bg-green-300 hover:bg-green-400 rounded-md p-1.5 text-sm text-center justify-center items-center"
+              >
+                View Video
+              </Link>
+              <span className="text-xs overflow-y-auto">{node.desc}</span>
+            </div>
+          ) : null}
+        </div>
+        <div className="w-56 bg-slate-100 rounded-md">
+          <Carousel>
+            <CarouselContent>
+              {hashtags?.map((item, index) => (
+                <CarouselItem key={index}>
+                  <div className="h-80 w-full px-7">
+                    <HorizontalBarChart2
+                      data={item.data}
+                      labelKey="hashtag"
+                      dataKey="value"
+                      color={item.color}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="absolute left-0" />
+            <CarouselNext className="absolute right-0" />
+          </Carousel>
         </div>
       </div>
     </div>
