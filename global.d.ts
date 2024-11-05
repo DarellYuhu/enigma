@@ -193,7 +193,7 @@ declare type YoutubeProject = {
   status: string;
   firstVideo: Date;
   lastTracking: Date;
-};
+} & YoutubeProjectInfo;
 
 declare type YoutubeProjectConfig = {
   APIs: string;
@@ -321,4 +321,13 @@ declare type YoutubeAudienceNet = {
   };
   start: string;
   end: string;
+};
+
+declare type YoutubeProjectInfo = {
+  projectID: string;
+  projectName: string;
+  keywords: string;
+  numVideos: number;
+  numChannels: number;
+  status: string;
 };

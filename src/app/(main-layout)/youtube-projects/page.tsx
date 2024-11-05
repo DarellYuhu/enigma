@@ -131,22 +131,12 @@ const columns = (isDisabled: boolean): ColumnDef<YoutubeProject>[] => {
       header: "Keywords",
     },
     {
-      accessorKey: "createdAt",
-      header: "Created At",
-      cell({ row }) {
-        return (
-          <span>{new Date(row.original.createdAt).toLocaleDateString()}</span>
-        );
-      },
+      accessorKey: "numChannels",
+      header: "Number of Channels",
     },
     {
-      accessorKey: "firstVideo",
-      header: "First Video",
-      cell({ row }) {
-        return (
-          <span>{new Date(row.original.firstVideo).toLocaleDateString()}</span>
-        );
-      },
+      accessorKey: "numVideos",
+      header: "Number of Videos",
     },
     {
       accessorKey: "lastTracking",

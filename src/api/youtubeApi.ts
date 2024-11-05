@@ -125,7 +125,16 @@ export const getTopChannels = async (payload: {
 export const getProjects = async () => {
   const response = await fetch("/api/v1/youtube/projects");
   const data: Data = await response.json();
-  return data;
+  const projects = await Promise.all(
+    data.projects.map((item) => getProjectInfo(item.projectID))
+  );
+  console.log(data, projects);
+  return {
+    projects: data.projects.map((item) => ({
+      ...item,
+      ...projects.find((project) => project.projectID === item.projectID),
+    })),
+  };
 };
 
 export const getChannelTopVideos = async (payload: {
@@ -206,6 +215,12 @@ export const getAudienceNetwork = async (payload: {
     end: parsed.end,
     start: parsed.start,
   };
+};
+
+export const getProjectInfo = async (projectId: string) => {
+  const response = await fetch(`/api/v1/youtube/projects/${projectId}/info`);
+  const data: YoutubeProjectInfo = await response.json();
+  return data;
 };
 
 type Data = {
