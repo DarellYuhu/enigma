@@ -3,6 +3,7 @@ import RechartSankey from "@/components/RechartSankey";
 import normalizeForSankey from "@/utils/normalizeForSankey";
 import sankeyData from "@/data/sankey.json";
 import ReavizSankey from "@/components/ReavizSankey";
+import SankeyChartJs from "@/components/SankeyChartJs";
 
 const TestPage = () => {
   return (
@@ -15,6 +16,9 @@ const TestPage = () => {
       </div>
       <div>
         <ReavizSankey />
+      </div>
+      <div className="w-fulll h-60">
+        <SankeyChartJs />
       </div>
     </div>
   );
