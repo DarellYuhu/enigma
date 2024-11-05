@@ -1,4 +1,4 @@
-import { Cosmograph, CosmographData, CosmographRef } from "@cosmograph/react";
+import { Cosmograph, CosmographData, CosmographProps } from "@cosmograph/react";
 import { CosmosInputLink, CosmosInputNode } from "@cosmograph/cosmos";
 import { useRef } from "react";
 
@@ -29,7 +29,7 @@ type Props = {
         event: MouseEvent
       ) => void)
     | undefined;
-};
+} & CosmographProps<CosmosNode, CosmosLink>;
 
 const Graph = ({
   data,
@@ -39,10 +39,12 @@ const Graph = ({
   simulationLinkSpring = 0.03,
   simulationRepulsion = 0.4,
   onClick,
+  ...props
 }: Props) => {
   const ref = useRef(null);
   return (
     <Cosmograph
+      {...props}
       ref={ref}
       nodes={data.nodes}
       links={data.links}

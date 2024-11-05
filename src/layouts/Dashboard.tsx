@@ -21,6 +21,7 @@ import AreaChart2 from "@/components/AreaChart2";
 import Graph, { CosmosLink, CosmosNode } from "@/components/Graph";
 import { CosmographData } from "@cosmograph/react";
 import BarChart2 from "@/components/BarChart2";
+import ReavizPie from "@/components/ReavizPie";
 
 type Props = {
   board?: React.ReactNode;
@@ -110,10 +111,18 @@ const Dashboard = ({
         <div className="card flex flex-col col-span-full md:col-span-3">
           <h5>Top Creators</h5>
           <div className="flex flex-1">
-            <CustomPieChart
+            {/* <CustomPieChart
               data={statistics?.topUsers[category] || []}
               dataKey="value"
               labelKey="user"
+            /> */}
+            <ReavizPie
+              data={
+                statistics?.topUsers[category].map((item) => ({
+                  key: item.user,
+                  data: item.value,
+                })) || []
+              }
             />
           </div>
         </div>
