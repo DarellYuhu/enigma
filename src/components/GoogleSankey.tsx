@@ -3,7 +3,11 @@
 import { COLORS } from "@/constants";
 import { Chart } from "react-google-charts";
 
-const GoogleSankey = () => {
+type Props = {
+  data: (string | number)[][];
+};
+
+const GoogleSankey = ({ data }: Props) => {
   return (
     <Chart
       data={data}
@@ -12,21 +16,26 @@ const GoogleSankey = () => {
         backgroundColor: "white",
         sankey: {
           node: {
+            width: 10,
             colors: COLORS,
             label: {
               fontName: "Times-Roman",
               fontSize: 14,
-              color: "#871b47",
               bold: true,
               italic: true,
             },
+            interactivity: true,
           },
           link: {
             colorMode: "gradient",
             colors: COLORS,
           },
         },
+        tooltip: {
+          isHtml: true,
+        },
       }}
+      height={"320px"}
     />
   );
 };

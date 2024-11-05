@@ -27,7 +27,6 @@ const RechartSankey = () => {
     >
       <Tooltip
         content={({ active, payload, label }) => {
-          console.log(payload);
           return (
             <div className="bg-white p-2">
               <p className="font-bold text-sm">{payload?.[0]?.name}</p>

@@ -1,5 +1,8 @@
 import GoogleSankey from "@/components/GoogleSankey";
 import RechartSankey from "@/components/RechartSankey";
+import normalizeForSankey from "@/utils/normalizeForSankey";
+import sankeyData from "@/data/sankey.json";
+import ReavizSankey from "@/components/ReavizSankey";
 
 const TestPage = () => {
   return (
@@ -8,7 +11,10 @@ const TestPage = () => {
         <RechartSankey />
       </div>
       <div>
-        <GoogleSankey />
+        <GoogleSankey data={normalizeForSankey(sankeyData)} />
+      </div>
+      <div>
+        <ReavizSankey />
       </div>
     </div>
   );

@@ -1,0 +1,684 @@
+{
+  "flow": [
+    {
+      "from": "39",
+      "to": "23",
+      "flow": 42
+    },
+    {
+      "from": "39",
+      "to": "21",
+      "flow": 566
+    },
+    {
+      "from": "39",
+      "to": "36",
+      "flow": 6345
+    },
+    {
+      "from": "35",
+      "to": "23",
+      "flow": 8
+    },
+    {
+      "from": "35",
+      "to": "21",
+      "flow": 827
+    },
+    {
+      "from": "29",
+      "to": "21",
+      "flow": 5
+    },
+    {
+      "from": "35",
+      "to": "36",
+      "flow": 448
+    },
+    {
+      "from": "29",
+      "to": "36",
+      "flow": 1
+    },
+    {
+      "from": "23",
+      "to": "6",
+      "flow": 15
+    },
+    {
+      "from": "21",
+      "to": "6",
+      "flow": 375
+    },
+    {
+      "from": "36",
+      "to": "6",
+      "flow": 5159
+    },
+    {
+      "from": "23",
+      "to": "37",
+      "flow": 154
+    },
+    {
+      "from": "21",
+      "to": "37",
+      "flow": 8
+    },
+    {
+      "from": "36",
+      "to": "37",
+      "flow": 13
+    },
+    {
+      "from": "23",
+      "to": "1",
+      "flow": 1
+    },
+    {
+      "from": "23",
+      "to": "33",
+      "flow": 36
+    },
+    {
+      "from": "21",
+      "to": "33",
+      "flow": 18
+    },
+    {
+      "from": "36",
+      "to": "33",
+      "flow": 37
+    },
+    {
+      "from": "21",
+      "to": "1",
+      "flow": 891
+    },
+    {
+      "from": "36",
+      "to": "1",
+      "flow": 191
+    },
+    {
+      "from": "6",
+      "to": "9",
+      "flow": 86
+    },
+    {
+      "from": "6",
+      "to": "34",
+      "flow": 9
+    },
+    {
+      "from": "6",
+      "to": "40",
+      "flow": 246
+    },
+    {
+      "from": "6",
+      "to": "27",
+      "flow": 28
+    },
+    {
+      "from": "6",
+      "to": "24",
+      "flow": 3
+    },
+    {
+      "from": "1",
+      "to": "9",
+      "flow": 37
+    },
+    {
+      "from": "33",
+      "to": "9",
+      "flow": 39
+    },
+    {
+      "from": "37",
+      "to": "9",
+      "flow": 38
+    },
+    {
+      "from": "1",
+      "to": "34",
+      "flow": 2
+    },
+    {
+      "from": "33",
+      "to": "34",
+      "flow": 13
+    },
+    {
+      "from": "37",
+      "to": "34",
+      "flow": 400
+    },
+    {
+      "from": "1",
+      "to": "40",
+      "flow": 55
+    },
+    {
+      "from": "33",
+      "to": "40",
+      "flow": 20
+    },
+    {
+      "from": "37",
+      "to": "40",
+      "flow": 1
+    },
+    {
+      "from": "37",
+      "to": "27",
+      "flow": 40
+    },
+    {
+      "from": "37",
+      "to": "24",
+      "flow": 31
+    },
+    {
+      "from": "33",
+      "to": "27",
+      "flow": 1036
+    },
+    {
+      "from": "33",
+      "to": "24",
+      "flow": 4
+    },
+    {
+      "from": "1",
+      "to": "27",
+      "flow": 5
+    },
+    {
+      "from": "1",
+      "to": "24",
+      "flow": 1
+    },
+    {
+      "from": "9",
+      "to": "15",
+      "flow": 19
+    },
+    {
+      "from": "9",
+      "to": "38",
+      "flow": 101
+    },
+    {
+      "from": "34",
+      "to": "38",
+      "flow": 30
+    },
+    {
+      "from": "40",
+      "to": "38",
+      "flow": 75
+    },
+    {
+      "from": "27",
+      "to": "38",
+      "flow": 2296
+    },
+    {
+      "from": "24",
+      "to": "38",
+      "flow": 7
+    },
+    {
+      "from": "34",
+      "to": "15",
+      "flow": 169
+    },
+    {
+      "from": "40",
+      "to": "15",
+      "flow": 2
+    },
+    {
+      "from": "27",
+      "to": "15",
+      "flow": 15
+    },
+    {
+      "from": "24",
+      "to": "15",
+      "flow": 5
+    },
+    {
+      "from": "15",
+      "to": "28",
+      "flow": 457
+    },
+    {
+      "from": "38",
+      "to": "28",
+      "flow": 191
+    },
+    {
+      "from": "15",
+      "to": "17",
+      "flow": 10
+    },
+    {
+      "from": "38",
+      "to": "17",
+      "flow": 6
+    },
+    {
+      "from": "38",
+      "to": "8",
+      "flow": 1789
+    },
+    {
+      "from": "15",
+      "to": "8",
+      "flow": 7
+    },
+    {
+      "from": "28",
+      "to": "18",
+      "flow": 225
+    },
+    {
+      "from": "28",
+      "to": "30",
+      "flow": 889
+    },
+    {
+      "from": "8",
+      "to": "30",
+      "flow": 5
+    },
+    {
+      "from": "17",
+      "to": "30",
+      "flow": 22
+    },
+    {
+      "from": "17",
+      "to": "18",
+      "flow": 7
+    },
+    {
+      "from": "8",
+      "to": "18",
+      "flow": 1513
+    },
+    {
+      "from": "18",
+      "to": "3",
+      "flow": 57
+    },
+    {
+      "from": "30",
+      "to": "11",
+      "flow": 2
+    },
+    {
+      "from": "30",
+      "to": "7",
+      "flow": 2
+    },
+    {
+      "from": "18",
+      "to": "11",
+      "flow": 70
+    },
+    {
+      "from": "18",
+      "to": "19",
+      "flow": 93
+    },
+    {
+      "from": "18",
+      "to": "7",
+      "flow": 33
+    },
+    {
+      "from": "19",
+      "to": "32",
+      "flow": 2
+    },
+    {
+      "from": "13",
+      "to": "14",
+      "flow": 47
+    },
+    {
+      "from": "13",
+      "to": "16",
+      "flow": 5
+    },
+    {
+      "from": "10",
+      "to": "14",
+      "flow": 48
+    },
+    {
+      "from": "10",
+      "to": "16",
+      "flow": 4
+    },
+    {
+      "from": "12",
+      "to": "2",
+      "flow": 41
+    },
+    {
+      "from": "22",
+      "to": "2",
+      "flow": 15
+    },
+    {
+      "from": "14",
+      "to": "2",
+      "flow": 49
+    },
+    {
+      "from": "16",
+      "to": "2",
+      "flow": 25
+    },
+    {
+      "from": "16",
+      "to": "4",
+      "flow": 1
+    },
+    {
+      "from": "16",
+      "to": "31",
+      "flow": 2
+    },
+    {
+      "from": "2",
+      "to": "25",
+      "flow": 1851
+    },
+    {
+      "from": "2",
+      "to": "26",
+      "flow": 302
+    },
+    {
+      "from": "4",
+      "to": "25",
+      "flow": 7
+    },
+    {
+      "from": "4",
+      "to": "26",
+      "flow": 1
+    },
+    {
+      "from": "31",
+      "to": "25",
+      "flow": 1
+    },
+    {
+      "from": "31",
+      "to": "26",
+      "flow": 1
+    },
+    {
+      "from": "25",
+      "to": "0",
+      "flow": 3616
+    },
+    {
+      "from": "26",
+      "to": "0",
+      "flow": 207
+    },
+    {
+      "from": "25",
+      "to": "5",
+      "flow": 1218
+    },
+    {
+      "from": "26",
+      "to": "5",
+      "flow": 923
+    },
+    {
+      "from": "0",
+      "to": "20",
+      "flow": 3565
+    },
+    {
+      "from": "5",
+      "to": "20",
+      "flow": 3980
+    }
+  ],
+  "thread": {
+    "0": {
+      "class": "0",
+      "window": 12
+    },
+    "1": {
+      "class": "1",
+      "window": 2
+    },
+    "2": {
+      "class": "2",
+      "window": 10
+    },
+    "3": {
+      "class": "3",
+      "window": 7
+    },
+    "4": {
+      "class": "4",
+      "window": 10
+    },
+    "5": {
+      "class": "5",
+      "window": 12
+    },
+    "6": {
+      "class": "6",
+      "window": 2
+    },
+    "7": {
+      "class": "7",
+      "window": 7
+    },
+    "8": {
+      "class": "8",
+      "window": 5
+    },
+    "9": {
+      "class": "9",
+      "window": 3
+    },
+    "10": {
+      "class": "10",
+      "window": 8
+    },
+    "11": {
+      "class": "11",
+      "window": 7
+    },
+    "12": {
+      "class": "12",
+      "window": 9
+    },
+    "13": {
+      "class": "13",
+      "window": 8
+    },
+    "14": {
+      "class": "14",
+      "window": 9
+    },
+    "15": {
+      "class": "15",
+      "window": 4
+    },
+    "16": {
+      "class": "16",
+      "window": 9
+    },
+    "17": {
+      "class": "17",
+      "window": 5
+    },
+    "18": {
+      "class": "18",
+      "window": 6
+    },
+    "19": {
+      "class": "19",
+      "window": 7
+    },
+    "20": {
+      "class": "20",
+      "window": 13
+    },
+    "21": {
+      "class": "21",
+      "window": 1
+    },
+    "22": {
+      "class": "22",
+      "window": 9
+    },
+    "23": {
+      "class": "23",
+      "window": 1
+    },
+    "24": {
+      "class": "24",
+      "window": 3
+    },
+    "25": {
+      "class": "25",
+      "window": 11
+    },
+    "26": {
+      "class": "26",
+      "window": 11
+    },
+    "27": {
+      "class": "27",
+      "window": 3
+    },
+    "28": {
+      "class": "28",
+      "window": 5
+    },
+    "29": {
+      "class": "29",
+      "window": 0
+    },
+    "30": {
+      "class": "30",
+      "window": 6
+    },
+    "31": {
+      "class": "31",
+      "window": 10
+    },
+    "32": {
+      "class": "32",
+      "window": 8
+    },
+    "33": {
+      "class": "33",
+      "window": 2
+    },
+    "34": {
+      "class": "34",
+      "window": 3
+    },
+    "35": {
+      "class": "35",
+      "window": 0
+    },
+    "36": {
+      "class": "36",
+      "window": 1
+    },
+    "37": {
+      "class": "37",
+      "window": 2
+    },
+    "38": {
+      "class": "38",
+      "window": 4
+    },
+    "39": {
+      "class": "39",
+      "window": 0
+    },
+    "40": {
+      "class": "40",
+      "window": 3
+    }
+  },
+  "class": {
+    "0": "12NOVEMBER | FYPPPPPPPPPPPPPPPPPPPPPPP | FB",
+    "1": "AGUS | PRATIWINOVIYANTHI | AGUSSALIM",
+    "2": "MOOTS | 12NOVEMBER | FYPPPPPPPPPPPPPPPPPPPPPPP",
+    "3": "RRQHOSHI",
+    "4": "GUNSNROSES | NOVEMBERRAIN",
+    "5": "MOOTS | MOOTSTIKTOK | ANTIUNFOLL",
+    "6": "GIBRANRAKABUMING | PRABOWO | GIBRAN",
+    "7": "FYP",
+    "8": "RRQHOSHI | MPLINDONESIA | MPLIDS14",
+    "9": "GERINDRA | PRABOWO | FOOTBALL",
+    "10": "MOOTS",
+    "11": "MLBBMEGASALE | 2024MLBBMEGASALE | MLBBM6",
+    "12": "",
+    "13": "MOOTS",
+    "14": "MOOTSTIKTOK | FYP",
+    "15": "REALMADRID | ELCLASICO | BARCELONA",
+    "16": "",
+    "17": "BARÇAONTIKTOK | VINICIUS | FCBARCELONA",
+    "18": "RRQHOSHI | MPLIDS14 | MPLINDONESIA",
+    "19": "LETSGOLIQUID",
+    "20": "MOOTS | MOOTSTIKTOK | ANTIUNFOLL",
+    "21": "CPNS2024 | AGUS | IRISHBELLA",
+    "22": "",
+    "23": "REALMADRID | HALAMADRID | UCL",
+    "24": "AESPA | KARINA | NINGNING",
+    "25": "12NOVEMBER | MOOTS",
+    "26": "MOOTS | FYPPPPPPPPPPPPPPPPPPPPPPP",
+    "27": "MPLIDS14 | RRQHOSHI | MPLINDONESIA",
+    "28": "REALMADRID | ELCLASICO | BARCELONA",
+    "29": "AESPA | WHIPLASH | KARINA",
+    "30": "BARCELONA | ELCLASICO | REALMADRID",
+    "31": "MLBBM6 | MLBBMEGASALE | M6NYALAINDONESIA",
+    "32": "",
+    "33": "MPLINDONESIA | ONICESPORT | MPLIDS14",
+    "34": "BARCELONA | REALMADRID | ELCLASICO",
+    "35": "IRISHBELLA | AMARZONI | AMMARZONI",
+    "36": "PRABOWO | GIBRANRAKABUMING | GIBRAN",
+    "37": "BARCELONA | FCBARCELONA | BARCA",
+    "38": "RRQHOSHI | MPLIDS14 | MPLINDONESIA",
+    "39": "PRABOWO | JOKOWI | PRABOWOSUBIANTO",
+    "40": "LIONCITYSAILORS | RCTIPLUSSUPERAPP | RCTIPLUSSPORTS"
+  },
+  "window": {
+    "0": "2024-10-21",
+    "1": "2024-10-22",
+    "2": "2024-10-23",
+    "3": "2024-10-24",
+    "4": "2024-10-25",
+    "5": "2024-10-26",
+    "6": "2024-10-27",
+    "7": "2024-10-28",
+    "8": "2024-10-29",
+    "9": "2024-10-30",
+    "10": "2024-10-31",
+    "11": "2024-11-01",
+    "12": "2024-11-02",
+    "13": "2024-11-03"
+  }
+}
