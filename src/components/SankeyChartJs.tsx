@@ -10,7 +10,8 @@ import {
   CategoryScale,
 } from "chart.js";
 import { Chart as ChartJs } from "react-chartjs-2";
-import sankeyData from "@/data/sankey.json";
+import sankeyData from "@/data/sankey2.json";
+import zoomPlugin from "chartjs-plugin-zoom";
 
 Chart.register(
   SankeyController,
@@ -18,7 +19,8 @@ Chart.register(
   Tooltip,
   Legend,
   LinearScale,
-  CategoryScale
+  CategoryScale,
+  zoomPlugin
 );
 
 const SankeyChartJs = () => {
@@ -36,12 +38,12 @@ const SankeyChartJs = () => {
         /* optionally override default alpha (0.5) applied to colorFrom and colorTo */
         alpha: 0.5,
         /* optional labels */
-        // labels: {
-        //   a: "Label A",
-        //   b: "Label B",
-        //   c: "Label C",
-        //   d: "Label D",
-        // },
+        labels: Object.fromEntries(
+          Object.entries(sankeyData.thread).map(([key, item]) => [
+            key,
+            item.class,
+          ])
+        ),
         // /* optional priority */
         // priority: Object.fromEntries(
         //   Object.entries(sankeyData.thread).map(([key, item]) => [
@@ -56,6 +58,12 @@ const SankeyChartJs = () => {
             item.window,
           ])
         ),
+        priority: Object.fromEntries(
+          Object.entries(sankeyData.thread).map(([key, item]) => [
+            key,
+            item.window,
+          ])
+        ),
         size: "max", // or 'min' if flow overlap is preferred
       },
     ],
@@ -64,12 +72,36 @@ const SankeyChartJs = () => {
   const options = {
     maintainAspectRatio: false,
     responsive: true,
+    sankey: {
+      node: {
+        label: {
+          fontName: "Times-Roman",
+          fontSize: 20,
+          bold: true,
+          italic: true,
+        },
+      },
+    },
     plugins: {
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: "xy",
+        },
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true,
+          },
+          mode: "xy",
+        },
+      },
       legend: { position: "top" as const },
       colors: {
         forceOverride: true,
       },
-
       tooltip: {
         usePointStyle: false,
         enabled: true,
@@ -78,14 +110,14 @@ const SankeyChartJs = () => {
             return [
               "From: " +
                 // @ts-ignore
-                sankeyData.class[raw?.from] +
+                sankeyData.thread[raw?.from].class +
                 " " +
                 // @ts-ignore
                 sankeyData.window[sankeyData.thread[raw.from].window],
 
               "To: " +
                 // @ts-ignore
-                sankeyData.class[raw?.to] +
+                sankeyData.thread[raw?.to].class +
                 " " +
                 // @ts-ignore
                 sankeyData.window[sankeyData.thread[raw.to].window],
@@ -102,6 +134,7 @@ const SankeyChartJs = () => {
     },
   };
 
+  // @ts-ignore
   return <ChartJs type="sankey" data={data as any} options={options} />;
 };
 

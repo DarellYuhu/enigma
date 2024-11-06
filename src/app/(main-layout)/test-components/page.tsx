@@ -14,9 +14,7 @@ const TestPage = () => {
       <div>
         <GoogleSankey data={normalizeForSankey(sankeyData)} />
       </div>
-      <div>
-        <ReavizSankey />
-      </div>
+      <div>{/* <ReavizSankey /> */}</div>
       <div className="w-fulll h-60">
         <SankeyChartJs />
       </div>
