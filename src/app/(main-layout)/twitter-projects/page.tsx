@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import CreateNewDialog from "./components/CreateNewDialog";
 import useTwitterProjects from "@/hooks/useTwitterProjects";
 import { TTwitterProjects } from "@/api/twitterApi";
+import EditDialog from "./components/EditDialog";
 
 const TwitterProjects = () => {
   const { data: session } = useSession();
@@ -111,6 +112,9 @@ const TwitterProjects = () => {
               <ChevronRight width={18} height={18} />
             </button>
           </div>
+          <EditDialog
+            projectId={table.getSelectedRowModel().rows[0]?.original.projectId}
+          />
         </Dialog>
       </div>
     </div>
@@ -124,6 +128,10 @@ const columns = (
     {
       accessorKey: "projectName",
       header: "Project Name",
+    },
+    {
+      accessorKey: "numTweets",
+      header: "Number of Tweets",
     },
     {
       accessorKey: "created",

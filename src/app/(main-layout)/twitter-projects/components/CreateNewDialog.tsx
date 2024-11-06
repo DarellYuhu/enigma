@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TiktokSchema from "@/schemas/tiktok";
 import { z } from "zod";
+import useCreateTWProject from "@/hooks/useCreateTWProject";
 
 const CreateNewDialog = () => {
   const createForm = useForm<z.infer<typeof TiktokSchema.create>>({
@@ -28,9 +29,10 @@ const CreateNewDialog = () => {
       keywords: "",
     },
   });
+  const { mutate } = useCreateTWProject();
 
   const onSubmit = (values: z.infer<typeof TiktokSchema.create>) => {
-    console.log(values);
+    mutate(values);
   };
 
   return (

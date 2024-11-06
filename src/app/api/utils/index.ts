@@ -16,7 +16,7 @@ const getTiktokApi = async () => {
 
 const getTwitterApi = async () => {
   const res = await prisma.apiUrl.findUnique({
-    where: { id: "tiktok" },
+    where: { id: "twitter" },
   });
   return res?.url;
 };
