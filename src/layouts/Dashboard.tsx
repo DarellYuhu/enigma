@@ -1,5 +1,4 @@
 import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
-import CustomPieChart from "@/components/CustomPieChart";
 import { ReactNode, useState } from "react";
 import { GetTrendsReturn } from "@/api/tiktokApi";
 import {
