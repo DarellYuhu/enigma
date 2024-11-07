@@ -1,3 +1,6 @@
+import { CosmosLink, CosmosNode } from "@/components/Graph";
+import { COLORS } from "@/constants";
+
 export const createProject = async (payload: {
   projectName: string;
   keywords: string;
@@ -66,6 +69,58 @@ export const getBoards = async (payload: {
   const data: TwitterBoards = await response.json();
   console.log(data);
   return data;
+};
+
+export const getTagRelationGraph = async (payload: {
+  project: string;
+  since?: Date;
+  until?: Date;
+  string: string;
+}) => {
+  const response = await fetch(
+    `/api/v1/twitter/${
+      payload.project
+    }/hashtag-network?since=${payload.since?.toISOString()}&until=${payload.until?.toISOString()}&string=${
+      payload.string
+    }`
+  );
+
+  const data: TwitterHashtagRelation = await response.json();
+
+  const nodes: CosmosNode[] = data.relation.nodes.map((node) => ({
+    id: node.id,
+    label: node.id,
+    fill: COLORS[node.class],
+    size: Math.log(node.authorCount),
+    data: node,
+  }));
+
+  const links: CosmosLink[] = data.relation.edges.map((link) => ({
+    source: link.from,
+    target: link.to,
+    data: link,
+    fill: nodes.find((node) => node.id === link.from)?.fill,
+  }));
+
+  return { links, nodes };
+};
+
+type TwitterHashtagRelation = {
+  relation: {
+    nodes: {
+      id: string;
+      tweetCount: number;
+      authorCount: number;
+      isinBackbone: number;
+      class: number;
+    }[];
+    edges: {
+      from: string;
+      to: string;
+      isBackbone: number;
+      value: number;
+    }[];
+  };
 };
 
 export type TTwitterProjects = {
