@@ -1,5 +1,7 @@
 import { CosmosLink, CosmosNode } from "@/components/Graph";
 import { COLORS } from "@/constants";
+import { CosmographData } from "@cosmograph/react";
+import { Edge, Node } from "vis-network/standalone/umd/vis-network.min";
 
 export const createProject = async (payload: {
   projectName: string;
@@ -67,7 +69,6 @@ export const getBoards = async (payload: {
     }`
   );
   const data: TwitterBoards = await response.json();
-  console.log(data);
   return data;
 };
 
@@ -87,22 +88,93 @@ export const getTagRelationGraph = async (payload: {
 
   const data: TwitterHashtagRelation = await response.json();
 
-  const nodes: CosmosNode[] = data.relation.nodes.map((node) => ({
-    id: node.id,
-    label: node.id,
-    fill: COLORS[node.class],
-    size: Math.log(node.authorCount),
-    data: node,
-  }));
+  // const nodes: CosmosNode[] = data.relation.nodes
+  //   .filter((node) => node.isinBackbone)
+  //   .map((node) => ({
+  //     id: node.id,
+  //     label: node.id,
+  //     fill: COLORS[node.class],
+  //     size: Math.log(node.authorCount),
+  //     data: node,
+  //   }));
 
-  const links: CosmosLink[] = data.relation.edges.map((link) => ({
-    source: link.from,
-    target: link.to,
-    data: link,
-    fill: nodes.find((node) => node.id === link.from)?.fill,
-  }));
+  // const links: CosmosLink[] = data.relation.edges
+  //   .filter((edge) => edge.isBackbone !== 0)
+  //   .map((link) => ({
+  //     source: link.from,
+  //     target: link.to,
+  //     data: link,
+  //     fill: nodes.find((node) => node.id === link.from)?.fill,
+  //   }));
 
-  return { links, nodes };
+  // return { links, nodes };
+
+  const normalized: {
+    nodes: Node[];
+    edges: Edge[];
+  } = {
+    nodes: data.relation.nodes
+      .filter((node) => node.isinBackbone)
+      .map((node) => ({
+        ...node,
+        label: node.id,
+        shape: "dot",
+        color: COLORS[node.class],
+        size: Math.log(node.authorCount),
+        font: { size: 5 * Math.log(node.authorCount) },
+      })),
+
+    edges: data.relation.edges.filter((edge) => edge.isBackbone !== 0),
+  };
+
+  return normalized;
+};
+
+export const getAccountNetwork = async (payload: {
+  project: string;
+  window: string;
+  string: string;
+}) => {
+  const response = await fetch(
+    `/api/v1/twitter/${payload.project}/account-network?string=${payload.string}&window=${payload.window}`
+  );
+  const data: AccountNetwork = await response.json();
+  const normalized: CosmographData<CosmosNode, CosmosLink> = {
+    links: data.network.edges.map((edge) => ({
+      data: edge,
+      source: edge.from,
+      target: edge.to,
+      fill: COLORS[edge.tone],
+    })),
+    nodes: data.network.nodes.map((node) => ({
+      data: node,
+      fill: COLORS[parseInt(node.class) ?? COLORS.length - 1],
+      id: node.user_id,
+      label: node.user_name,
+      size: Math.log(node.num_followers),
+    })),
+  };
+  return normalized;
+};
+
+type AccountNetwork = {
+  network: {
+    nodes: {
+      user_id: string;
+      user_screen_name: string;
+      user_name: string;
+      user_description: string;
+      num_followers: number;
+      centrality: number;
+      class: string; // <-- a number
+    }[];
+    edges: {
+      from: string;
+      to: string;
+      tone: number;
+      weight: number;
+    }[];
+  };
 };
 
 type TwitterHashtagRelation = {

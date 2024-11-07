@@ -104,7 +104,7 @@ const VisGraph = ({
           physics: {
             solver: "barnesHut",
             barnesHut: {
-              gravitationalConstant: -10000,
+              gravitationalConstant: -2000,
               avoidOverlap: 1,
             },
             minVelocity: 0.2,

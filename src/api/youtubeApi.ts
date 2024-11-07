@@ -128,7 +128,6 @@ export const getProjects = async () => {
   const projects = await Promise.all(
     data.projects.map((item) => getProjectInfo(item.projectID))
   );
-  console.log(data, projects);
   return {
     projects: data.projects.map((item) => ({
       ...item,

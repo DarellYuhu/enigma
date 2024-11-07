@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Board from "./components/Board";
 import HashtagNetGraph from "./components/HashtagNetGraph";
+import AccountNetGraph from "./components/AccountNetGraph";
 
 const TwitterProjectDetail = ({
   params,
@@ -24,6 +25,15 @@ const TwitterProjectDetail = ({
         </CardHeader>
         <CardContent>
           <HashtagNetGraph projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Hashtag Relation Network</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AccountNetGraph projectId={params.projectId} />
         </CardContent>
       </Card>
     </div>
