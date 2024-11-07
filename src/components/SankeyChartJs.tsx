@@ -30,28 +30,14 @@ const SankeyChartJs = () => {
       {
         label: "My sankey",
         data: sankeyData.flow,
-        // colorFrom: (c) => getColor(c.dataset.data[c.dataIndex].from),
-        // colorTo: (c) => getColor(c.dataset.data[c.dataIndex].to),
-        // hoverColorFrom: (c) => getHover(c.dataset.data[c.dataIndex].from),
-        // hoverColorTo: (c) => getHover(c.dataset.data[c.dataIndex].to),
-        colorMode: "gradient", // or 'from' or 'to'
-        /* optionally override default alpha (0.5) applied to colorFrom and colorTo */
+        colorMode: "gradient",
         alpha: 0.5,
-        /* optional labels */
         labels: Object.fromEntries(
           Object.entries(sankeyData.thread).map(([key, item]) => [
             key,
             item.class,
           ])
         ),
-        // /* optional priority */
-        // priority: Object.fromEntries(
-        //   Object.entries(sankeyData.thread).map(([key, item]) => [
-        //     key,
-        //     item.window,
-        //   ])
-        // ),
-        // /* optional column overrides */
         column: Object.fromEntries(
           Object.entries(sankeyData.thread).map(([key, item]) => [
             key,

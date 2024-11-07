@@ -49,7 +49,7 @@ const Form = () => {
 
   useEffect(() => {
     if (services.data) {
-      let newValues = services.data.reduce(
+      const newValues = services.data.reduce(
         (acc: { [key: string]: any }, curr) => {
           const {
             createdAt: _createdAt,

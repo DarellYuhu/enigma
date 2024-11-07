@@ -1,9 +1,9 @@
-import GoogleSankey from "@/components/GoogleSankey";
+import dynamic from "next/dynamic";
 import RechartSankey from "@/components/RechartSankey";
-import normalizeForSankey from "@/utils/normalizeForSankey";
-import sankeyData from "@/data/sankey.json";
-import ReavizSankey from "@/components/ReavizSankey";
-import SankeyChartJs from "@/components/SankeyChartJs";
+
+const SankeyChartJs = dynamic(() => import("@/components/SankeyChartJs"), {
+  ssr: false,
+});
 
 const TestPage = () => {
   return (
@@ -11,10 +11,6 @@ const TestPage = () => {
       <div>
         <RechartSankey />
       </div>
-      <div>
-        <GoogleSankey data={normalizeForSankey(sankeyData)} />
-      </div>
-      <div>{/* <ReavizSankey /> */}</div>
       <div className="w-fulll h-60">
         <SankeyChartJs />
       </div>

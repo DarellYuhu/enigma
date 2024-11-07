@@ -10,10 +10,9 @@ type Props = {
   data: ChartShallowDataShape[];
 } & PieChartProps;
 
-const ReavizPie = ({ data, ...props }: Props) => {
+const ReavizPie = ({ data }: Props) => {
   return (
     <PieChart
-      {...props}
       data={data}
       series={
         <PieArcSeries doughnut={true} colorScheme="cybertron" innerRadius={1} />
