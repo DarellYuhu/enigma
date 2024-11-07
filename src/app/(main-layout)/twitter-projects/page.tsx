@@ -34,7 +34,7 @@ const TwitterProjects = () => {
     enableMultiRowSelection: false,
   });
   const handleNavigation = (projectId: string) => {
-    router.push(`/youtube-projects/${projectId}`);
+    router.push(`/twitter-projects/${projectId}`);
   };
   return (
     <div className="flex flex-col gap-3">
@@ -80,7 +80,7 @@ const TwitterProjects = () => {
             <TableBody>
               {table.getRowModel().rows.map((row) => (
                 <TableRow
-                  // onClick={() => handleNavigation(row.original.projectID)}
+                  onClick={() => handleNavigation(row.original.projectId)}
                   key={row.id}
                   className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
                 >
