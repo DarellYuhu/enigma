@@ -2,6 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Board from "./components/Board";
 import HashtagNetGraph from "./components/HashtagNetGraph";
 import AccountNetGraph from "./components/AccountNetGraph";
+import HashtagEvoSankey from "./components/HashtagEvoSankey";
+import ScatterTopics from "./components/ScatterTopics";
+import TopAccount from "./components/TopAccount";
 
 const TwitterProjectDetail = ({
   params,
@@ -9,8 +12,8 @@ const TwitterProjectDetail = ({
   params: { projectId: string };
 }) => {
   return (
-    <div className="space-y-4">
-      <Card>
+    <div className="grid grid-cols-12 gap-4">
+      <Card className="col-span-full">
         <CardHeader>
           <CardTitle>Board</CardTitle>
         </CardHeader>
@@ -19,7 +22,7 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="col-span-full">
         <CardHeader>
           <CardTitle>Hashtag Relation Network</CardTitle>
         </CardHeader>
@@ -28,12 +31,39 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="col-span-full">
         <CardHeader>
-          <CardTitle>Hashtag Relation Network</CardTitle>
+          <CardTitle>Hashtag Evolution</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <HashtagEvoSankey projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-6">
+        <CardHeader>
+          <CardTitle>Account Relation Network</CardTitle>
         </CardHeader>
         <CardContent>
           <AccountNetGraph projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-6">
+        <CardHeader>
+          <CardTitle>Top 10 Centrality Account</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <TopAccount projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full">
+        <CardHeader>
+          <CardTitle>Scatter Topics</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ScatterTopics projectId={params.projectId} />
         </CardContent>
       </Card>
     </div>

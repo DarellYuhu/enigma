@@ -8,10 +8,12 @@ import {
   TooltipOptions,
   LinearScale,
   CategoryScale,
+  ChartTypeRegistry,
+  TooltipItem,
 } from "chart.js";
 import { Chart as ChartJs } from "react-chartjs-2";
-import sankeyData from "@/data/sankey2.json";
 import zoomPlugin from "chartjs-plugin-zoom";
+import { HashtagEvolution } from "@/api/twitterApi";
 
 Chart.register(
   SankeyController,
@@ -23,32 +25,23 @@ Chart.register(
   zoomPlugin
 );
 
-const SankeyChartJs = () => {
+const SankeyChartJs = ({ item }: { item: HashtagEvolution }) => {
   const data = {
     labels: ["From", "To", "Flow"],
     datasets: [
       {
         label: "My sankey",
-        data: sankeyData.flow,
+        data: item.flow,
         colorMode: "gradient",
         alpha: 0.5,
         labels: Object.fromEntries(
-          Object.entries(sankeyData.thread).map(([key, item]) => [
-            key,
-            item.class,
-          ])
+          Object.entries(item.thread).map(([key, item]) => [key, item.class])
         ),
         column: Object.fromEntries(
-          Object.entries(sankeyData.thread).map(([key, item]) => [
-            key,
-            item.window,
-          ])
+          Object.entries(item.thread).map(([key, item]) => [key, item.window])
         ),
         priority: Object.fromEntries(
-          Object.entries(sankeyData.thread).map(([key, item]) => [
-            key,
-            item.window,
-          ])
+          Object.entries(item.thread).map(([key, item]) => [key, item.window])
         ),
         size: "max", // or 'min' if flow overlap is preferred
       },
@@ -92,22 +85,21 @@ const SankeyChartJs = () => {
         usePointStyle: false,
         enabled: true,
         callbacks: {
-          label: ({ raw }) => {
+          label: ({
+            raw,
+          }: TooltipItem<keyof ChartTypeRegistry> & {
+            raw: HashtagEvolution["flow"][0];
+          }) => {
             return [
               "From: " +
-                // @ts-ignore
-                sankeyData.thread[raw?.from].class +
+                item.thread[raw.from].class +
                 " " +
-                // @ts-ignore
-                sankeyData.window[sankeyData.thread[raw.from].window],
+                item.window[item.thread[raw.from].window],
 
               "To: " +
-                // @ts-ignore
-                sankeyData.thread[raw?.to].class +
+                item.thread[raw?.to].class +
                 " " +
-                // @ts-ignore
-                sankeyData.window[sankeyData.thread[raw.to].window],
-              // @ts-ignore
+                item.window[item.thread[raw.to].window],
               "Flow: " + raw?.flow,
             ];
           },

@@ -8,13 +8,15 @@ import React from "react";
 const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const { data } = useTwitterAccountNetwork({
     project: projectId,
-    string: "",
-    window: "7d",
+    window: "1",
   });
   return (
-    <div className="w-full h-80">
+    <div className="w-full h-80 shadow-inner">
       <Graph
-        data={(data as CosmographData<CosmosNode, CosmosLink>) ?? []}
+        linkVisibilityDistanceRange={[50, 150]}
+        data={
+          (data?.normalized as CosmographData<CosmosNode, CosmosLink>) ?? []
+        }
         // onClick={(node) => {
         //   if (node) {
         //     setNode(node.data);

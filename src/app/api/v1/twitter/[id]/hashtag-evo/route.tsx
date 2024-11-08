@@ -6,16 +6,20 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const searchParams = request.nextUrl.searchParams;
-  const window = searchParams.get("window");
+  const since = searchParams.get("since");
+  const until = searchParams.get("until");
+  const string = searchParams.get("string");
 
   const response = await fetch(
-    `${await getTwitterApi()}/api/v2/project/graphs`,
+    `${await getTwitterApi()}/api/v1/project/flows`,
     {
       method: "POST",
       body: JSON.stringify({
-        type: "accountNetwork",
+        type: "hashtagEvo",
         project: params.id,
-        window,
+        since: new Date(since || "").toISOString().split("T")[0],
+        until: new Date(until || "").toISOString().split("T")[0],
+        string,
       }),
       headers: {
         "Content-Type": "application/json",

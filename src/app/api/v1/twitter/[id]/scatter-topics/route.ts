@@ -6,16 +6,16 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const searchParams = request.nextUrl.searchParams;
-  const window = searchParams.get("window");
+  const date = searchParams.get("date");
 
   const response = await fetch(
-    `${await getTwitterApi()}/api/v2/project/graphs`,
+    `${await getTwitterApi()}/api/v2/project/topics`,
     {
       method: "POST",
       body: JSON.stringify({
-        type: "accountNetwork",
+        type: "topics",
         project: params.id,
-        window,
+        date: new Date(date || "").toISOString().split("T")[0],
       }),
       headers: {
         "Content-Type": "application/json",

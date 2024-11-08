@@ -133,31 +133,107 @@ export const getTagRelationGraph = async (payload: {
 export const getAccountNetwork = async (payload: {
   project: string;
   window: string;
-  string: string;
 }) => {
   const response = await fetch(
-    `/api/v1/twitter/${payload.project}/account-network?string=${payload.string}&window=${payload.window}`
+    `/api/v1/twitter/${payload.project}/account-network?&window=${payload.window}`
   );
   const data: AccountNetwork = await response.json();
+  const nodes = data.network.nodes.map((node) => ({
+    data: node,
+    fill: COLORS[parseInt(node.class)] ?? "#808080",
+    id: node.user_id,
+    label: node.user_screen_name,
+    size: Math.log(node.num_followers),
+  }));
   const normalized: CosmographData<CosmosNode, CosmosLink> = {
     links: data.network.edges.map((edge) => ({
       data: edge,
       source: edge.from,
       target: edge.to,
-      fill: COLORS[edge.tone],
+      // fill: edge.tone > 0.3 ? "#22c55e" : "#ef4444",
+      fill: nodes.find((node) => node.id === edge.from)?.fill,
     })),
-    nodes: data.network.nodes.map((node) => ({
-      data: node,
-      fill: COLORS[parseInt(node.class) ?? COLORS.length - 1],
-      id: node.user_id,
-      label: node.user_name,
-      size: Math.log(node.num_followers),
-    })),
+    nodes,
   };
-  return normalized;
+  return { data, normalized };
 };
 
-type AccountNetwork = {
+export const getHashtagEvolution = async (payload: {
+  project: string;
+  since?: Date;
+  until?: Date;
+  string: string;
+}) => {
+  const response = await fetch(
+    `/api/v1/twitter/${
+      payload.project
+    }/hashtag-evo?since=${payload.since?.toISOString()}&until=${payload.until?.toISOString()}&string=${
+      payload.string
+    }`
+  );
+
+  const data: HashtagEvolution = await response.json();
+  return data;
+};
+
+export const getScatterTopics = async (payload: {
+  project: string;
+  date: Date;
+}) => {
+  const response = await fetch(
+    `/api/v1/twitter/${
+      payload.project
+    }/scatter-topics?date=${payload.date?.toISOString()}`
+  );
+
+  const data: ScatterTopics = await response.json();
+  const normalized: CosmographData<CosmosNode, CosmosLink> = {
+    nodes: data.tweets.map((node) => ({
+      data: node,
+      id: node.id,
+      label: node.user_screen_name,
+      fill: COLORS[Math.round(parseInt(node.class))] ?? "#808080",
+      x: node.pos.x,
+      y: node.pos.y,
+      size: 0.3,
+    })),
+    links: [],
+  };
+  return { data, normalized };
+};
+
+type ScatterTopics = {
+  class: Record<
+    number,
+    {
+      num_accounts: number;
+      num_tweets: number;
+      num_unique_tweets: number;
+      tone_positive: number;
+      tone_negative: number;
+      tone_neutral: number;
+    }
+  >;
+  tweets: {
+    class: string; // <-- a number
+    id: string;
+    user_id: string;
+    user_screen_name: string;
+    full_text: string;
+    pos: {
+      x: number;
+      y: number;
+    };
+  }[];
+};
+
+export type HashtagEvolution = {
+  flow: { from: string; to: string; flow: number }[];
+  thread: Record<string, { class: string; window: number }>;
+  window: Record<string, string>; // <-- T is this format 2024-11-05
+};
+
+export type AccountNetwork = {
   network: {
     nodes: {
       user_id: string;
