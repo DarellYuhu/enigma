@@ -191,7 +191,7 @@ export const getScatterTopics = async (payload: {
     nodes: data.tweets.map((node) => ({
       data: node,
       id: node.id,
-      label: node.user_screen_name,
+      label: node.full_text,
       fill: COLORS[Math.round(parseInt(node.class))] ?? "#808080",
       x: node.pos.x,
       y: node.pos.y,

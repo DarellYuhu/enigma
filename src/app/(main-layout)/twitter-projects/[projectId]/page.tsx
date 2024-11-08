@@ -24,7 +24,7 @@ const TwitterProjectDetail = ({
 
       <Card className="col-span-full">
         <CardHeader>
-          <CardTitle>Hashtag Relation Network</CardTitle>
+          <CardTitle>Hashtag Network</CardTitle>
         </CardHeader>
         <CardContent>
           <HashtagNetGraph projectId={params.projectId} />
@@ -40,30 +40,30 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card>
 
-      <Card className="col-span-6">
+      <Card className="col-span-full">
         <CardHeader>
-          <CardTitle>Account Relation Network</CardTitle>
+          <CardTitle>Topics</CardTitle>
         </CardHeader>
         <CardContent>
+          <ScatterTopics projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-6">
+        <CardHeader>
+          <CardTitle>Actor Network</CardTitle>
+        </CardHeader>
+        <CardContent className="h-full">
           <AccountNetGraph projectId={params.projectId} />
         </CardContent>
       </Card>
 
       <Card className="col-span-6">
         <CardHeader>
-          <CardTitle>Top 10 Centrality Account</CardTitle>
+          <CardTitle>Top Central Actors</CardTitle>
         </CardHeader>
         <CardContent>
           <TopAccount projectId={params.projectId} />
-        </CardContent>
-      </Card>
-
-      <Card className="col-span-full">
-        <CardHeader>
-          <CardTitle>Scatter Topics</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ScatterTopics projectId={params.projectId} />
         </CardContent>
       </Card>
     </div>

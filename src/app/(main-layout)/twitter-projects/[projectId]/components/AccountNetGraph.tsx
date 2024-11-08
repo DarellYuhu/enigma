@@ -11,7 +11,7 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
     window: "1",
   });
   return (
-    <div className="w-full h-80 shadow-inner">
+    <div className="w-full h-96 shadow-inner">
       <Graph
         linkVisibilityDistanceRange={[50, 150]}
         data={

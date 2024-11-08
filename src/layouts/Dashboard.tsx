@@ -147,7 +147,7 @@ const Dashboard = ({
       </div>
       {board ? <div className="col-span-full card">{board}</div> : null}
       <div className="card flex flex-col col-span-full h-80 relative">
-        <h5 className="absolute top-2 left-2 bg-white">Hashtag Map</h5>
+        <h5 className="absolute top-2 left-2 bg-white z-10">Hashtag Map</h5>
         {tagRelationNetwork ? (
           <>
             {/* <VisGraph
@@ -201,7 +201,7 @@ const Dashboard = ({
       <div className="col-span-full">{graphSettingsComponent}</div>
       <div className=" card flex flex-row col-span-full gap-3 relative flex-wrap md:flex-nowrap">
         <div className="relative w-full flex-1 h-80">
-          <h5 className="absolute top-0 left-0">Interest Network</h5>
+          <h5 className="absolute top-0 left-0 z-10">Interest Network</h5>
           {interestNetwork ? (
             <>
               <Graph

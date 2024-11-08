@@ -4,6 +4,7 @@ import { AccountNetwork } from "@/api/twitterApi";
 import Datatable from "@/components/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import useTwitterAccountNetwork from "@/hooks/useTwitterAccountNetwork";
+import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 
@@ -13,7 +14,7 @@ const TopAccount = ({ projectId }: { projectId: string }) => {
     window: "1",
   });
   return (
-    <div className="w-full h-80 overflow-auto">
+    <div className="w-full h-96 overflow-auto">
       {data && (
         <Datatable
           columns={columns}
@@ -30,7 +31,7 @@ const columns: ColumnDef<AccountNetwork["network"]["nodes"][0]>[] = [
   {
     accessorKey: "user_screen_name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Screen Name" />
+      <DataTableColumnHeader column={column} title="Account" />
     ),
   },
   {
@@ -38,16 +39,11 @@ const columns: ColumnDef<AccountNetwork["network"]["nodes"][0]>[] = [
     header: "Description",
   },
   {
-    accessorKey: "centrality",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Centrality" />
-    ),
-  },
-  {
     accessorKey: "num_followers",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Number of Folowers" />
+      <DataTableColumnHeader column={column} title="Followers" />
     ),
+    cell: ({ row }) => abbreviateNumber(row.original.num_followers),
   },
 ];
 
