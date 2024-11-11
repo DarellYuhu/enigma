@@ -4,13 +4,12 @@ import { TwitterBoardItem } from "@/api/twitterApi";
 import Datatable from "@/components/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import useTwitterBoards from "@/hooks/useTwitterBoards";
-import useStatisticDateStore from "@/store/statistic-date-store";
+import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
-import React, { useState } from "react";
 
 const Board = ({ projectId }: { projectId: string }) => {
-  const [query, setQuery] = useState("");
-  const { from, to } = useStatisticDateStore();
+  // const [query, setQuery] = useState("");
+  // const { from, to } = useStatisticDateStore();
   const boards = useTwitterBoards({
     project: projectId,
     since: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
@@ -39,28 +38,39 @@ const column: ColumnDef<TwitterBoardItem>[] = [
     header: "Tweets",
   },
   {
+    accessorKey: "view_count",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="View" />
+    ),
+    cell: ({ row }) => abbreviateNumber(row.original.view_count),
+  },
+  {
     accessorKey: "retweet_count",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Retweet Count" />
+      <DataTableColumnHeader column={column} title="Retweet" />
     ),
+    cell: ({ row }) => abbreviateNumber(row.original.retweet_count),
   },
   {
     accessorKey: "reply_count",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Reply Count" />
+      <DataTableColumnHeader column={column} title="Reply" />
     ),
+    cell: ({ row }) => abbreviateNumber(row.original.reply_count),
   },
   {
     accessorKey: "favorite_count",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Favorite Count" />
+      <DataTableColumnHeader column={column} title="Favorite" />
     ),
+    cell: ({ row }) => abbreviateNumber(row.original.favorite_count),
   },
   {
     accessorKey: "bookmark_count",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Bookmark Count" />
+      <DataTableColumnHeader column={column} title="Bookmark" />
     ),
+    cell: ({ row }) => abbreviateNumber(row.original.bookmark_count),
   },
 ];
 

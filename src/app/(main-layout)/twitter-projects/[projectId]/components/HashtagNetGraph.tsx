@@ -2,11 +2,10 @@
 
 import VisGraph from "@/components/VisGraph";
 import useTwitterHashtagNet from "@/hooks/useTwitterHashtagNet";
-import useStatisticDateStore from "@/store/statistic-date-store";
 import { Edge, Node } from "vis-network/declarations/entry-esnext";
 
 const HashtagNetGraph = ({ projectId }: { projectId: string }) => {
-  const { from, to } = useStatisticDateStore();
+  // const { from, to } = useStatisticDateStore();
   const { data } = useTwitterHashtagNet({
     project: projectId,
     string: "",

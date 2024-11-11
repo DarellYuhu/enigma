@@ -1,4 +1,9 @@
-import { Cosmograph, CosmographData, CosmographProps } from "@cosmograph/react";
+import {
+  Cosmograph,
+  CosmographData,
+  CosmographProps,
+  CosmographRef,
+} from "@cosmograph/react";
 import { CosmosInputLink, CosmosInputNode } from "@cosmograph/cosmos";
 import { useRef } from "react";
 
@@ -38,10 +43,11 @@ const Graph = ({
   simulationGravity = 0.38,
   simulationLinkSpring = 0.03,
   simulationRepulsion = 0.4,
+  linkArrows = false,
   onClick,
   ...props
 }: Props) => {
-  const ref = useRef(null);
+  const ref = useRef<CosmographRef<CosmosNode, CosmosLink> | null>(null);
   return (
     <Cosmograph
       {...props}
@@ -55,14 +61,23 @@ const Graph = ({
       nodeLabelAccessor={(node) => `${node.label}`}
       nodeLabelColor={"#fff"}
       showDynamicLabels={showDynamicLabel}
-      linkArrows={false}
-      linkColor={(link) => link.fill || "#fff"}
+      linkArrows={linkArrows}
+      linkColor={(link) => link.fill || "#c7c7c7"}
       linkVisibilityDistanceRange={linkVisibilityDistanceRange}
       linkGreyoutOpacity={0.9}
       simulationGravity={simulationGravity}
       simulationLinkSpring={simulationLinkSpring}
       simulationRepulsion={simulationRepulsion}
-      onClick={onClick}
+      onClick={(clickedNode, index, nodePosition, event) => {
+        if (onClick) {
+          onClick(clickedNode, index, nodePosition, event);
+        }
+        if (clickedNode) {
+          ref.current?.selectNode(clickedNode, true);
+        } else {
+          ref.current?.unselectNodes();
+        }
+      }}
     />
   );
 };

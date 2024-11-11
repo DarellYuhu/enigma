@@ -3,6 +3,7 @@
 import { AccountNetwork } from "@/api/twitterApi";
 import Datatable from "@/components/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import useTwitterAccountNetwork from "@/hooks/useTwitterAccountNetwork";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
@@ -14,7 +15,7 @@ const TopAccount = ({ projectId }: { projectId: string }) => {
     window: "1",
   });
   return (
-    <div className="w-full h-96 overflow-auto">
+    <ScrollArea className="w-full h-[500px]">
       {data && (
         <Datatable
           columns={columns}
@@ -23,7 +24,7 @@ const TopAccount = ({ projectId }: { projectId: string }) => {
             .slice(0, 10)}
         />
       )}
-    </div>
+    </ScrollArea>
   );
 };
 

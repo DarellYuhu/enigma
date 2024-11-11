@@ -1,9 +1,4 @@
-import dynamic from "next/dynamic";
 import RechartSankey from "@/components/RechartSankey";
-
-const SankeyChartJs = dynamic(() => import("@/components/SankeyChartJs"), {
-  ssr: false,
-});
 
 const TestPage = () => {
   return (

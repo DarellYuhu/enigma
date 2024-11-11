@@ -1,6 +1,14 @@
-import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
+import {
+  Frown,
+  Heart,
+  Meh,
+  MessageSquareMore,
+  MonitorPlay,
+  Share2,
+  Smile,
+} from "lucide-react";
 import { ReactNode, useState } from "react";
-import { GetTrendsReturn } from "@/api/tiktokApi";
+import { GetInterestGraphs, GetTrendsReturn } from "@/api/tiktokApi";
 import {
   Carousel,
   CarouselContent,
@@ -21,12 +29,32 @@ import Graph, { CosmosLink, CosmosNode } from "@/components/Graph";
 import { CosmographData } from "@cosmograph/react";
 import BarChart2 from "@/components/BarChart2";
 import ReavizPie from "@/components/ReavizPie";
+import * as Tabs from "@radix-ui/react-tabs";
+import {
+  DiscreteLegend,
+  DiscreteLegendEntry,
+  LinearGauge,
+  LinearGaugeSeries,
+} from "reaviz";
+import chroma from "chroma-js";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import ReactMarkdown from "react-markdown";
+
+const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 
 type Props = {
   board?: React.ReactNode;
   graphSettingsComponent: React.ReactNode;
   statistics?: GetTrendsReturn;
   interestNetwork?: CosmographData<CosmosNode, CosmosLink>;
+  interestNetwork2?: GetInterestGraphs;
   tagRelationNetwork?: CosmographData<CosmosNode, CosmosLink>;
   hashtags?: { color: string; data: { hashtag: string; value: number }[] }[];
 };
@@ -39,6 +67,7 @@ const Dashboard = ({
   statistics,
   interestNetwork,
   tagRelationNetwork,
+  interestNetwork2,
   hashtags,
 }: Props) => {
   const { category, setCategory } = useCategoryStore();
@@ -166,6 +195,7 @@ const Dashboard = ({
               }}
             /> */}
             <Graph
+              linkVisibilityDistanceRange={[50, 150]}
               simulationGravity={0.0}
               simulationRepulsion={1}
               simulationLinkSpring={0.4}
@@ -202,10 +232,10 @@ const Dashboard = ({
       <div className=" card flex flex-row col-span-full gap-3 relative flex-wrap md:flex-nowrap">
         <div className="relative w-full flex-1 h-80">
           <h5 className="absolute top-0 left-0 z-10">Interest Network</h5>
-          {interestNetwork ? (
+          {interestNetwork2 ? (
             <>
               <Graph
-                data={interestNetwork}
+                data={interestNetwork2.network || []}
                 onClick={(node) => {
                   if (node) {
                     setNode(node.data);
@@ -263,6 +293,102 @@ const Dashboard = ({
           </Carousel>
         </div>
       </div>
+
+      <div className="card col-span-full">
+        <Tabs.Root className="space-y-4" defaultValue="0">
+          <ScrollArea className="w-full overflow-x-auto ">
+            <Tabs.TabsList className="flex flex-row w-full bg-gray-300 rounded-md p-2 gap-2">
+              {interestNetwork2?.hashtags.map((item, index) => (
+                <Tabs.TabsTrigger
+                  key={index}
+                  value={index.toString()}
+                  className={
+                    "p-2 w-10 h-10w-10 rounded-md data-[state=active]:opacity-35 data-[state=active]:shadow-md transition-all duration-300"
+                  }
+                  style={{
+                    backgroundColor: item.color,
+                  }}
+                />
+              ))}
+            </Tabs.TabsList>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+          {interestNetwork2?.hashtags.map((item, index) => (
+            <Tabs.TabsContent
+              key={index}
+              value={index.toString()}
+              className="w-full grid grid-cols-12 gap-4"
+            >
+              <div className="grid grid-cols-12 gap-4 col-span-8">
+                <Card className="col-span-4">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-base">Representation</CardTitle>
+                    <CardDescription>{item.representation}</CardDescription>
+                  </CardHeader>
+                </Card>
+                <Card className="col-span-8">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-base">Summary</CardTitle>
+                    <CardDescription>{item.summary}</CardDescription>
+                  </CardHeader>
+                </Card>
+                <Card className="col-span-full">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-base">Topics</CardTitle>
+                    <CardDescription>
+                      <ReactMarkdown>{item.topics}</ReactMarkdown>
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </div>
+              <div className="col-span-4 grid grid-cols-12 gap-4">
+                <Card className="col-span-full">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-base">Tone</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="col-span-full">
+                      <LinearGauge
+                        series={<LinearGaugeSeries colorScheme={colorScheme} />}
+                        data={[
+                          { key: "Negative", data: item.tone_negative * 100 },
+                          { key: "Neutral", data: item.tone_neutral * 100 },
+                          { key: "Positive", data: item.tone_positive * 100 },
+                        ]}
+                        width={300}
+                        height={30}
+                      />
+                      <DiscreteLegend
+                        orientation="horizontal"
+                        entries={scale.map((v, i) => (
+                          <DiscreteLegendEntry
+                            key={index}
+                            style={{
+                              padding: "0 3px",
+                            }}
+                            symbol={v.icon}
+                            label={`${v.type}`}
+                            color={colorScheme[i]}
+                            orientation="horizontal"
+                          />
+                        ))}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+                <div className="col-span-full">
+                  <HorizontalBarChart2
+                    data={item.hashtags}
+                    labelKey="hashtag"
+                    dataKey="value"
+                    color={item.color}
+                  />
+                </div>
+              </div>
+            </Tabs.TabsContent>
+          ))}
+        </Tabs.Root>
+      </div>
     </div>
   );
 };
@@ -298,5 +424,20 @@ const CategoryButton = ({
     </button>
   );
 };
+
+const scale = [
+  {
+    type: "Negative",
+    icon: <Frown />,
+  },
+  {
+    type: "Neutral",
+    icon: <Meh />,
+  },
+  {
+    type: "Positive",
+    icon: <Smile />,
+  },
+];
 
 export default Dashboard;

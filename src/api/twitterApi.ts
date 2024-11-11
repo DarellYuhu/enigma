@@ -119,7 +119,7 @@ export const getTagRelationGraph = async (payload: {
         ...node,
         label: node.id,
         shape: "dot",
-        color: COLORS[node.class],
+        color: COLORS[node.class % COLORS.length],
         size: Math.log(node.authorCount),
         font: { size: 5 * Math.log(node.authorCount) },
       })),
@@ -138,20 +138,20 @@ export const getAccountNetwork = async (payload: {
     `/api/v1/twitter/${payload.project}/account-network?&window=${payload.window}`
   );
   const data: AccountNetwork = await response.json();
+  const MAX_CENTRALITY = data.network.nodes.sort((item) => item.centrality)[0]
+    .centrality;
   const nodes = data.network.nodes.map((node) => ({
     data: node,
     fill: COLORS[parseInt(node.class)] ?? "#808080",
     id: node.user_id,
     label: node.user_screen_name,
-    size: Math.log(node.num_followers),
+    size: node.centrality / MAX_CENTRALITY,
   }));
   const normalized: CosmographData<CosmosNode, CosmosLink> = {
     links: data.network.edges.map((edge) => ({
       data: edge,
       source: edge.from,
       target: edge.to,
-      // fill: edge.tone > 0.3 ? "#22c55e" : "#ef4444",
-      fill: nodes.find((node) => node.id === edge.from)?.fill,
     })),
     nodes,
   };
@@ -171,7 +171,6 @@ export const getHashtagEvolution = async (payload: {
       payload.string
     }`
   );
-
   const data: HashtagEvolution = await response.json();
   return data;
 };
@@ -295,6 +294,7 @@ export type TwitterBoardItem = {
   user_id: string;
   user_screen_name: string;
   full_text: string;
+  view_count: number;
   retweet_count: number;
   reply_count: number;
   favorite_count: number;
