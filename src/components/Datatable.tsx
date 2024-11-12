@@ -15,15 +15,18 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import DataTablePagination from "./datatable/DataTablePagination";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  className?: string;
 }
 
 function Datatable<TData, TValue>({
   data,
   columns,
+  className,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -39,7 +42,7 @@ function Datatable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
+    <div className={cn("space-y-4", className)}>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

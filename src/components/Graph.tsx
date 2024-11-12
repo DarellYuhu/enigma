@@ -5,7 +5,7 @@ import {
   CosmographRef,
 } from "@cosmograph/react";
 import { CosmosInputLink, CosmosInputNode } from "@cosmograph/cosmos";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export type CosmosNode = CosmosInputNode & {
   label: string;
@@ -25,6 +25,7 @@ type Props = {
   simulationGravity?: number;
   simulationLinkSpring?: number;
   simulationRepulsion?: number;
+  selectedNode?: CosmosNode | null;
   data: CosmographData<CosmosNode, CosmosLink>;
   onClick?:
     | ((
@@ -44,10 +45,16 @@ const Graph = ({
   simulationLinkSpring = 0.03,
   simulationRepulsion = 0.4,
   linkArrows = false,
+  selectedNode,
   onClick,
   ...props
 }: Props) => {
   const ref = useRef<CosmographRef<CosmosNode, CosmosLink> | null>(null);
+  useEffect(() => {
+    if (!selectedNode) {
+      ref.current?.unselectNodes();
+    }
+  }, [selectedNode]);
   return (
     <Cosmograph
       {...props}
