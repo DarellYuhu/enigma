@@ -178,18 +178,19 @@ export const getInterestGraphs2 = async (payload: {
       })),
     },
     hashtags: Object.values(data.hashtags)
-      .filter((item) => "hashtags" in item)
       .map((item, index) => ({
         ...item,
         color: COLORS[index],
-        hashtags: item.hashtags.hashtags.map((tag, index) => ({
-          hashtag: tag,
-          value: item.hashtags.values[index],
-          color: COLORS[index],
-        })),
-      })),
+        hashtags: item.hashtags
+          ? item.hashtags.hashtags.map((tag, index) => ({
+              hashtag: tag,
+              value: item.hashtags!.values[index],
+              color: COLORS[index],
+            }))
+          : undefined,
+      }))
+      .filter((item) => !!item.representation),
   };
-  console.log(normalized);
   return normalized;
 };
 
@@ -298,7 +299,7 @@ type InterestGraph2 = {
       tone_positive: number;
       tone_negative: number;
       tone_neutral: number;
-      hashtags: {
+      hashtags?: {
         hashtags: string[];
         values: number[];
       };

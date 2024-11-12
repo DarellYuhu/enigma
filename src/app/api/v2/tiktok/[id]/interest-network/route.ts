@@ -7,7 +7,6 @@ export async function GET(
 ) {
   const searchParams = request.nextUrl.searchParams;
   const window = searchParams.get("window");
-  console.log(params.id, window);
 
   const response = await fetch(
     `${await getTiktokApi()}/api/v2/project/graphs`,

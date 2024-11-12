@@ -46,6 +46,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import ReactMarkdown from "react-markdown";
+import { Separator } from "@/components/ui/separator";
+import Datatable from "@/components/Datatable";
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 
@@ -229,9 +233,15 @@ const Dashboard = ({
         ) : null}
       </div>
       <div className="col-span-full">{graphSettingsComponent}</div>
-      <div className=" card flex flex-row col-span-full gap-3 relative flex-wrap md:flex-nowrap">
+      <div
+        className={`card flex flex-row ${
+          interestNetwork2 ? "col-span-2" : "col-span-3"
+        } gap-3 relative flex-wrap md:flex-nowrap`}
+      >
         <div className="relative w-full flex-1 h-80">
-          <h5 className="absolute top-0 left-0 z-10">Interest Network</h5>
+          <h5 className="absolute top-0 left-0 z-10 bg-white">
+            Interest Network
+          </h5>
           {interestNetwork2 ? (
             <>
               <Graph
@@ -272,7 +282,24 @@ const Dashboard = ({
             </div>
           ) : null}
         </div>
-        <div className="w-56 bg-slate-100 rounded-md">
+      </div>
+
+      {interestNetwork2 ? (
+        <div className="card col-span-2">
+          <ScrollArea className="h-80">
+            <Datatable
+              data={interestNetwork2.network.nodes
+                .sort((a, b) => b.data.centrality - a.data.centrality)
+                .slice(0, 10)
+                .map((item) => ({
+                  ...item.data,
+                }))}
+              columns={columns}
+            />
+          </ScrollArea>
+        </div>
+      ) : (
+        <div className="card col-span-1 w-full bg-slate-100 rounded-md">
           <Carousel>
             <CarouselContent>
               {hashtags?.map((item, index) => (
@@ -292,7 +319,7 @@ const Dashboard = ({
             <CarouselNext className="absolute right-0" />
           </Carousel>
         </div>
-      </div>
+      )}
 
       <div className="card col-span-full">
         <Tabs.Root className="space-y-4" defaultValue="0">
@@ -344,6 +371,34 @@ const Dashboard = ({
               <div className="col-span-4 grid grid-cols-12 gap-4">
                 <Card className="col-span-full">
                   <CardHeader className="p-4">
+                    <CardTitle className="text-base">Count</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-row justify-evenly">
+                      <div className="flex flex-col items-center">
+                        {abbreviateNumber(item.total_views)}
+                        <p className="text-sm">Views</p>
+                      </div>
+                      <Separator orientation="vertical" className="h-11" />
+                      <div className="flex flex-col items-center">
+                        {abbreviateNumber(item.total_likes)}
+                        <p className="text-sm">Likes</p>
+                      </div>
+                      <Separator orientation="vertical" className="h-11" />
+                      <div className="flex flex-col items-center">
+                        {abbreviateNumber(item.total_comments)}
+                        <p className="text-sm">Comments</p>
+                      </div>
+                      <Separator orientation="vertical" className="h-11" />
+                      <div className="flex flex-col items-center">
+                        {abbreviateNumber(item.total_shares)}
+                        <p className="text-sm">Shares</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card className="col-span-full">
+                  <CardHeader className="p-4">
                     <CardTitle className="text-base">Tone</CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -376,13 +431,15 @@ const Dashboard = ({
                     </div>
                   </CardContent>
                 </Card>
-                <div className="col-span-full">
-                  <HorizontalBarChart2
-                    data={item.hashtags}
-                    labelKey="hashtag"
-                    dataKey="value"
-                    color={item.color}
-                  />
+                <div className="col-span-full h-96">
+                  {
+                    <HorizontalBarChart2
+                      data={item.hashtags!}
+                      labelKey="hashtag"
+                      dataKey="value"
+                      color={item.color}
+                    />
+                  }
                 </div>
               </div>
             </Tabs.TabsContent>
@@ -424,6 +481,55 @@ const CategoryButton = ({
     </button>
   );
 };
+
+const columns: ColumnDef<GetInterestGraphs["network"]["nodes"][0]["data"]>[] = [
+  {
+    accessorKey: "author_name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Account" />
+    ),
+  },
+  {
+    accessorKey: "desc",
+    header: "Description",
+  },
+  {
+    accessorKey: "play",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Play" />
+    ),
+    cell(props) {
+      return abbreviateNumber(props.row.original.play);
+    },
+  },
+  {
+    accessorKey: "like",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Like" />
+    ),
+    cell(props) {
+      return abbreviateNumber(props.row.original.like);
+    },
+  },
+  {
+    accessorKey: "comment",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Comment" />
+    ),
+    cell(props) {
+      return abbreviateNumber(props.row.original.comment);
+    },
+  },
+  {
+    accessorKey: "share",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Share" />
+    ),
+    cell(props) {
+      return abbreviateNumber(props.row.original.share);
+    },
+  },
+];
 
 const scale = [
   {
