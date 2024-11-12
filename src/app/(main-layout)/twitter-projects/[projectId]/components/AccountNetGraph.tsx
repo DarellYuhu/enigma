@@ -28,6 +28,7 @@ import { useState } from "react";
 
 const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const [node, setNode] = useState<CosmosNode | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
   const { data } = useTwitterAccountNetwork({
     project: projectId,
     window: "1",
@@ -59,6 +60,8 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
           />
         </div>
         <Graph
+          onNodeMouseOver={(node) => setNode(node)}
+          onNodeMouseOut={() => setNode(null)}
           simulationGravity={0.25}
           simulationRepulsion={1}
           simulationRepulsionTheta={1.15}
@@ -75,6 +78,7 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
           onClick={(node) => {
             if (node) {
               setNode(node);
+              setIsOpen(true);
             } else {
               setNode(null);
             }
@@ -82,18 +86,25 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
         />
       </CosmographProvider>
 
-      <Drawer open={!!node} onOpenChange={() => setNode(null)}>
+      <Drawer
+        open={isOpen}
+        onOpenChange={(open) => {
+          setNode(null);
+          setIsOpen(open);
+        }}
+      >
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>Content Board</DrawerTitle>
-            <DrawerDescription>{node?.label}</DrawerDescription>
+            <DrawerDescription>
+              <p>{node?.label}</p>
+              <p>{node?.data.user_description}</p>
+              <p>Followers: {abbreviateNumber(node?.data.num_followers)}</p>
+            </DrawerDescription>
           </DrawerHeader>
           {boards.data && node && (
             <ScrollArea className="w-full h-80 bg-white">
-              <Datatable
-                columns={columns}
-                data={boards.data.top.bookmark_count}
-              />
+              <Datatable columns={columns} data={boards.data.top.view_count} />
               <ScrollBar orientation="vertical" />
             </ScrollArea>
           )}

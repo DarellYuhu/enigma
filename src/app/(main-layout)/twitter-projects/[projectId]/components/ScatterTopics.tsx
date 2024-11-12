@@ -45,7 +45,7 @@ const ScatterTopics = ({ projectId }: { projectId: string }) => {
   }, 500);
 
   return (
-    <div className="relative w-full h-80">
+    <div className="relative w-full h-80 flex flex-row">
       <Input
         type="search"
         placeholder="Search..."
@@ -63,7 +63,7 @@ const ScatterTopics = ({ projectId }: { projectId: string }) => {
           }}
         />
       )}
-      <div className="absolute top-0 right-0 bg-white">
+      <div className="bg-white">
         <Card>
           <CardContent className="p-2">
             <CardHeader className="p-2">
@@ -92,6 +92,13 @@ const ScatterTopics = ({ projectId }: { projectId: string }) => {
                     .map(([key, item], index) => (
                       <div key={index} className="flex flex-row gap-2">
                         <Separator
+                          onClick={() =>
+                            setFiltered(
+                              data.data.tweets.filter(
+                                (item) => item.class === key
+                              )
+                            )
+                          }
                           className="w-2"
                           style={{
                             height: 15,

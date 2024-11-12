@@ -20,7 +20,7 @@ const TopAccount = ({ projectId }: { projectId: string }) => {
           columns={columns}
           data={data.data.network.nodes
             .sort((a, b) => b.centrality - a.centrality)
-            .slice(0, 10)}
+            .slice(0, 20)}
         />
       )}
     </ScrollArea>

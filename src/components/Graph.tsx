@@ -55,18 +55,17 @@ const Graph = ({
   const ref = useRef<CosmographRef<CosmosNode, CosmosLink> | null>(null);
 
   useEffect(() => {
-    if (!selectedNode) {
-      ref.current?.unselectNodes();
-    }
+    if (selectedNode) {
+      ref.current?.selectNode(selectedNode, true);
+    } else ref.current?.unselectNodes();
   }, [selectedNode]);
 
   useEffect(() => {
-    console.log("fire");
     if (selectedNodes) {
-      console.log(selectedNodes);
       ref.current?.selectNodes(selectedNodes);
     } else ref.current?.unselectNodes();
   }, [selectedNodes]);
+
   return (
     <Cosmograph
       {...props}

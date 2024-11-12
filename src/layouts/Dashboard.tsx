@@ -50,6 +50,7 @@ import { Separator } from "@/components/ui/separator";
 import Datatable from "@/components/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
+import { badgeVariants } from "@/components/ui/badge";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 
@@ -234,18 +235,18 @@ const Dashboard = ({
       </div>
       <div className="col-span-full">{graphSettingsComponent}</div>
       <div
-        className={`card flex flex-row ${
-          interestNetwork2 ? "col-span-2" : "col-span-3"
-        } gap-3 relative flex-wrap md:flex-nowrap`}
+        className={`card flex flex-row col-span-3 gap-3 relative flex-wrap md:flex-nowrap`}
       >
         <div className="relative w-full flex-1 h-80">
           <h5 className="absolute top-0 left-0 z-10 bg-white">
             Interest Network
           </h5>
-          {interestNetwork2 ? (
+          {interestNetwork2 || interestNetwork ? (
             <>
               <Graph
-                data={interestNetwork2.network || []}
+                data={
+                  interestNetwork2?.network || interestNetwork || ([] as any)
+                }
                 onClick={(node) => {
                   if (node) {
                     setNode(node.data);
@@ -285,17 +286,26 @@ const Dashboard = ({
       </div>
 
       {interestNetwork2 ? (
-        <div className="card col-span-2">
+        <div className="card col-span-1">
           <ScrollArea className="h-80">
-            <Datatable
-              data={interestNetwork2.network.nodes
-                .sort((a, b) => b.data.centrality - a.data.centrality)
-                .slice(0, 10)
-                .map((item) => ({
-                  ...item.data,
-                }))}
-              columns={columns}
-            />
+            <Card className="col-span-full">
+              <CardHeader className="p-2">
+                <CardTitle className="text-base">
+                  Top Central Contents
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <Datatable
+                  data={interestNetwork2.network.nodes
+                    .sort((a, b) => b.data.centrality - a.data.centrality)
+                    .slice(0, 10)
+                    .map((item) => ({
+                      ...item.data,
+                    }))}
+                  columns={columns}
+                />
+              </CardContent>
+            </Card>
           </ScrollArea>
         </div>
       ) : (
@@ -371,7 +381,7 @@ const Dashboard = ({
               <div className="col-span-4 grid grid-cols-12 gap-4">
                 <Card className="col-span-full">
                   <CardHeader className="p-4">
-                    <CardTitle className="text-base">Count</CardTitle>
+                    <CardTitle className="text-base">Metrics</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-row justify-evenly">
@@ -488,45 +498,25 @@ const columns: ColumnDef<GetInterestGraphs["network"]["nodes"][0]["data"]>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Account" />
     ),
-  },
-  {
-    accessorKey: "desc",
-    header: "Description",
+    cell(props) {
+      return (
+        <Link
+          className={badgeVariants({ variant: "outline" })}
+          href={`https://www.tiktok.com/@${props.row.original.author_name}/video/${props.row.original.id}`}
+          target="_blank"
+        >
+          {props.row.original.author_name}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "play",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Play" />
+      <DataTableColumnHeader column={column} title="Views" />
     ),
     cell(props) {
       return abbreviateNumber(props.row.original.play);
-    },
-  },
-  {
-    accessorKey: "like",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Like" />
-    ),
-    cell(props) {
-      return abbreviateNumber(props.row.original.like);
-    },
-  },
-  {
-    accessorKey: "comment",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Comment" />
-    ),
-    cell(props) {
-      return abbreviateNumber(props.row.original.comment);
-    },
-  },
-  {
-    accessorKey: "share",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Share" />
-    ),
-    cell(props) {
-      return abbreviateNumber(props.row.original.share);
     },
   },
 ];

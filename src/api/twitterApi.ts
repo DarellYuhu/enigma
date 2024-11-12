@@ -305,6 +305,7 @@ export type TwitterBoardItem = {
 
 type TwitterBoards = {
   top: {
+    view_count: TwitterBoardItem[];
     retweet_count: TwitterBoardItem[];
     reply_count: TwitterBoardItem[];
     favorite_count: TwitterBoardItem[];
