@@ -7,7 +7,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import useTwitterAccountNetwork from "@/hooks/useTwitterAccountNetwork";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
-import React from "react";
 
 const TopAccount = ({ projectId }: { projectId: string }) => {
   const { data } = useTwitterAccountNetwork({

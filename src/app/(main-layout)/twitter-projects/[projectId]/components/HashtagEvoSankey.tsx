@@ -1,7 +1,6 @@
 "use client";
 
 import useTwitterHashtagEvo from "@/hooks/useTwitterHashtagEvo";
-import React from "react";
 import dynamic from "next/dynamic";
 
 const SankeyChartJs = dynamic(() => import("@/components/SankeyChartJs"));

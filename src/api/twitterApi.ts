@@ -190,7 +190,7 @@ export const getScatterTopics = async (payload: {
     nodes: data.tweets.map((node) => ({
       data: node,
       id: node.id,
-      label: node.full_text,
+      label: node.user_screen_name,
       fill: COLORS[Math.round(parseInt(node.class))] ?? "#808080",
       x: node.pos.x,
       y: node.pos.y,
@@ -225,6 +225,8 @@ type ScatterTopics = {
     };
   }[];
 };
+
+export type ScatterTopicsResult = Awaited<ReturnType<typeof getScatterTopics>>;
 
 export type HashtagEvolution = {
   flow: { from: string; to: string; flow: number }[];

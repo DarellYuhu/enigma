@@ -26,6 +26,7 @@ type Props = {
   simulationLinkSpring?: number;
   simulationRepulsion?: number;
   selectedNode?: CosmosNode | null;
+  selectedNodes?: CosmosNode[] | null;
   data: CosmographData<CosmosNode, CosmosLink>;
   onClick?:
     | ((
@@ -46,15 +47,26 @@ const Graph = ({
   simulationRepulsion = 0.4,
   linkArrows = false,
   selectedNode,
+  selectedNodes,
+  nodeLabelAccessor = (node) => `${node.label}`,
   onClick,
   ...props
 }: Props) => {
   const ref = useRef<CosmographRef<CosmosNode, CosmosLink> | null>(null);
+
   useEffect(() => {
     if (!selectedNode) {
       ref.current?.unselectNodes();
     }
   }, [selectedNode]);
+
+  useEffect(() => {
+    console.log("fire");
+    if (selectedNodes) {
+      console.log(selectedNodes);
+      ref.current?.selectNodes(selectedNodes);
+    } else ref.current?.unselectNodes();
+  }, [selectedNodes]);
   return (
     <Cosmograph
       {...props}
@@ -65,7 +77,7 @@ const Graph = ({
       hoveredNodeLabelColor={"#fff"}
       nodeColor={(node) => node.fill}
       nodeSize={(node) => (node.size ? node.size * 0.18 : 1)}
-      nodeLabelAccessor={(node) => `${node.label}`}
+      nodeLabelAccessor={nodeLabelAccessor}
       nodeLabelColor={"#fff"}
       showDynamicLabels={showDynamicLabel}
       linkArrows={linkArrows}

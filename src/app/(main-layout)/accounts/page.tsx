@@ -34,7 +34,7 @@ import UpdateSheet from "./components/UpdateSheet";
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import DeleteAlert from "./components/DeleteAlert";
 import ResetPassAlert from "./components/ResetPassAlert";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Account = () => {
   const [resetAlert, setResetAlert] = useState(false);
