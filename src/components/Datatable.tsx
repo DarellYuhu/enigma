@@ -21,12 +21,16 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   className?: string;
+  pagination?: boolean;
+  initialPageSize?: number;
 }
 
 function Datatable<TData, TValue>({
   data,
   columns,
   className,
+  pagination = true,
+  initialPageSize = 5,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -36,7 +40,7 @@ function Datatable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: initialPageSize,
       },
     },
   });
@@ -93,7 +97,7 @@ function Datatable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      {pagination && <DataTablePagination table={table} />}
     </div>
   );
 }

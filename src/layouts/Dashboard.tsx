@@ -22,7 +22,6 @@ import useCategoryStore from "@/store/category-store";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import tagRelationExport from "@/utils/tagRelationExport";
 import useGraphDateStore from "@/store/graph-date-store";
-import interestNetExport from "@/utils/interestNetExport";
 import HorizontalBarChart2 from "@/components/HorizontalBarChart2";
 import AreaChart2 from "@/components/AreaChart2";
 import Graph, { CosmosLink, CosmosNode } from "@/components/Graph";
@@ -51,6 +50,7 @@ import Datatable from "@/components/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import { badgeVariants } from "@/components/ui/badge";
+// import interestNetExport from "@/utils/interestNetExport";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 
@@ -60,7 +60,10 @@ type Props = {
   statistics?: GetTrendsReturn;
   interestNetwork?: CosmographData<CosmosNode, CosmosLink>;
   interestNetwork2?: GetInterestGraphs;
-  tagRelationNetwork?: CosmographData<CosmosNode, CosmosLink>;
+  tagRelationNetwork?: {
+    data: TagRelationNetwork;
+    normalized: CosmographData<CosmosNode, CosmosLink>;
+  };
   hashtags?: { color: string; data: { hashtag: string; value: number }[] }[];
 };
 
@@ -204,7 +207,7 @@ const Dashboard = ({
               simulationGravity={0.0}
               simulationRepulsion={1}
               simulationLinkSpring={0.4}
-              data={tagRelationNetwork}
+              data={tagRelationNetwork.normalized}
               onClick={(node) => {
                 if (node) {
                   setTagNode(node.data);
@@ -218,7 +221,7 @@ const Dashboard = ({
                 tagRelationExport(
                   graphDate.from!,
                   graphDate.to!,
-                  interestNetwork as any
+                  tagRelationNetwork.data.relation
                 )
               }
               className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm bg-white"
@@ -245,7 +248,9 @@ const Dashboard = ({
             <>
               <Graph
                 data={
-                  interestNetwork2?.network || interestNetwork || ([] as any)
+                  interestNetwork2?.normalized.network ||
+                  interestNetwork ||
+                  ([] as any)
                 }
                 onClick={(node) => {
                   if (node) {
@@ -255,18 +260,18 @@ const Dashboard = ({
                   }
                 }}
               />
-              <button
-                onClick={() =>
-                  interestNetExport(
-                    graphDate.from!,
-                    graphDate.to!,
-                    interestNetwork as any
-                  )
-                }
-                className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm bg-white"
-              >
-                Export (.gdf)
-              </button>
+              {/* <button
+              onClick={() =>
+                interestNetExport(
+                  graphDate.from!,
+                  graphDate.to!,
+                  interestNetwork2?.data.network
+                )
+              }
+              className="absolute top-2 right-2 border border-slate-200 hover:border-slate-200 text-sm bg-white"
+            >
+              Export (.gdf)
+            </button> */}
             </>
           ) : null}
           {node ? (
@@ -296,7 +301,7 @@ const Dashboard = ({
               </CardHeader>
               <CardContent className="p-0">
                 <Datatable
-                  data={interestNetwork2.network.nodes
+                  data={interestNetwork2.normalized.network.nodes
                     .sort((a, b) => b.data.centrality - a.data.centrality)
                     .slice(0, 10)
                     .map((item) => ({
@@ -335,7 +340,7 @@ const Dashboard = ({
         <Tabs.Root className="space-y-4" defaultValue="0">
           <ScrollArea className="w-full overflow-x-auto ">
             <Tabs.TabsList className="flex flex-row w-full bg-gray-300 rounded-md p-2 gap-2">
-              {interestNetwork2?.hashtags.map((item, index) => (
+              {interestNetwork2?.normalized.hashtags.map((item, index) => (
                 <Tabs.TabsTrigger
                   key={index}
                   value={index.toString()}
@@ -350,7 +355,7 @@ const Dashboard = ({
             </Tabs.TabsList>
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
-          {interestNetwork2?.hashtags.map((item, index) => (
+          {interestNetwork2?.normalized.hashtags.map((item, index) => (
             <Tabs.TabsContent
               key={index}
               value={index.toString()}
@@ -492,7 +497,9 @@ const CategoryButton = ({
   );
 };
 
-const columns: ColumnDef<GetInterestGraphs["network"]["nodes"][0]["data"]>[] = [
+const columns: ColumnDef<
+  GetInterestGraphs["normalized"]["network"]["nodes"][0]["data"]
+>[] = [
   {
     accessorKey: "author_name",
     header: ({ column }) => (

@@ -1,103 +1,81 @@
-"use client";
-
-import Dashboard from "@/layouts/Dashboard";
-import { useEffect, useState } from "react";
-import DateRangePicker from "@/components/ui/date-range-picker";
-import useStatisticDateStore from "@/store/statistic-date-store";
-import useGraphDateStore from "@/store/graph-date-store";
-import { useTiktokTrends } from "@/hooks/useTiktokTrends";
-import { useTiktokInterestNet } from "@/hooks/useTiktokInterestNet";
-import { useTiktokHashtagNet } from "@/hooks/useTiktokHashtagNet";
-// import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Category from "./components/Category";
+import Weekly from "./components/Weekly";
+import Monthly from "./components/Monthly";
+import Creators from "./components/Creators";
+import Daily from "./components/Daily";
+import HashtagGraph from "./components/HashtagGraph";
+import InterestGraph from "./components/InterestGraph";
+import { GraphFilter, StatisticsFilter } from "./components/Filter";
 
 const Trend = () => {
-  const [query, setQuery] = useState("");
-  const [graphQuery, setGraphQuery] = useState("");
-  const statisticDate = useStatisticDateStore();
-  const graphDate = useGraphDateStore();
-  const trends = useTiktokTrends({
-    params: { projectId: "0" },
-    query,
-    statisticDate,
-  });
-  const interestNetwork = useTiktokInterestNet({
-    params: { projectId: "0" },
-    graphDate,
-    graphQuery,
-  });
-  // const interestNetwork2 = useTiktokInterestNet2({
-  //   projectId: "0",
-  //   window: 3,
-  // });
-  const hashtagsNetwork = useTiktokHashtagNet({
-    params: { projectId: "0" },
-    graphDate: statisticDate,
-    graphQuery,
-  });
-
-  useEffect(() => {
-    graphDate.reset();
-    statisticDate.reset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-row gap-2 flex-wrap">
-        <DateRangePicker
-          date={{ from: statisticDate.from, to: statisticDate.to }}
-          setDate={(value) => {
-            statisticDate.setFrom(value?.from);
-            statisticDate.setTo(value?.to);
-          }}
-          className="w-fit"
-        />
-        <input
-          onChange={(e) => setQuery(e.target.value)}
-          value={query}
-          placeholder="filter"
-          className="border-[1px]  rounded-md p-2 text-sm"
-        />
-        <button
-          onClick={() => {
-            trends.refetch();
-            hashtagsNetwork.refetch();
-          }}
-          className="bg-blue-400 hover:bg-blue-500 text-white border rounded-md p-2 text-sm"
-        >
-          Submit
-        </button>
+    <div className="grid grid-cols-12 gap-3">
+      <div className="col-span-full">
+        <StatisticsFilter projectId="0" />
       </div>
-      <Dashboard
-        statistics={trends.data}
-        interestNetwork={interestNetwork.data?.network}
-        hashtags={interestNetwork.data?.hashtags}
-        tagRelationNetwork={hashtagsNetwork.data}
-        graphSettingsComponent={
-          <div className="flex flex-row flex-wrap gap-2">
-            <DateRangePicker
-              date={{ from: graphDate.from, to: graphDate.to }}
-              setDate={(value) => {
-                graphDate.setFrom(value?.from);
-                graphDate.setTo(value?.to);
-              }}
-              max={7}
-              className="w-fit"
-            />
-            <input
-              onChange={(e) => setGraphQuery(e.target.value)}
-              value={graphQuery}
-              placeholder="filter"
-              className="border-[1px]  rounded-md p-2 text-sm"
-            />
-            <button
-              onClick={() => interestNetwork.refetch()}
-              className="bg-blue-400 hover:bg-blue-500 text-white border rounded-md p-2 text-sm"
-            >
-              Submit
-            </button>
-          </div>
-        }
-      />
+
+      <div className="col-span-full md:col-span-6 flex">
+        <Category projectId="0" />
+      </div>
+
+      <Card className="col-span-6 md:col-span-3 flex flex-col">
+        <CardHeader>
+          <CardTitle>Weekly</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0 h-full">
+          <Weekly projectId="0" />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-6 md:col-span-3 flex flex-col">
+        <CardHeader>
+          <CardTitle>Monthly</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0 h-full">
+          <Monthly projectId="0" />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full md:col-span-5">
+        <CardHeader>
+          <CardTitle>Top Creators</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0 h-80">
+          <Creators projectId="0" />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full md:col-span-7 flex flex-col">
+        <CardHeader>
+          <CardTitle>Daily</CardTitle>
+        </CardHeader>
+        <CardContent className="pb-4 pt-0 pl-0 pr-4 h-80">
+          <Daily projectId="0" />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full flex flex-col">
+        <CardHeader>
+          <CardTitle>Hashtag Map</CardTitle>
+        </CardHeader>
+        <CardContent className="relative p-0 h-80">
+          <HashtagGraph projectId="0" />
+        </CardContent>
+      </Card>
+
+      <div className="col-span-full">
+        <GraphFilter projectId="0" />
+      </div>
+
+      <Card className="col-span-full flex flex-col">
+        <CardHeader>
+          <CardTitle>Interest Network</CardTitle>
+        </CardHeader>
+        <CardContent className="relative p-0">
+          <InterestGraph projectId="0" />
+        </CardContent>
+      </Card>
     </div>
   );
 };

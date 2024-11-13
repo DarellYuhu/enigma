@@ -1,4 +1,4 @@
-import { Area, AreaChart, XAxis } from "recharts";
+import { Area, AreaChart, XAxis, YAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
@@ -27,12 +27,20 @@ const AreaChart2 = ({ data, dataKey, label, labelKey }: Props) => {
     >
       <AreaChart accessibilityLayer data={data}>
         <XAxis dataKey={labelKey} hide={true} />
+        <YAxis
+          dataKey={dataKey}
+          hide={true}
+          allowDataOverflow={true}
+          domain={(props) => {
+            console.log(props);
+            return [0, props[1] * 1.2];
+          }}
+        />
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent indicator="line" />}
         />
         <Area
-          className="bg-green-"
           dataKey={dataKey}
           type="natural"
           fill="#4ade80"
