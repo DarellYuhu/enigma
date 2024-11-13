@@ -10,6 +10,7 @@ import { useTiktokTrends } from "@/hooks/useTiktokTrends";
 import { useTiktokInterestNet } from "@/hooks/useTiktokInterestNet";
 import { useTiktokHashtagNet } from "@/hooks/useTiktokHashtagNet";
 import { useTiktokBoards } from "@/hooks/useTiktokBoards";
+import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const graphDate = useGraphDateStore();
@@ -17,6 +18,10 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   const [query, setQuery] = useState("");
   const [graphQuery, setGraphQuery] = useState("");
   const trends = useTiktokTrends({ params, query, statisticDate });
+  const interestNetwork2 = useTiktokInterestNet2({
+    projectId: params.projectId,
+    window: 3,
+  });
   const boards = useTiktokBoards({
     from: statisticDate.from,
     to: statisticDate.to,
@@ -70,6 +75,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         board={<Board string={query} projectId={params.projectId} />}
         statistics={trends.data}
         interestNetwork={interestNetwork.data?.network}
+        interestNetwork2={interestNetwork2.data}
         hashtags={interestNetwork.data?.hashtags}
         tagRelationNetwork={hashtagsNetwork.data}
         graphSettingsComponent={

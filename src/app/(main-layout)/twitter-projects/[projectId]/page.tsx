@@ -53,7 +53,7 @@ const TwitterProjectDetail = ({
         <CardHeader>
           <CardTitle>Actor Network</CardTitle>
         </CardHeader>
-        <CardContent className="h-full">
+        <CardContent>
           <AccountNetGraph projectId={params.projectId} />
         </CardContent>
       </Card>

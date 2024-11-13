@@ -1,14 +1,8 @@
-import {
-  PieChart,
-  PieArcSeries,
-  ChartShallowDataShape,
-  PieChartProps,
-} from "reaviz";
-import React from "react";
+import { PieChart, PieArcSeries, ChartShallowDataShape } from "reaviz";
 
 type Props = {
   data: ChartShallowDataShape[];
-} & PieChartProps;
+};
 
 const ReavizPie = ({ data }: Props) => {
   return (

@@ -17,7 +17,6 @@ import {
   ChevronRight,
   CircleAlert,
   Clapperboard,
-  Clipboard,
   FilePenLine,
 } from "lucide-react";
 import {

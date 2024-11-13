@@ -1,5 +1,5 @@
 import abbreviateNumber from "@/utils/abbreviateNumber";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 
 type Props = {
   dataKey: "comment" | "like" | "view";

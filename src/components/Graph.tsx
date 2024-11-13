@@ -1,6 +1,11 @@
-import { Cosmograph, CosmographData, CosmographProps } from "@cosmograph/react";
+import {
+  Cosmograph,
+  CosmographData,
+  CosmographProps,
+  CosmographRef,
+} from "@cosmograph/react";
 import { CosmosInputLink, CosmosInputNode } from "@cosmograph/cosmos";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export type CosmosNode = CosmosInputNode & {
   label: string;
@@ -20,6 +25,8 @@ type Props = {
   simulationGravity?: number;
   simulationLinkSpring?: number;
   simulationRepulsion?: number;
+  selectedNode?: CosmosNode | null;
+  selectedNodes?: CosmosNode[] | null;
   data: CosmographData<CosmosNode, CosmosLink>;
   onClick?:
     | ((
@@ -38,10 +45,27 @@ const Graph = ({
   simulationGravity = 0.38,
   simulationLinkSpring = 0.03,
   simulationRepulsion = 0.4,
+  linkArrows = false,
+  selectedNode,
+  selectedNodes,
+  nodeLabelAccessor = (node) => `${node.label}`,
   onClick,
   ...props
 }: Props) => {
-  const ref = useRef(null);
+  const ref = useRef<CosmographRef<CosmosNode, CosmosLink> | null>(null);
+
+  useEffect(() => {
+    if (selectedNode) {
+      ref.current?.selectNode(selectedNode, true);
+    } else ref.current?.unselectNodes();
+  }, [selectedNode]);
+
+  useEffect(() => {
+    if (selectedNodes) {
+      ref.current?.selectNodes(selectedNodes);
+    } else ref.current?.unselectNodes();
+  }, [selectedNodes]);
+
   return (
     <Cosmograph
       {...props}
@@ -52,17 +76,26 @@ const Graph = ({
       hoveredNodeLabelColor={"#fff"}
       nodeColor={(node) => node.fill}
       nodeSize={(node) => (node.size ? node.size * 0.18 : 1)}
-      nodeLabelAccessor={(node) => `${node.label}`}
+      nodeLabelAccessor={nodeLabelAccessor}
       nodeLabelColor={"#fff"}
       showDynamicLabels={showDynamicLabel}
-      linkArrows={false}
-      linkColor={(link) => link.fill || "#fff"}
+      linkArrows={linkArrows}
+      linkColor={(link) => link.fill || "#c7c7c7"}
       linkVisibilityDistanceRange={linkVisibilityDistanceRange}
       linkGreyoutOpacity={0.9}
       simulationGravity={simulationGravity}
       simulationLinkSpring={simulationLinkSpring}
       simulationRepulsion={simulationRepulsion}
-      onClick={onClick}
+      onClick={(clickedNode, index, nodePosition, event) => {
+        if (onClick) {
+          onClick(clickedNode, index, nodePosition, event);
+        }
+        if (clickedNode) {
+          ref.current?.selectNode(clickedNode, true);
+        } else {
+          ref.current?.unselectNodes();
+        }
+      }}
     />
   );
 };

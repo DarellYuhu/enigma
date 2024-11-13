@@ -8,7 +8,7 @@ export function useChangePassword() {
     onSuccess() {
       toast.success("Password changed successfully", { duration: 5000 });
     },
-    onError(error, variables, context) {
+    onError(error) {
       toast.error(error.message ?? "Something went wrong", { duration: 5000 });
     },
   });

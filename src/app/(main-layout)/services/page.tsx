@@ -4,7 +4,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import React from "react";
 import Form from "./components/Form";
 
 const Services = () => {

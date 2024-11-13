@@ -3,10 +3,10 @@
 import { AccountNetwork } from "@/api/twitterApi";
 import Datatable from "@/components/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import useTwitterAccountNetwork from "@/hooks/useTwitterAccountNetwork";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
-import React from "react";
 
 const TopAccount = ({ projectId }: { projectId: string }) => {
   const { data } = useTwitterAccountNetwork({
@@ -14,16 +14,16 @@ const TopAccount = ({ projectId }: { projectId: string }) => {
     window: "1",
   });
   return (
-    <div className="w-full h-96 overflow-auto">
+    <ScrollArea className="w-full h-[500px]">
       {data && (
         <Datatable
           columns={columns}
           data={data.data.network.nodes
             .sort((a, b) => b.centrality - a.centrality)
-            .slice(0, 10)}
+            .slice(0, 20)}
         />
       )}
-    </div>
+    </ScrollArea>
   );
 };
 

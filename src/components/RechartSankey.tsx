@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Layer,
-  Rectangle,
-  ResponsiveContainer,
-  Sankey,
-  Tooltip,
-} from "recharts";
-import { ChartTooltipContent } from "./ui/chart";
+import { Layer, Rectangle, Sankey, Tooltip } from "recharts";
 
 const RechartSankey = () => {
   return (
@@ -26,7 +19,7 @@ const RechartSankey = () => {
       link={{ stroke: "#77c878" }}
     >
       <Tooltip
-        content={({ active, payload, label }) => {
+        content={({ payload }) => {
           return (
             <div className="bg-white p-2">
               <p className="font-bold text-sm">{payload?.[0]?.name}</p>

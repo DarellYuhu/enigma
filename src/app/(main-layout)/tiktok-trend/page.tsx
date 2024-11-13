@@ -8,6 +8,7 @@ import useGraphDateStore from "@/store/graph-date-store";
 import { useTiktokTrends } from "@/hooks/useTiktokTrends";
 import { useTiktokInterestNet } from "@/hooks/useTiktokInterestNet";
 import { useTiktokHashtagNet } from "@/hooks/useTiktokHashtagNet";
+// import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
 
 const Trend = () => {
   const [query, setQuery] = useState("");
@@ -24,6 +25,10 @@ const Trend = () => {
     graphDate,
     graphQuery,
   });
+  // const interestNetwork2 = useTiktokInterestNet2({
+  //   projectId: "0",
+  //   window: 3,
+  // });
   const hashtagsNetwork = useTiktokHashtagNet({
     params: { projectId: "0" },
     graphDate: statisticDate,

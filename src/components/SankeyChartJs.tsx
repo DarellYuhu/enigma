@@ -116,13 +116,4 @@ const SankeyChartJs = ({ item }: { item: HashtagEvolution }) => {
   return <ChartJs type="sankey" data={data as any} options={options} />;
 };
 
-const generateColors = () => {
-  const colors: string[] = [];
-  for (let i = 0; i < 20; i++) {
-    const color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-    colors.push(color);
-  }
-  return colors;
-};
-
 export default SankeyChartJs;
