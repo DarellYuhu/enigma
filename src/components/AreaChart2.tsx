@@ -32,7 +32,6 @@ const AreaChart2 = ({ data, dataKey, label, labelKey }: Props) => {
           hide={true}
           allowDataOverflow={true}
           domain={(props) => {
-            console.log(props);
             return [0, props[1] * 1.2];
           }}
         />
