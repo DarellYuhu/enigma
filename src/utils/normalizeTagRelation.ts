@@ -1,38 +1,26 @@
-import { CosmosLink, CosmosNode } from "@/components/Graph";
-import { CosmographData } from "@cosmograph/react";
+import { COLORS } from "@/constants";
+import { Edge, Node } from "vis-network/standalone/umd/vis-network.min";
 
-const normalizeTagRelation: (
-  data: TagRelationNetwork
-) => CosmographData<CosmosNode, CosmosLink> = (data) => {
-  const nodes: CosmosNode[] = data.relation.nodes
+const normalizeTagRelation: (data: TagRelationNetwork) => {
+  nodes: Node[];
+  edges: Edge[];
+} = (data) => {
+  const nodes: Node[] = data.relation.nodes
     .filter((node) => node.isinBackbone)
     .map((node) => ({
-      id: node.id,
+      ...node,
       label: node.id,
-      fill: colors[node.class],
+      shape: "text",
+      color: COLORS[node.class % COLORS.length],
       size: Math.log(node.authorCount),
-      data: node,
+      font: { size: 5 * Math.log(node.authorCount) },
     }));
 
-  const links: CosmosLink[] = data.relation.edges
-    .filter((edge) => edge.isBackbone !== 0)
-    .map((link) => ({
-      source: link.from,
-      target: link.to,
-      data: link,
-      fill: nodes.find((node) => node.id === link.from)?.fill,
-    }));
+  const edges: Edge[] = data.relation.edges.filter(
+    (edge) => edge.isBackbone !== 0
+  );
 
-  return { links, nodes };
+  return { edges, nodes };
 };
-
-const colors = [
-  "#7D89FD",
-  "#E7C400",
-  "#F38200",
-  "#BFE719",
-  "#2CB6AF",
-  "#7BDF66",
-];
 
 export default normalizeTagRelation;

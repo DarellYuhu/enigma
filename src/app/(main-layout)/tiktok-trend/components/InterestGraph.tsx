@@ -2,7 +2,7 @@
 
 import Graph from "@/components/Graph";
 import HorizontalBarChart2 from "@/components/HorizontalBarChart2";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Toggle } from "@/components/ui/toggle";
 import { useTiktokInterestNet } from "@/hooks/useTiktokInterestNet";
 import useGraphDateStore from "@/store/graph-date-store";
 import { useGraphQueryStore } from "@/store/graph-query-store";
@@ -18,6 +19,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 const InterestGraph = ({ projectId }: { projectId: string }) => {
+  const [label, setLabel] = useState(false);
   const [node, setNode] = useState<any>(null);
   const { from, to } = useGraphDateStore();
   const { query } = useGraphQueryStore();
@@ -34,8 +36,9 @@ const InterestGraph = ({ projectId }: { projectId: string }) => {
 
   return (
     <div className="grid grid-cols-12 gap-4">
-      <div className="col-span-full md:col-span-8 h-80">
+      <div className="relative col-span-full md:col-span-8 h-80">
         <Graph
+          showDynamicLabel={label}
           data={data.network}
           onClick={(node) => {
             if (node) {
@@ -45,6 +48,22 @@ const InterestGraph = ({ projectId }: { projectId: string }) => {
             }
           }}
         />
+        <div className="absolute top-2 right-2 space-x-3">
+          <Toggle
+            variant={"outline"}
+            pressed={label}
+            onPressedChange={setLabel}
+            className={buttonVariants({ variant: "outline" })}
+          >
+            Show Label
+          </Toggle>
+          <Button
+            variant={"outline"}
+            onClick={() => interestNetExport(from!, to!, data.data.network)}
+          >
+            Export (.gdf)
+          </Button>
+        </div>
       </div>
       <div className="col-span-full md:col-span-4 w-full rounded-md h-80 p-2">
         <Carousel>
@@ -79,13 +98,6 @@ const InterestGraph = ({ projectId }: { projectId: string }) => {
           <span className="text-xs overflow-y-auto">{node.desc}</span>
         </div>
       ) : null}
-      <Button
-        variant={"outline"}
-        onClick={() => interestNetExport(from!, to!, data.data.network)}
-        className="absolute top-2 right-2"
-      >
-        Export (.gdf)
-      </Button>
     </div>
   );
 };

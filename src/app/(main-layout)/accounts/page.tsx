@@ -1,23 +1,8 @@
 "use client";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { User } from "@prisma/client";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import { User as PrismaUser } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import CreateSheet from "./components/CreateSheet";
 import { useUsers } from "@/hooks/useUsers";
@@ -29,141 +14,85 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import UpdateSheet from "./components/UpdateSheet";
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import DeleteAlert from "./components/DeleteAlert";
 import ResetPassAlert from "./components/ResetPassAlert";
 import { useState } from "react";
+import Datatable from "@/components/Datatable";
+import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
+import { cn } from "@/lib/utils";
+
+type User = Omit<PrismaUser, "password">;
 
 const Account = () => {
+  const [selectedRow, setSelectedRow] = useState<User | undefined>();
   const [resetAlert, setResetAlert] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
   const users = useUsers();
-  const table = useReactTable({
-    columns: columns({
-      resetAlert,
-      setResetAlert,
-      deleteAlert,
-      setDeleteAlert,
-    }),
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    enableMultiRowSelection: false,
-    data: users?.data || [],
-  });
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       <Sheet>
-        <SheetTrigger className="flex justify-self-end bg-blue-500 dark:bg-green-500 shadow-md rounded-md p-2 text-white text-sm dark:hover:bg-green-600 hover:bg-blue-600 transition-all ease-in-out duration-200 self-end mb-2">
+        <SheetTrigger
+          className={cn(buttonVariants({ variant: "default" }), "self-end")}
+        >
           Create New Account
         </SheetTrigger>
         <CreateSheet />
       </Sheet>
-      <div className="bg-white">
-        <AlertDialog open={resetAlert} onOpenChange={setResetAlert}>
-          <AlertDialog open={deleteAlert} onOpenChange={setDeleteAlert}>
-            <Sheet>
-              <Table>
-                <TableHeader>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow
-                      key={headerGroup.id}
-                      className="hover:bg-slate-200 dark:hover:bg-slate-700"
-                    >
-                      {headerGroup.headers.map((header) => (
-                        <TableHead
-                          key={header.id}
-                          className={
-                            header.id === "actions"
-                              ? "text-black dark:text-slate-300 text-nowrap font-semibold"
-                              : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
-                          }
-                          onClick={header.column.getToggleSortingHandler()}
-                        >
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </TableHead>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  {table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id} className="">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <UpdateSheet
-                user={table.getSelectedRowModel().rows[0]?.original}
-              />
-              <DeleteAlert
-                id={table.getSelectedRowModel().rows[0]?.original.id}
-              />
-            </Sheet>
-          </AlertDialog>
-          <ResetPassAlert
-            id={table.getSelectedRowModel().rows[0]?.original.id}
-          />
+      <AlertDialog open={resetAlert} onOpenChange={setResetAlert}>
+        <AlertDialog open={deleteAlert} onOpenChange={setDeleteAlert}>
+          <Sheet>
+            <Datatable
+              columns={() =>
+                columns({
+                  deleteAlert,
+                  resetAlert,
+                  setDeleteAlert,
+                  setResetAlert,
+                  setSelectedRow,
+                })
+              }
+              data={users?.data || []}
+            />
+            <UpdateSheet user={selectedRow} />
+            <DeleteAlert id={selectedRow?.id || 0} />
+          </Sheet>
         </AlertDialog>
-        <div className="flex flex-1 justify-end p-4 gap-3">
-          <button
-            className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft width={18} height={18} />
-          </button>
-          <button
-            className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight width={18} height={18} />
-          </button>
-        </div>
-      </div>
+        <ResetPassAlert id={selectedRow?.id || 0} />
+      </AlertDialog>
     </div>
   );
 };
 
-const columns: ({
-  resetAlert,
-  setResetAlert,
-  deleteAlert,
-  setDeleteAlert,
-}: {
+type ColumnProps = {
   resetAlert: boolean;
   setResetAlert: React.Dispatch<React.SetStateAction<boolean>>;
   deleteAlert: boolean;
   setDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>;
-}) => ColumnDef<Omit<User, "password">>[] = ({
+  setSelectedRow: React.Dispatch<React.SetStateAction<User | undefined>>;
+};
+
+const columns: ({
   resetAlert,
-  setResetAlert,
   deleteAlert,
+  setResetAlert,
   setDeleteAlert,
+  setSelectedRow,
+}: ColumnProps) => ColumnDef<User>[] = ({
+  resetAlert,
+  deleteAlert,
+  setResetAlert,
+  setDeleteAlert,
+  setSelectedRow,
 }) => {
   return [
     {
       accessorKey: "displayName",
-      header: "Name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Name" />
+      ),
     },
     {
       accessorKey: "username",
@@ -171,11 +100,15 @@ const columns: ({
     },
     {
       accessorKey: "role",
-      header: "Role",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Role" />
+      ),
     },
     {
       accessorKey: "createdAt",
-      header: "Created At",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Created At" />
+      ),
       cell: ({ row }) => (
         <span>
           {new Date(row.getValue<Date>("createdAt")).toLocaleDateString()}
@@ -184,7 +117,9 @@ const columns: ({
     },
     {
       accessorKey: "updatedAt",
-      header: "Updated At",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Updated At" />
+      ),
       cell: ({ row }) => (
         <span>
           {new Date(row.getValue<Date>("updatedAt")).toLocaleDateString()}
@@ -195,6 +130,9 @@ const columns: ({
       id: "actions",
       header: "Actions",
       cell: ({ row }) => {
+        const handleRowSelect = () => {
+          setSelectedRow(row.original);
+        };
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -206,14 +144,14 @@ const columns: ({
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <SheetTrigger asChild onClick={() => row.toggleSelected()}>
+              <SheetTrigger asChild onClick={() => handleRowSelect()}>
                 <DropdownMenuItem>Edit</DropdownMenuItem>
               </SheetTrigger>
               <AlertDialogTrigger
                 asChild
                 onClick={() => {
-                  row.toggleSelected();
                   setDeleteAlert(!deleteAlert);
+                  handleRowSelect();
                 }}
               >
                 <DropdownMenuItem>
@@ -225,7 +163,7 @@ const columns: ({
                   onClick={(event) => {
                     setResetAlert(!resetAlert);
                     event.stopPropagation();
-                    row.toggleSelected();
+                    handleRowSelect();
                   }}
                 >
                   <span>Reset Password</span>

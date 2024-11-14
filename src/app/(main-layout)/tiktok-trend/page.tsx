@@ -55,6 +55,10 @@ const Trend = () => {
         </CardContent>
       </Card>
 
+      <div className="col-span-full">
+        <GraphFilter projectId="0" />
+      </div>
+
       <Card className="col-span-full flex flex-col">
         <CardHeader>
           <CardTitle>Hashtag Map</CardTitle>
@@ -63,10 +67,6 @@ const Trend = () => {
           <HashtagGraph projectId="0" />
         </CardContent>
       </Card>
-
-      <div className="col-span-full">
-        <GraphFilter projectId="0" />
-      </div>
 
       <Card className="col-span-full flex flex-col">
         <CardHeader>

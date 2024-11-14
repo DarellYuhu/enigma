@@ -1,7 +1,8 @@
 "use client";
 
 import Graph from "@/components/Graph";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
 import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
 import useGraphDateStore from "@/store/graph-date-store";
 import { interestNetExport2 } from "@/utils/interestNetExport";
@@ -9,6 +10,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 const InterestGraph = ({ projectId }: { projectId: string }) => {
+  const [label, setLabel] = useState(false);
   const [node, setNode] = useState<any>(null);
   const { from, to } = useGraphDateStore();
   const { data } = useTiktokInterestNet2({
@@ -29,6 +31,7 @@ const InterestGraph = ({ projectId }: { projectId: string }) => {
             setNode(null);
           }
         }}
+        showDynamicLabel={label}
       />
       {node ? (
         <div className="absolute bottom-2 left-2 h-3/5 w-64 flex flex-col gap-2 border rounded-md p-2 shadow-lg backdrop-blur-md">
@@ -43,13 +46,21 @@ const InterestGraph = ({ projectId }: { projectId: string }) => {
           <span className="text-xs overflow-y-auto">{node.desc}</span>
         </div>
       ) : null}
-      <Button
-        variant={"outline"}
-        onClick={() => interestNetExport2(from!, to!, data.data.network)}
-        className="absolute top-2 right-2"
-      >
-        Export (.gdf)
-      </Button>
+      <div className="absolute top-2 right-2 space-x-3">
+        <Toggle
+          pressed={label}
+          onPressedChange={setLabel}
+          className={buttonVariants({ variant: "outline" })}
+        >
+          Show Label
+        </Toggle>
+        <Button
+          variant={"outline"}
+          onClick={() => interestNetExport2(from!, to!, data.data.network)}
+        >
+          Export (.gdf)
+        </Button>
+      </div>
     </>
   );
 };

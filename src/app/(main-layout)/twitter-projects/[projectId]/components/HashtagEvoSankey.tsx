@@ -10,7 +10,7 @@ const HashtagEvoSankey = ({ projectId }: { projectId: string }) => {
     project: projectId,
     string: "",
     since: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-    until: new Date(),
+    until: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
   });
   return (
     <div className="w-full h-80 shadow-inner">

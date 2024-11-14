@@ -1,133 +1,71 @@
 "use client";
 
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ColumnDef } from "@tanstack/react-table";
 import { useSession } from "next-auth/react";
 import CreateNewDialog from "./components/CreateNewDialog";
 import useTwitterProjects from "@/hooks/useTwitterProjects";
 import { TTwitterProjects } from "@/api/twitterApi";
 import EditDialog from "./components/EditDialog";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+import Datatable from "@/components/Datatable";
+import { badgeVariants } from "@/components/ui/badge";
+import Link from "next/link";
+import { useState } from "react";
 
 const TwitterProjects = () => {
+  const [selected, setSelected] = useState<
+    TTwitterProjects["projects"][0] | undefined
+  >();
   const { data: session } = useSession();
-  const router = useRouter();
   const projects = useTwitterProjects();
-  const table = useReactTable({
-    columns: columns(session?.user.role === "USER"),
-    data: projects.data?.projects || [],
-    getCoreRowModel: getCoreRowModel(),
-    enableMultiRowSelection: false,
-  });
-  const handleNavigation = (projectId: string) => {
-    router.push(`/twitter-projects/${projectId}`);
-  };
   return (
     <div className="flex flex-col gap-3">
       <Dialog>
         <DialogTrigger
           disabled={session?.user.role === "USER"}
-          className="bg-blue-500 dark:bg-green-500 shadow-md rounded-md p-2 text-white text-sm dark:hover:bg-green-600 hover:bg-blue-600 transition-all ease-in-out duration-200 self-end"
+          className={cn(buttonVariants(), "self-end")}
         >
           Create New
         </DialogTrigger>
         <CreateNewDialog />
       </Dialog>
-      <div className="bg-white dark:bg-slate-600 rounded-md shadow-md">
-        <Dialog onOpenChange={(open) => !open && table.resetRowSelection()}>
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  key={headerGroup.id}
-                  className="hover:bg-slate-200 dark:hover:bg-slate-700"
-                >
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className={
-                        header.id === "actions"
-                          ? "text-black dark:text-slate-300 text-nowrap font-semibold"
-                          : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
-                      }
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow
-                  onClick={() => handleNavigation(row.original.projectId)}
-                  key={row.id}
-                  className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div className="flex flex-1 justify-end p-4 gap-3">
-            <button
-              className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <ChevronLeft width={18} height={18} />
-            </button>
-            <button
-              className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <ChevronRight width={18} height={18} />
-            </button>
-          </div>
-          <EditDialog
-            projectId={table.getSelectedRowModel().rows[0]?.original.projectId}
+      <div className="card dark:bg-slate-600 rounded-md shadow-md">
+        <Dialog onOpenChange={(open) => !open && setSelected(undefined)}>
+          <Datatable
+            columns={columns(session?.user.role === "USER", setSelected)}
+            data={projects.data?.projects || []}
           />
+          <EditDialog projectId={selected?.projectId} />
         </Dialog>
       </div>
     </div>
   );
 };
 
-const columns = (
-  isDisabled: boolean
-): ColumnDef<TTwitterProjects["projects"][0]>[] => {
+type ColumnProps = (
+  isDisabled: boolean,
+  setSelected: React.Dispatch<
+    React.SetStateAction<TTwitterProjects["projects"][0] | undefined>
+  >
+) => ColumnDef<TTwitterProjects["projects"][0]>[];
+
+const columns: ColumnProps = (isDisabled, setSelected) => {
   return [
     {
       accessorKey: "projectName",
       header: "Project Name",
+      cell(props) {
+        return (
+          <Link
+            className={badgeVariants({ variant: "default" })}
+            href={`/twitter-projects/${props.row.original.projectId}`}
+          >
+            {props.row.original.projectName}
+          </Link>
+        );
+      },
     },
     {
       accessorKey: "numTweets",
@@ -161,12 +99,12 @@ const columns = (
       cell: ({ row }) => {
         return (
           <DialogTrigger
-            disabled={isDisabled}
+            className={buttonVariants({ size: "sm", variant: "outline" })}
             onClick={(event) => {
-              row.toggleSelected();
+              setSelected(row.original);
               event.stopPropagation();
             }}
-            className="border border-blue-300 rounded-sm cursor-pointer hover:bg-blue-300 p-2"
+            disabled={isDisabled}
           >
             Edit
           </DialogTrigger>
