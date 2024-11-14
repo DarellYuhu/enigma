@@ -8,7 +8,7 @@ export const createProject = async (payload: {
   projectName: string;
   keywords: string;
 }) => {
-  const response = await fetch("/api/v1/project/create", {
+  const response = await fetch("/api/v1/tiktok", {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
@@ -27,8 +27,8 @@ export const createProject = async (payload: {
 };
 
 export const editProject = async (payload: EditProjectPayload) => {
-  const response = await fetch("/api/v1/project/edit", {
-    method: "POST",
+  const response = await fetch(`/api/v1/tiktok/${payload.projectId}`, {
+    method: "PATCH",
     body: JSON.stringify(payload),
     headers: {
       "Content-Type": "application/json",
@@ -44,42 +44,22 @@ export const editProject = async (payload: EditProjectPayload) => {
   return data;
 };
 
-export const getProject = async (payload: {
-  projectId?: string;
-}): Promise<GetProjectResult> => {
-  const response = await fetch("/api/v1/project/cat", {
-    method: "POST",
-    body: JSON.stringify({ type: "getProjectInfo", ...payload }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await response.json();
+export const getProject = async (payload: { projectId?: string }) => {
+  const response = await fetch(`/api/v1/tiktok/${payload.projectId}`);
+  const data: GetProjectResult = await response.json();
   return data;
 };
 
-export const getProjects = async (
-  payload: GetProjectsPayload
-): Promise<GetProjectsResult> => {
-  const response = await fetch("/api/v1/project/cat", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await response.json();
+export const getProjects = async () => {
+  const response = await fetch("/api/v1/tiktok");
+  const data: GetProjectsResult = await response.json();
   return data;
 };
 
 export const getBoards = async (payload: GetTrendsPayload) => {
-  const response = await fetch("/api/v1/project/boards", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `/api/v1/tiktok/${payload.project}/boards?since=${payload.since}&until=${payload.until}&string=${payload.string}`
+  );
   const data: BoardsData = await response.json();
   const normalize = {
     ...data,
@@ -99,7 +79,7 @@ export const exportComments = async (payload: {
   id: string;
   keywords: string;
 }) => {
-  const response = await fetch("/api/v1/export/comments", {
+  const response = await fetch(`/api/v1/tiktok/${payload.id}/export-comments`, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
@@ -148,7 +128,7 @@ export const getInterestGraphs = async (payload: GetGraphsPayload) => {
     })),
   };
 
-  return { network: normalized, hashtags };
+  return { network: normalized, hashtags, data };
 };
 
 export const getInterestGraphs2 = async (payload: {
@@ -158,7 +138,7 @@ export const getInterestGraphs2 = async (payload: {
   const response = await fetch(
     `/api/v2/tiktok/${payload.projectId}/interest-network?window=${payload.window}`
   );
-  const data: InterestGraph2 = await response.json();
+  const data: InterestNetwork2 = await response.json();
   const nodes = data.network.nodes.map((node) => ({
     id: node.id,
     label: node.author_name,
@@ -191,17 +171,13 @@ export const getInterestGraphs2 = async (payload: {
       }))
       .filter((item) => !!item.representation),
   };
-  return normalized;
+  return { data, normalized };
 };
 
 export const getTagInformation = async (payload: { hashtag: string }) => {
-  const response = await fetch("/api/v1/hashtags", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `/api/v1/tiktok/hashtags?hashtag=${payload.hashtag}`
+  );
   const data: TagInformation = await response.json();
 
   return {
@@ -214,26 +190,18 @@ export const getTagInformation = async (payload: { hashtag: string }) => {
 };
 
 export const getTagRelationGraphs = async (payload: GetGraphsPayload) => {
-  const response = await fetch("/api/v1/project/graphs/tag-relation-network", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `/api/v1/tiktok/${payload.project}/tag-relation?since=${payload.since}&until=${payload.until}&string=${payload.string}`
+  );
 
   const data: TagRelationNetwork = await response.json();
-  return normalizeTagRelation(data);
+  return { data, normalized: normalizeTagRelation(data) };
 };
 
 export default async function getTrends(payload: GetTrendsPayload) {
-  const response = await fetch("/api/v1/project/statistics", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `/api/v1/tiktok/${payload.project}/statistics?since=${payload.since}&until=${payload.until}&string=${payload.string}`
+  );
   const data: TrendsData = await response.json();
 
   const parseData = (data: TSAtom) =>
@@ -283,7 +251,7 @@ export type GetTrendsReturn = Awaited<ReturnType<typeof getTrends>>;
 
 export type GetInterestGraphs = Awaited<ReturnType<typeof getInterestGraphs2>>;
 
-type InterestGraph2 = {
+export type InterestNetwork2 = {
   hashtags: Record<
     number,
     {

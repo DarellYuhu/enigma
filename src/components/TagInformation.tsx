@@ -1,8 +1,8 @@
 import { CalendarRange, Eye, Globe } from "lucide-react";
 import { Separator } from "./ui/separator";
-import CustomPieChart from "./CustomPieChart";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { useTiktokTagInfo } from "@/hooks/useTiktokTagInfo";
+import ReavizPie from "./ReavizPie";
 
 const TagInformation = ({
   tagNode,
@@ -76,10 +76,16 @@ const TagInformation = ({
         </div>
         <div className="flex flex-col h-52 w-52">
           <h3 className="mx-2 self-center">Age Range</h3>
-          <CustomPieChart
+          {/* <CustomPieChart
             data={tagInformation.data.audienceAges}
             dataKey="value"
             labelKey="age"
+          /> */}
+          <ReavizPie
+            data={tagInformation.data.audienceAges.map((item) => ({
+              key: item.age,
+              data: item.value,
+            }))}
           />
         </div>
       </div>

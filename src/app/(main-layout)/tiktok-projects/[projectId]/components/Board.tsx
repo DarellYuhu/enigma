@@ -1,3 +1,5 @@
+"use client";
+
 import useCategoryStore from "@/store/category-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import {
@@ -42,18 +44,20 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useTiktokBoards } from "@/hooks/useTiktokBoards";
 import { useTiktokComments } from "@/hooks/useTiktokComments";
+import { useQueryFilterStore } from "@/store/query-filter-store";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Props = {
   projectId: string;
-  string: string;
 };
 
-const Board = ({ projectId, string }: Props) => {
+const Board = ({ projectId }: Props) => {
   const [keywords, setKeywords] = useState<string>("");
   const { category } = useCategoryStore();
   const { from, to } = useStatisticDateStore();
-  const [type, setType] = useState<"top" | "trending">("top");
-  const boards = useTiktokBoards({ projectId, string, from, to });
+  const { query } = useQueryFilterStore();
+  const [type, setType] = useState<"top" | "trending">("trending");
+  const boards = useTiktokBoards({ projectId, string: query, from, to });
   const comments = useTiktokComments();
   const table = useReactTable({
     columns,
@@ -71,60 +75,64 @@ const Board = ({ projectId, string }: Props) => {
   });
   return (
     <div className="flex flex-col bg-white rounded-md">
-      <div className="flex flex-row items-center justify-between m-2">
-        <h5>Content Board</h5>
+      <div className="flex flex-row items-center justify-end m-2">
         <TypeSelection value={type} setValue={setType} />
       </div>
       <Dialog>
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className="hover:bg-slate-200 dark:hover:bg-slate-700"
-              >
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className={
-                      header.id === "actions"
-                        ? "text-black dark:text-slate-300 text-nowrap font-semibold"
-                        : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
-                    }
-                    onClick={header.column.getToggleSortingHandler()}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
-                onDoubleClick={() =>
-                  window.open(
-                    `https://www.tiktok.com/@${row.original.author_name}/video/${row.original.id}`,
-                    "_blank"
-                  )
-                }
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <ScrollArea className="h-80">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow
+                  key={headerGroup.id}
+                  className="hover:bg-slate-200 dark:hover:bg-slate-700"
+                >
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      className={
+                        header.id === "actions"
+                          ? "text-black dark:text-slate-300 text-nowrap font-semibold"
+                          : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
+                      }
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
+                  onDoubleClick={() =>
+                    window.open(
+                      `https://www.tiktok.com/@${row.original.author_name}/video/${row.original.id}`,
+                      "_blank"
+                    )
+                  }
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </ScrollArea>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Export Comments into Excel</DialogTitle>

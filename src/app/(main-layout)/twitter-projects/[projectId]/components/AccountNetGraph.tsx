@@ -36,8 +36,8 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const boards = useTwitterBoards({
     project: projectId,
     string: node?.label ?? "",
-    since: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-    until: new Date(),
+    since: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+    until: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
   });
   return (
     <div className="relative w-full h-[500px] shadow-inner">
