@@ -19,7 +19,7 @@ const ClusterInfo = ({
   node: ClusterTrends["network"]["nodes"]["0"] | null;
 }) => {
   const { data } = useTiktokClusterInfo({
-    cluster: node?.class,
+    cluster: node?.id,
     date: new Date(date || ""),
     window: 7,
   });
