@@ -14,8 +14,9 @@ const TwitterProjectDetail = ({
   return (
     <div className="grid grid-cols-12 gap-4">
       <Card className="col-span-full">
-        <CardHeader>
+        <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle>Board</CardTitle>
+          {/* <BoardConfig projectId={params.projectId} /> */}
         </CardHeader>
         <CardContent>
           <Board projectId={params.projectId} />

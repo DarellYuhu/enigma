@@ -48,6 +48,11 @@ const defaultOptions = {
   },
 };
 
+export type VisData<TNode = unknown, TEdge = unknown> = {
+  nodes: (Node & { data: TNode })[];
+  edges: (Edge & { data: TEdge })[];
+};
+
 interface VisGraphProps {
   type?: "interestNet" | "tagRelation";
   data: {
@@ -59,6 +64,7 @@ interface VisGraphProps {
     [key in NetworkEvents]?: (params: any) => void;
   };
   style?: React.CSSProperties;
+  minVelocity?: number;
   getNetwork?: (network: Network) => void;
   getNodes?: (nodes: DataSet<Node>) => void;
   getEdges?: (edges: DataSet<Edge>) => void;
@@ -70,6 +76,7 @@ const VisGraph = ({
   options = defaultOptions,
   events = {},
   style = { width: "100%", height: "100%" },
+  minVelocity = 3,
   getNetwork,
   getNodes,
   getEdges,
@@ -92,22 +99,27 @@ const VisGraph = ({
       if (type === "tagRelation") {
         network.current?.setOptions({
           nodes: {
-            opacity: 0.0,
+            // opacity: 0.0,
             borderWidth: 0.1,
           },
           edges: {
+            smooth: {
+              type: "curvedCCW",
+              enabled: true,
+              roundness: 0.5,
+            },
             color: {
               opacity: 0.2,
             },
-            width: 0.1,
+            width: 0.8,
           },
           physics: {
-            solver: "barnesHut",
-            barnesHut: {
-              gravitationalConstant: -2000,
-              avoidOverlap: 1,
+            solver: "forceAtlas2Based",
+            forceAtlas2Based: {
+              damping: 0.6,
+              springLength: 80,
             },
-            minVelocity: 0.2,
+            minVelocity,
             stabilization: false,
           },
         });

@@ -27,6 +27,9 @@ const Creators = ({ projectId }: { projectId: string }) => {
           data: item.value,
         })) || []
       }
+      onClick={(e) =>
+        window.open(`https://www.tiktok.com/@${e.value.key}`, "_blank")
+      }
     />
   );
 };

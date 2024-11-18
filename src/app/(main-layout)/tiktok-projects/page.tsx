@@ -1,32 +1,14 @@
 "use client";
 
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  HeaderGroup,
-  useReactTable,
-} from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import {
   ALargeSmall,
   CalendarArrowUp,
   CalendarPlus,
-  ChevronLeft,
-  ChevronRight,
   CircleAlert,
   Clapperboard,
   FilePenLine,
 } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   Dialog,
   DialogClose,
@@ -48,12 +30,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useRouter } from "next/navigation";
 import { useTiktokProjects } from "@/hooks/useTiktokProjects";
 import { useCreateTTProject } from "@/hooks/useCreateTTProject";
 import TiktokSchema from "@/schemas/tiktok";
 import { useSession } from "next-auth/react";
 import EditDialog from "./components/EditDialog";
+import Datatable from "@/components/Datatable";
+import { buttonVariants } from "@/components/ui/button";
+import { useState } from "react";
+import Link from "next/link";
+import { badgeVariants } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 type Project = {
   projectId: string;
@@ -65,24 +52,10 @@ type Project = {
 };
 
 const Projects = () => {
+  const [selected, setSelected] = useState<Project | undefined>();
   const { data: session } = useSession();
-  const router = useRouter();
   const projectsQuery = useTiktokProjects();
   const projectsMutation = useCreateTTProject();
-  const table = useReactTable({
-    columns: columns(session?.user.role === "USER"),
-    data: projectsQuery.data?.projects || [],
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    enableMultiRowSelection: false,
-    initialState: {
-      pagination: {
-        pageIndex: 0,
-        pageSize: 5,
-      },
-    },
-  });
   const createForm = useForm<z.infer<typeof TiktokSchema.create>>({
     resolver: zodResolver(TiktokSchema.create),
     defaultValues: {
@@ -96,10 +69,6 @@ const Projects = () => {
     createForm.reset();
   };
 
-  const handleNavigation = (projectId: string) => {
-    router.push(`/tiktok-projects/${projectId}`);
-  };
-
   if (projectsQuery.status === "pending") {
     return <div>Loading...</div>;
   }
@@ -108,7 +77,7 @@ const Projects = () => {
       <Dialog>
         <DialogTrigger
           disabled={session?.user.role === "USER"}
-          className="bg-blue-500 dark:bg-green-500 shadow-md rounded-md p-2 text-white text-sm dark:hover:bg-green-600 hover:bg-blue-600 transition-all ease-in-out duration-200 self-end"
+          className={cn(buttonVariants(), "self-end")}
         >
           Create New
         </DialogTrigger>
@@ -168,79 +137,16 @@ const Projects = () => {
         </DialogContent>
       </Dialog>
       <div className="card bg-white dark:bg-slate-600 rounded-md">
-        <Dialog onOpenChange={(open) => !open && table.resetRowSelection()}>
-          <Table>
-            <TableHeader>
-              {table
-                .getHeaderGroups()
-                .map((headerGroup: HeaderGroup<Project>) => (
-                  <TableRow
-                    key={headerGroup.id}
-                    className="hover:bg-slate-200 dark:hover:bg-slate-700"
-                  >
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        key={header.id}
-                        className={
-                          header.id === "actions"
-                            ? "text-black dark:text-slate-300 text-nowrap font-semibold"
-                            : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
-                        }
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow
-                  onClick={() => handleNavigation(row.original.projectId)}
-                  key={row.id}
-                  className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div className="flex flex-1 justify-end p-4 gap-3">
-            <button
-              className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <ChevronLeft width={18} height={18} />
-            </button>
-            <button
-              className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <ChevronRight width={18} height={18} />
-            </button>
-          </div>
+        <Dialog onOpenChange={(open) => !open && selected}>
+          <Datatable
+            columns={columns(session?.user.role === "USER", setSelected)}
+            data={projectsQuery.data?.projects || []}
+          />
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Edit Project</DialogTitle>
             </DialogHeader>
-            <EditDialog
-              project={table.getSelectedRowModel().rows[0]?.original}
-            />
+            <EditDialog project={selected} />
           </DialogContent>
         </Dialog>
       </div>
@@ -248,10 +154,24 @@ const Projects = () => {
   );
 };
 
-const columns: (isDisabled: boolean) => ColumnDef<Project>[] = (isDisabled) => [
+type ColumnProps = (
+  isDisabled: boolean,
+  setSelected: React.Dispatch<React.SetStateAction<Project | undefined>>
+) => ColumnDef<Project>[];
+
+const columns: ColumnProps = (isDisabled, setSelected) => [
   {
-    sortingFn: "text",
     accessorKey: "projectName",
+    cell(props) {
+      return (
+        <Link
+          className={badgeVariants({ variant: "default" })}
+          href={`/tiktok-projects/${props.row.original.projectId}`}
+        >
+          {props.row.original.projectName}
+        </Link>
+      );
+    },
     header: () => {
       return (
         <div className="flex flex-row gap-2 items-center">
@@ -261,7 +181,6 @@ const columns: (isDisabled: boolean) => ColumnDef<Project>[] = (isDisabled) => [
     },
   },
   {
-    sortingFn: "basic",
     accessorKey: "numVideos",
     header: () => {
       return (
@@ -272,7 +191,6 @@ const columns: (isDisabled: boolean) => ColumnDef<Project>[] = (isDisabled) => [
     },
   },
   {
-    sortingFn: "datetime",
     accessorKey: "created",
     header: () => {
       return (
@@ -288,7 +206,6 @@ const columns: (isDisabled: boolean) => ColumnDef<Project>[] = (isDisabled) => [
     },
   },
   {
-    sortingFn: "datetime",
     accessorKey: "lastUpdate",
     header: () => {
       return (
@@ -304,7 +221,6 @@ const columns: (isDisabled: boolean) => ColumnDef<Project>[] = (isDisabled) => [
     },
   },
   {
-    sortingFn: "text",
     accessorKey: "status",
     header: () => {
       return (
@@ -326,10 +242,10 @@ const columns: (isDisabled: boolean) => ColumnDef<Project>[] = (isDisabled) => [
     cell: ({ row }) => {
       return (
         <DialogTrigger
-          className="bg-blue-400 hover:bg-blue-500 text-slate-100 flex flex-row gap-2 items-center p-[3px] rounded-md"
+          className={buttonVariants({ size: "sm", variant: "outline" })}
           onClick={(event) => {
+            setSelected(row.original);
             event.stopPropagation();
-            row.toggleSelected();
           }}
           disabled={isDisabled}
         >

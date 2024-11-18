@@ -88,27 +88,6 @@ export const getTagRelationGraph = async (payload: {
 
   const data: TwitterHashtagRelation = await response.json();
 
-  // const nodes: CosmosNode[] = data.relation.nodes
-  //   .filter((node) => node.isinBackbone)
-  //   .map((node) => ({
-  //     id: node.id,
-  //     label: node.id,
-  //     fill: COLORS[node.class],
-  //     size: Math.log(node.authorCount),
-  //     data: node,
-  //   }));
-
-  // const links: CosmosLink[] = data.relation.edges
-  //   .filter((edge) => edge.isBackbone !== 0)
-  //   .map((link) => ({
-  //     source: link.from,
-  //     target: link.to,
-  //     data: link,
-  //     fill: nodes.find((node) => node.id === link.from)?.fill,
-  //   }));
-
-  // return { links, nodes };
-
   const normalized: {
     nodes: Node[];
     edges: Edge[];
@@ -118,9 +97,9 @@ export const getTagRelationGraph = async (payload: {
       .map((node) => ({
         ...node,
         label: node.id,
-        shape: "dot",
+        shape: "text",
         color: COLORS[node.class % COLORS.length],
-        size: Math.log(node.authorCount),
+        size: Math.log(node.authorCount) * 5,
         font: { size: 5 * Math.log(node.authorCount) },
       })),
 

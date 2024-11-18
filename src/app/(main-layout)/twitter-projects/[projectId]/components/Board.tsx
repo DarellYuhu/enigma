@@ -8,20 +8,15 @@ import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 
 const Board = ({ projectId }: { projectId: string }) => {
-  // const [query, setQuery] = useState("");
-  // const { from, to } = useStatisticDateStore();
-  const boards = useTwitterBoards({
+  const { data } = useTwitterBoards({
     project: projectId,
-    since: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-    until: new Date(),
+    since: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    until: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
     string: "",
   });
   return (
     <div>
-      <Datatable
-        columns={column}
-        data={boards.data?.top.bookmark_count || []}
-      />
+      <Datatable columns={column} data={data?.top.bookmark_count || []} />
     </div>
   );
 };

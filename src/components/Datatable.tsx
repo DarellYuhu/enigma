@@ -12,17 +12,21 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  OnChangeFn,
+  RowSelectionState,
   useReactTable,
 } from "@tanstack/react-table";
 import DataTablePagination from "./datatable/DataTablePagination";
 import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+  columns: ColumnDef<TData, TValue>[] | (() => ColumnDef<TData, TValue>[]);
   data: TData[];
   className?: string;
   pagination?: boolean;
   initialPageSize?: number;
+  enableMultiRowSelection?: boolean;
+  onRowSelectionChange?: OnChangeFn<RowSelectionState>;
 }
 
 function Datatable<TData, TValue>({
@@ -31,13 +35,15 @@ function Datatable<TData, TValue>({
   className,
   pagination = true,
   initialPageSize = 5,
+  enableMultiRowSelection,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
-    columns,
+    columns: Array.isArray(columns) ? columns : columns(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    enableMultiRowSelection: enableMultiRowSelection,
     initialState: {
       pagination: {
         pageSize: initialPageSize,

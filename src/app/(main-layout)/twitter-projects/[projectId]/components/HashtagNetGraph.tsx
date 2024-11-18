@@ -31,6 +31,7 @@ const HashtagNetGraph = ({ projectId }: { projectId: string }) => {
       <VisGraph
         data={(data as { nodes: Node[]; edges: Edge[] }) ?? []}
         type="tagRelation"
+        minVelocity={0.5}
       />
     </div>
   );

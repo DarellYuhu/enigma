@@ -1,17 +1,18 @@
 "use client";
 
-import Graph from "@/components/Graph";
 import TagInformation from "@/components/TagInformation";
 import { Button } from "@/components/ui/button";
+import VisGraph from "@/components/VisGraph";
 import { useTiktokHashtagNet } from "@/hooks/useTiktokHashtagNet";
+import useGraphDateStore from "@/store/graph-date-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";
-import useStatisticDateStore from "@/store/statistic-date-store";
 import tagRelationExport from "@/utils/tagRelationExport";
 import React, { useState } from "react";
+import { DataSet } from "vis-data";
 
 const HashtagGraph = ({ projectId }: { projectId: string }) => {
   const [tagNode, setTagNode] = useState(null);
-  const { from, to } = useStatisticDateStore();
+  const { from, to } = useGraphDateStore();
   const { query } = useQueryFilterStore();
   const { data } = useTiktokHashtagNet({
     params: { projectId },
@@ -24,7 +25,7 @@ const HashtagGraph = ({ projectId }: { projectId: string }) => {
   if (!data?.normalized) return null;
   return (
     <>
-      <Graph
+      {/* <Graph
         linkVisibilityDistanceRange={[50, 150]}
         simulationGravity={0.0}
         simulationRepulsion={1}
@@ -36,6 +37,21 @@ const HashtagGraph = ({ projectId }: { projectId: string }) => {
           } else {
             setTagNode(null);
           }
+        }}
+      /> */}
+      <VisGraph
+        data={data.normalized ?? []}
+        type="tagRelation"
+        events={{
+          click: (event) => {
+            const nodes = new DataSet(data.data.relation.nodes);
+            const node = nodes.get(event.nodes[0]);
+            if (node && !Array.isArray(node)) {
+              setTagNode(node);
+            } else {
+              setTagNode(null);
+            }
+          },
         }}
       />
       {tagNode ? (

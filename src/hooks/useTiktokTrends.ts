@@ -1,4 +1,4 @@
-import getTrends from "@/api/tiktokApi";
+import { getTrends } from "@/api/tiktokApi";
 import { useQuery } from "@tanstack/react-query";
 
 export function useTiktokTrends({

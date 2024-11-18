@@ -51,7 +51,7 @@ const DateRangePicker = ({
             defaultMonth={date?.from}
             selected={date}
             onSelect={setDate}
-            toDate={new Date()}
+            toDate={new Date(Date.now() + 1000 * 60 * 60 * 24 * 1)}
             max={max}
           />
         </PopoverContent>

@@ -2,15 +2,8 @@
 
 import useCategoryStore from "@/store/category-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { Dispatch, SetStateAction, useState } from "react";
 import TypeSelection from "./TypeSelection";
 import {
   Dialog,
@@ -21,16 +14,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import {
   DropdownMenu,
@@ -46,12 +31,14 @@ import { useTiktokBoards } from "@/hooks/useTiktokBoards";
 import { useTiktokComments } from "@/hooks/useTiktokComments";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Datatable from "@/components/Datatable";
 
 type Props = {
   projectId: string;
 };
 
 const Board = ({ projectId }: Props) => {
+  const [selected, setSelected] = useState<BoardItem | undefined>();
   const [keywords, setKeywords] = useState<string>("");
   const { category } = useCategoryStore();
   const { from, to } = useStatisticDateStore();
@@ -59,20 +46,6 @@ const Board = ({ projectId }: Props) => {
   const [type, setType] = useState<"top" | "trending">("trending");
   const boards = useTiktokBoards({ projectId, string: query, from, to });
   const comments = useTiktokComments();
-  const table = useReactTable({
-    columns,
-    data: boards.data?.[type as "top" | "trending"][category] || [],
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    enableMultiRowSelection: false,
-    initialState: {
-      pagination: {
-        pageIndex: 0,
-        pageSize: 5,
-      },
-    },
-  });
   return (
     <div className="flex flex-col bg-white rounded-md">
       <div className="flex flex-row items-center justify-end m-2">
@@ -80,58 +53,10 @@ const Board = ({ projectId }: Props) => {
       </div>
       <Dialog>
         <ScrollArea className="h-80">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  key={headerGroup.id}
-                  className="hover:bg-slate-200 dark:hover:bg-slate-700"
-                >
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className={
-                        header.id === "actions"
-                          ? "text-black dark:text-slate-300 text-nowrap font-semibold"
-                          : "text-black dark:text-slate-300 text-nowrap font-semibold cursor-pointer hover:bg-slate-300"
-                      }
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className="dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
-                  onDoubleClick={() =>
-                    window.open(
-                      `https://www.tiktok.com/@${row.original.author_name}/video/${row.original.id}`,
-                      "_blank"
-                    )
-                  }
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <Datatable
+            columns={columns(setSelected)}
+            data={boards.data?.[type as "top" | "trending"][category] || []}
+          />
         </ScrollArea>
         <DialogContent>
           <DialogHeader>
@@ -148,7 +73,7 @@ const Board = ({ projectId }: Props) => {
             <button
               onClick={() =>
                 comments.mutate({
-                  id: table.getSelectedRowModel().rows[0].original.id,
+                  id: selected?.id ?? "",
                   keywords: keywords,
                 })
               }
@@ -162,27 +87,13 @@ const Board = ({ projectId }: Props) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <div className="flex flex-1 justify-end p-4 gap-3">
-        <button
-          className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeft width={18} height={18} />
-        </button>
-        <button
-          className="bg-blue-300 rounded-sm cursor-pointer hover:bg-blue-400 p-2"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRight width={18} height={18} />
-        </button>
-      </div>
     </div>
   );
 };
 
-const columns: ColumnDef<BoardItem>[] = [
+const columns: (
+  setSelected: Dispatch<SetStateAction<BoardItem | undefined>>
+) => ColumnDef<BoardItem>[] = (setSelected) => [
   {
     accessorKey: "author_name",
     header: "Creator",
@@ -232,7 +143,7 @@ const columns: ColumnDef<BoardItem>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DialogTrigger onClick={() => row.toggleSelected()}>
+            <DialogTrigger onClick={() => setSelected(row.original)}>
               <DropdownMenuItem>Export Comments</DropdownMenuItem>
             </DialogTrigger>
             <DropdownMenuSeparator />
@@ -242,7 +153,7 @@ const columns: ColumnDef<BoardItem>[] = [
             >
               <DropdownMenuItem>Watch</DropdownMenuItem>
             </Link>
-            <DropdownMenuItem onClick={() => row.toggleSelected()}>
+            <DropdownMenuItem onClick={() => setSelected(row.original)}>
               Hide this video
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -198,7 +198,7 @@ export const getTagRelationGraphs = async (payload: GetGraphsPayload) => {
   return { data, normalized: normalizeTagRelation(data) };
 };
 
-export default async function getTrends(payload: GetTrendsPayload) {
+export const getTrends = async (payload: GetTrendsPayload) => {
   const response = await fetch(
     `/api/v1/tiktok/${payload.project}/statistics?since=${payload.since}&until=${payload.until}&string=${payload.string}`
   );
@@ -245,8 +245,7 @@ export default async function getTrends(payload: GetTrendsPayload) {
   };
 
   return { daily, weekly, monthly, topUsers, count };
-}
-
+};
 export type GetTrendsReturn = Awaited<ReturnType<typeof getTrends>>;
 
 export type GetInterestGraphs = Awaited<ReturnType<typeof getInterestGraphs2>>;
