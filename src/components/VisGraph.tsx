@@ -48,6 +48,11 @@ const defaultOptions = {
   },
 };
 
+export type VisData<TNode = unknown, TEdge = unknown> = {
+  nodes: (Node & { data: TNode })[];
+  edges: (Edge & { data: TEdge })[];
+};
+
 interface VisGraphProps {
   type?: "interestNet" | "tagRelation";
   data: {

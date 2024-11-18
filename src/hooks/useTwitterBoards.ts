@@ -11,15 +11,7 @@ type Payload = {
 const useTwitterBoards = (payload: Payload) => {
   return useQuery({
     queryFn: () => getBoards(payload),
-    queryKey: [
-      "twitter",
-      "boards",
-      payload.project,
-      payload.string,
-      payload.since,
-      payload.until,
-    ],
-    enabled: false,
+    queryKey: ["twitter", "boards", payload.project],
   });
 };
 

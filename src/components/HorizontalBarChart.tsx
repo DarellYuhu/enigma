@@ -12,14 +12,16 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart";
 
 type Props = {
   label: string;
+  hidelabel?: boolean;
   labelKey: string;
   dataKey: string;
   data: { [key: string]: any }[];
   selectedId?: string;
-  onBarSelect: (item: YoutubeTopChannels["tc"]["0"]) => void;
+  onBarSelect?: (item: YoutubeTopChannels["tc"]["0"]) => void;
 };
 
 const HorizontalBarChart = ({
+  hidelabel = true,
   label,
   labelKey,
   dataKey,
@@ -57,7 +59,9 @@ const HorizontalBarChart = ({
           />
           <ChartTooltip
             cursor={false}
-            content={<ChartTooltipContent hideLabel indicator="line" />}
+            content={
+              <ChartTooltipContent hideLabel={hidelabel} indicator="line" />
+            }
           />
           <Bar dataKey={dataKey} radius={5} fill="#f87171">
             {data.map((entry, index) => (
@@ -65,6 +69,7 @@ const HorizontalBarChart = ({
                 fill={selectedId === entry.channel_id ? "#ef4444" : "#f87171"}
                 key={`cell-${index}`}
                 onClick={() =>
+                  onBarSelect &&
                   onBarSelect(entry as YoutubeTopChannels["tc"]["0"])
                 }
               />
