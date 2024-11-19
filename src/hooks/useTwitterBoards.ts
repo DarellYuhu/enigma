@@ -20,7 +20,7 @@ const useTwitterBoards = (payload: Payload) => {
       const data: TwitterBoards = await response.json();
       return data;
     },
-    queryKey: ["twitter", "boards", payload.project],
+    queryKey: ["twitter", "boards", payload.project, payload.string],
   });
 };
 
@@ -29,6 +29,8 @@ export type TwitterBoardItem = {
   created_at: string; // 2024-11-06 05:35:11 <-- this format
   user_id: string;
   user_screen_name: string;
+  user_description: string;
+  num_followers: number;
   full_text: string;
   view_count: number;
   retweet_count: number;

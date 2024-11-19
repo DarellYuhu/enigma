@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { COLORS } from "@/constants";
 import useTwitterScatterTopics, {
   ScatterTopicsResult,
 } from "@/hooks/useTwitterScatterTopics";
@@ -103,8 +102,7 @@ const ScatterTopics = ({ projectId }: { projectId: string }) => {
                           className="w-2"
                           style={{
                             height: 15,
-                            backgroundColor:
-                              COLORS[Math.round(parseInt(key))] ?? "#808080",
+                            backgroundColor: data.colors[key] ?? "#808080",
                           }}
                         />
                         <div>
@@ -117,7 +115,10 @@ const ScatterTopics = ({ projectId }: { projectId: string }) => {
                                 key: "Negative",
                                 data: item.tone_negative * 100,
                               },
-                              { key: "Neutral", data: item.tone_neutral * 100 },
+                              {
+                                key: "Neutral",
+                                data: item.tone_neutral * 100,
+                              },
                               {
                                 key: "Positive",
                                 data: item.tone_positive * 100,

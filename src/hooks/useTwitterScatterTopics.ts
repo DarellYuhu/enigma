@@ -1,5 +1,5 @@
 import { CosmosLink, CosmosNode } from "@/components/Graph";
-import { COLORS } from "@/constants";
+import generateNodeColors from "@/utils/generateNodeColors";
 import { CosmographData } from "@cosmograph/react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -14,19 +14,21 @@ const useTwitterScatterTopics = (payload: { project: string; date: Date }) => {
       );
 
       const data: ScatterTopics = await response.json();
+      const classes = Object.keys(data.class);
+      const colors = generateNodeColors(classes);
       const normalized: CosmographData<CosmosNode, CosmosLink> = {
         nodes: data.tweets.map((node) => ({
           data: node,
           id: node.id,
           label: node.user_screen_name,
-          fill: COLORS[Math.round(parseInt(node.class))] ?? "#808080",
+          fill: colors[node.class] ?? "#808080",
           x: node.pos.x,
           y: node.pos.y,
           size: 0.3,
         })),
         links: [],
       };
-      return { data, normalized };
+      return { data, normalized, colors };
     },
   });
 };

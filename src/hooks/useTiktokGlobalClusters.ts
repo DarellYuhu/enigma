@@ -1,6 +1,6 @@
 import { VisData } from "@/components/VisGraph";
+import generateNodeColors from "@/utils/generateNodeColors";
 import { useQuery } from "@tanstack/react-query";
-import chroma from "chroma-js";
 
 const useTiktokGlobalClusters = (payload: { window: number }) => {
   return useQuery({
@@ -62,18 +62,6 @@ export type ClusterTrends = {
       class: string; // probably a number
     }[];
   };
-};
-
-const generateNodeColors = (indicators: string[]) => {
-  const colors = chroma
-    .scale(["red", "green", "blue"])
-    .mode("lch")
-    .colors(indicators.length);
-
-  return indicators.reduce((acc, curr, index) => {
-    acc[curr] = colors[index];
-    return acc;
-  }, {} as Record<string, string>);
 };
 
 export default useTiktokGlobalClusters;
