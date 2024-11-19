@@ -5,13 +5,15 @@ import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHea
 import useTwitterBoards, { TwitterBoardItem } from "@/hooks/useTwitterBoards";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
+import useBoardConfigStore from "../store/board-config-store";
 
 const Board = ({ projectId }: { projectId: string }) => {
+  const { from, to, string } = useBoardConfigStore();
   const { data } = useTwitterBoards({
     project: projectId,
-    since: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-    until: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
-    string: "",
+    since: from,
+    until: to,
+    string,
   });
   return (
     <div>

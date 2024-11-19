@@ -5,47 +5,45 @@ import { Input } from "@/components/ui/input";
 import { ArrowRight, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import useTwitterBoards from "@/hooks/useTwitterBoards";
+import useBoardConfigStore from "../store/board-config-store";
 
 const BoardConfig = ({ projectId }: { projectId: string }) => {
   const [toggleValue, setToggleValue] = useState("3");
-  const [query, setQuery] = useState("");
-  const [date, setDate] = useState({
-    since: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-    until: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
-  });
+  const { from, to, string, setDate, setString, reset } = useBoardConfigStore();
   const { refetch } = useTwitterBoards({
     project: projectId,
-    string: query,
-    since: date.since,
-    until: date.until,
+    string: string,
+    since: from,
+    until: to,
   });
 
   useEffect(() => {
-    refetch();
+    reset();
   }, []);
 
   useEffect(() => {
     switch (toggleValue) {
       case "1":
         setDate({
-          since: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-          until: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+          from: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+          to: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
         });
         break;
       case "3":
         setDate({
-          since: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-          until: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+          from: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+          to: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
         });
         break;
       case "7":
         setDate({
-          since: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-          until: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          to: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
         });
         break;
     }
   }, [toggleValue]);
+
   return (
     <div className="flex flex-row gap-2">
       <ToggleGroup
@@ -71,7 +69,7 @@ const BoardConfig = ({ projectId }: { projectId: string }) => {
           className="peer pe-9 ps-9"
           placeholder="Search..."
           type="search"
-          onChange={(event) => setQuery(event.currentTarget.value)}
+          onChange={(event) => setString({ string: event.currentTarget.value })}
         />
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
           <Search size={16} strokeWidth={2} />

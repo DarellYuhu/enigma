@@ -5,6 +5,7 @@ import AccountNetGraph from "./components/AccountNetGraph";
 import HashtagEvoSankey from "./components/HashtagEvoSankey";
 import ScatterTopics from "./components/ScatterTopics";
 import TopAccount from "./components/TopAccount";
+import BoardConfig from "./components/BoardConfig";
 
 const TwitterProjectDetail = ({
   params,
@@ -16,7 +17,7 @@ const TwitterProjectDetail = ({
       <Card className="col-span-full">
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle>Board</CardTitle>
-          {/* <BoardConfig projectId={params.projectId} /> */}
+          <BoardConfig projectId={params.projectId} />
         </CardHeader>
         <CardContent>
           <Board projectId={params.projectId} />
