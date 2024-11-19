@@ -1,10 +1,11 @@
 "use client";
 
-import { AccountNetwork } from "@/api/twitterApi";
 import Datatable from "@/components/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useTwitterAccountNetwork from "@/hooks/useTwitterAccountNetwork";
+import useTwitterAccountNetwork, {
+  AccountNetwork,
+} from "@/hooks/useTwitterAccountNetwork";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 

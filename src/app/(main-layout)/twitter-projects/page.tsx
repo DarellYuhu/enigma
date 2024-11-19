@@ -4,8 +4,9 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import { useSession } from "next-auth/react";
 import CreateNewDialog from "./components/CreateNewDialog";
-import useTwitterProjects from "@/hooks/useTwitterProjects";
-import { TTwitterProjects } from "@/api/twitterApi";
+import useTwitterProjects, {
+  TTwitterProjects,
+} from "@/hooks/useTwitterProjects";
 import EditDialog from "./components/EditDialog";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";

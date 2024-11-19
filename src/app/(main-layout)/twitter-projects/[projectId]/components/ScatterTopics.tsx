@@ -1,13 +1,14 @@
 "use client";
 
-import { ScatterTopicsResult } from "@/api/twitterApi";
 import Graph from "@/components/Graph";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { COLORS } from "@/constants";
-import useTwitterScatterTopics from "@/hooks/useTwitterScatterTopics";
+import useTwitterScatterTopics, {
+  ScatterTopicsResult,
+} from "@/hooks/useTwitterScatterTopics";
 import chroma from "chroma-js";
 import { Frown, Meh, Smile } from "lucide-react";
 import { useState } from "react";

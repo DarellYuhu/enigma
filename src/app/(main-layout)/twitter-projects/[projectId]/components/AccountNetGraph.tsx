@@ -1,6 +1,5 @@
 "use client";
 
-import { TwitterBoardItem } from "@/api/twitterApi";
 import Datatable from "@/components/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import Graph, { CosmosLink, CosmosNode } from "@/components/Graph";
@@ -16,7 +15,7 @@ import {
 } from "@/components/ui/drawer";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import useTwitterAccountNetwork from "@/hooks/useTwitterAccountNetwork";
-import useTwitterBoards from "@/hooks/useTwitterBoards";
+import useTwitterBoards, { TwitterBoardItem } from "@/hooks/useTwitterBoards";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import {
   CosmographData,

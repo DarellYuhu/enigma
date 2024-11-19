@@ -1,13 +1,6 @@
-import { getChannelTopVideos } from "@/api/youtubeApi";
 import { useQuery } from "@tanstack/react-query";
 
-export function useYTChannelTopVids({
-  params,
-  from,
-  to,
-  selectedTopChannel,
-  string,
-}: {
+export function useYTChannelTopVids(payload: {
   params: { projectId: string };
   from?: Date;
   to?: Date;
@@ -18,18 +11,22 @@ export function useYTChannelTopVids({
     queryKey: [
       "youtube",
       "projects",
-      params.projectId,
+      payload.params.projectId,
       "top-channels",
-      selectedTopChannel,
+      payload.selectedTopChannel,
     ],
-    enabled: !!selectedTopChannel,
-    queryFn: () =>
-      getChannelTopVideos({
-        projectId: params.projectId,
-        since: from,
-        until: to,
-        details: selectedTopChannel,
-        string,
-      }),
+    enabled: !!payload.selectedTopChannel,
+    queryFn: async () => {
+      const response = await fetch(
+        `/api/v1/youtube/projects/${payload.params.projectId}/top-channels/${
+          payload.selectedTopChannel
+        }?since=${payload.from?.toISOString()}&until=${payload.to?.toISOString()}&string=${
+          payload.string
+        }`
+      );
+
+      const data: YoutubeChannelTopVids = await response.json();
+      return data;
+    },
   });
 }

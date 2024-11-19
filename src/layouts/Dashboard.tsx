@@ -8,7 +8,6 @@ import {
   Smile,
 } from "lucide-react";
 import { ReactNode, useState } from "react";
-import { GetInterestGraphs, GetTrendsReturn } from "@/api/tiktokApi";
 import {
   Carousel,
   CarouselContent,
@@ -50,6 +49,8 @@ import Datatable from "@/components/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import { badgeVariants } from "@/components/ui/badge";
+import { GetTrendsReturn } from "@/hooks/useTiktokTrends";
+import { GetInterestGraphs } from "@/hooks/useTiktokInterestNet2";
 // import interestNetExport from "@/utils/interestNetExport";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);

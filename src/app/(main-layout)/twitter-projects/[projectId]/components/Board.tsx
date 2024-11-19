@@ -1,9 +1,8 @@
 "use client";
 
-import { TwitterBoardItem } from "@/api/twitterApi";
 import Datatable from "@/components/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
-import useTwitterBoards from "@/hooks/useTwitterBoards";
+import useTwitterBoards, { TwitterBoardItem } from "@/hooks/useTwitterBoards";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 
