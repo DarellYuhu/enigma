@@ -1,4 +1,3 @@
-import { getProject } from "@/api/tiktokApi";
 import { useQuery } from "@tanstack/react-query";
 
 type Project = {
@@ -13,7 +12,11 @@ type Project = {
 export function useTiktokProject({ project }: { project?: Project | null }) {
   return useQuery({
     queryKey: ["project", project?.projectId],
-    queryFn: () => getProject({ projectId: project?.projectId }),
     enabled: !!project?.projectId,
+    queryFn: async () => {
+      const response = await fetch(`/api/v1/tiktok/${project?.projectId}`);
+      const data: GetProjectResult = await response.json();
+      return data;
+    },
   });
 }

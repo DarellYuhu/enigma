@@ -10,6 +10,7 @@ import InterestGraph from "./components/InterestGraph";
 import TopCentrality from "./components/TopCentrality";
 import ClusterInfo from "./components/ClusterInfo";
 import Board from "./components/Board";
+import TypeSelection from "./components/TypeSelection";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   return (
@@ -59,10 +60,11 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
       </Card>
 
       <Card className="col-span-full flex flex-col">
-        <CardHeader>
+        <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle>Content Board</CardTitle>
+          <TypeSelection />
         </CardHeader>
-        <CardContent className="pb-4 pt-0 pl-0 pr-4">
+        <CardContent>
           <Board projectId={params.projectId} />
         </CardContent>
       </Card>

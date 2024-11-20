@@ -14,12 +14,12 @@ type GraphDateActions = {
 type GraphDateStore = GraphDateState & GraphDateActions;
 
 const initialState: GraphDateState = {
-  from: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
+  from: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
   to: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
 };
 
 const useGraphDateStore = create<GraphDateStore>((set) => ({
-  from: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
+  from: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
   to: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
   setFrom: (from) => set({ from }),
   setTo: (to) => set({ to }),

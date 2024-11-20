@@ -63,10 +63,10 @@ const HorizontalBarChart = ({
               <ChartTooltipContent hideLabel={hidelabel} indicator="line" />
             }
           />
-          <Bar dataKey={dataKey} radius={5} fill="#f87171">
+          <Bar dataKey={dataKey} radius={5} fill="#c4e5f3">
             {data.map((entry, index) => (
               <Cell
-                fill={selectedId === entry.channel_id ? "#ef4444" : "#f87171"}
+                fill={selectedId !== entry.channel_id ? "#87cfed" : "#c4e5f3"}
                 key={`cell-${index}`}
                 onClick={() =>
                   onBarSelect &&
@@ -78,7 +78,7 @@ const HorizontalBarChart = ({
               dataKey={labelKey}
               position="insideLeft"
               offset={8}
-              className="fill-[#fff]"
+              className="fill-[#000000]"
               fontSize={12}
             />
           </Bar>

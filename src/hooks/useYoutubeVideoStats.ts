@@ -1,12 +1,6 @@
-import { getVideoStats } from "@/api/youtubeApi";
 import { useQuery } from "@tanstack/react-query";
 
-export function useYoutubeVideoStats({
-  params,
-  from,
-  to,
-  selectedVideo,
-}: {
+export function useYoutubeVideoStats(payload: {
   params: { projectId: string };
   from?: Date;
   to?: Date;
@@ -16,17 +10,43 @@ export function useYoutubeVideoStats({
     queryKey: [
       "youtube",
       "projects",
-      params.projectId,
+      payload.params.projectId,
       "statistics",
-      selectedVideo?.id,
+      payload.selectedVideo?.id,
     ],
-    enabled: !!selectedVideo,
-    queryFn: () =>
-      getVideoStats({
-        projectId: params.projectId,
-        since: from,
-        until: to,
-        details: selectedVideo?.id,
-      }),
+    enabled: !!payload.selectedVideo,
+    queryFn: async () => {
+      const response = await fetch(
+        `/api/v1/youtube/projects/${payload.params.projectId}/statistics/${
+          payload.selectedVideo?.id
+        }?since=${payload.from?.toISOString()}&until=${payload.to?.toISOString()}`
+      );
+
+      const data: YoutubeVideoStats = await response.json();
+
+      const normalized: NormalizedYTStats = {
+        comment: [],
+        like: [],
+        view: [],
+      };
+      data.datetime.forEach((item, index) => {
+        normalized.view.push({
+          date: item,
+          del: data.view.del[index],
+          val: data.view.val[index],
+        });
+        normalized.like.push({
+          date: item,
+          del: data.like.del[index],
+          val: data.like.val[index],
+        });
+        normalized.comment.push({
+          date: item,
+          del: data.comment.del[index],
+          val: data.comment.val[index],
+        });
+      });
+      return normalized;
+    },
   });
 }

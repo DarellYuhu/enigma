@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Select,
   SelectContent,
@@ -5,23 +7,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useSelectionStore from "../hooks/selection-store";
 
-const TypeSelection = ({
-  value,
-  setValue,
-}: {
-  value: "top" | "trending";
-  setValue: (value: "top" | "trending") => void;
-}) => (
-  <Select onValueChange={setValue} value={value}>
-    <SelectTrigger className="w-[180px]">
-      <SelectValue placeholder="Type" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="top">Top</SelectItem>
-      <SelectItem value="trending">Trending</SelectItem>
-    </SelectContent>
-  </Select>
-);
+const TypeSelection = () => {
+  const { type, setType } = useSelectionStore();
+  return (
+    <Select onValueChange={setType} value={type}>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Type" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="top">Top</SelectItem>
+        <SelectItem value="trending">Trending</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+};
 
 export default TypeSelection;

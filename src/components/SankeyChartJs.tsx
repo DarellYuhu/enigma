@@ -13,7 +13,7 @@ import {
 } from "chart.js";
 import { Chart as ChartJs } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
-import { HashtagEvolution } from "@/api/twitterApi";
+import { HashtagEvolution } from "@/hooks/useTwitterHashtagEvo";
 
 Chart.register(
   SankeyController,

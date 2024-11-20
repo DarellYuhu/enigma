@@ -93,7 +93,6 @@ const columns: ColumnProps = (isDisabled, setSelected) => {
       id: "actions",
       header: "Actions",
       cell: ({ row }) => {
-        setSelected(row.original);
         return (
           <DialogTrigger
             disabled={isDisabled}

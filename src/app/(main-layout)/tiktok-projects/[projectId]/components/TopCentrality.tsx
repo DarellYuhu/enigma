@@ -1,11 +1,12 @@
 "use client";
 
-import { GetInterestGraphs } from "@/api/tiktokApi";
 import Datatable from "@/components/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import { badgeVariants } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
+import useTiktokInterestNet2, {
+  GetInterestGraphs,
+} from "@/hooks/useTiktokInterestNet2";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";

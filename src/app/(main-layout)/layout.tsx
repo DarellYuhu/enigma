@@ -82,12 +82,25 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Trend",
-          url: "/tiktok-trend",
-        },
-        {
           title: "Projects",
           url: "/tiktok-projects",
+        },
+        {
+          title: "Creative Insights",
+          url: "/tiktok-trend",
+        },
+      ],
+    },
+
+    {
+      title: "Twitter",
+      url: "#",
+      icon: Twitter,
+      isActive: true,
+      items: [
+        {
+          title: "Projects",
+          url: "/twitter-projects",
         },
       ],
     },
@@ -100,18 +113,6 @@ const data = {
         {
           title: "Projects",
           url: "/youtube-projects",
-        },
-      ],
-    },
-    {
-      title: "Twitter",
-      url: "#",
-      icon: Twitter,
-      isActive: true,
-      items: [
-        {
-          title: "Projects",
-          url: "/twitter-projects",
         },
       ],
     },
