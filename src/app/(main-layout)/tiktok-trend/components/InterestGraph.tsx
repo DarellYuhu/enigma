@@ -7,26 +7,10 @@ import useTiktokGlobalClusters, {
 import React, { useEffect, useState } from "react";
 import { DataSet } from "vis-data";
 import ClusterInfo from "./ClusterInfo";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-type Type =
-  | "num_contents"
-  | "num_authors"
-  | "num_audience"
-  | "total_views"
-  | "total_likes"
-  | "total_comments"
-  | "total_shares"
-  | "centrality";
+import useSelectionStore from "../hooks/selection-store";
 
 const InterestGraph = () => {
-  const [type, setType] = useState<Type>("centrality");
+  const { type } = useSelectionStore();
   const [graphData, setGraphData] = useState<VisData<
     ClusterTrends["network"]["nodes"][0],
     ClusterTrends["network"]["edges"][0]
@@ -75,26 +59,6 @@ const InterestGraph = () => {
           }}
           data={graphData}
         />
-      </div>
-      <div className="absolute top-0 left-2">
-        <Select
-          defaultValue="centrality"
-          onValueChange={(value) => setType(value as Type)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select a type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="centrality">Centrality</SelectItem>
-            <SelectItem value="num_contents">Number of contents</SelectItem>
-            <SelectItem value="num_authors">Number of authors</SelectItem>
-            <SelectItem value="num_audience">Number of audience</SelectItem>
-            <SelectItem value="total_views">Total views</SelectItem>
-            <SelectItem value="total_likes">Total likes</SelectItem>
-            <SelectItem value="total_comments">Total comments</SelectItem>
-            <SelectItem value="total_shares">Total shares</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
       <ClusterInfo date={data?.data.date} node={node} />
     </div>

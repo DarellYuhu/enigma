@@ -2,13 +2,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import HashtagGraph from "./components/HashtagGraph";
 import InterestGraph from "./components/InterestGraph";
 import { GraphFilter } from "./components/Filter";
+import TypeSelection from "./components/TypeSelection";
 
 const Trend = () => {
   return (
     <div className="grid grid-cols-12 gap-3">
       <Card className="col-span-full flex flex-col">
-        <CardHeader>
+        <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle>Interest Network</CardTitle>
+          <TypeSelection />
         </CardHeader>
         <CardContent className="relative p-0">
           <InterestGraph />

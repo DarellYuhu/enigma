@@ -1,6 +1,6 @@
 "use client";
 
-import HorizontalBarChart2 from "@/components/HorizontalBarChart2";
+import HorizontalBarChart from "@/components/HorizontalBarChart";
 import {
   Card,
   CardContent,
@@ -156,14 +156,13 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
               </CardContent>
             </Card>
             <div className="col-span-full h-96">
-              {
-                <HorizontalBarChart2
-                  data={item.hashtags!}
-                  labelKey="hashtag"
-                  dataKey="value"
-                  color={item.color}
-                />
-              }
+              <HorizontalBarChart
+                data={item.hashtags!}
+                dataKey="value"
+                labelKey="hashtag"
+                label="Value"
+                hidelabel={false}
+              />
             </div>
           </div>
         </Tabs.TabsContent>
