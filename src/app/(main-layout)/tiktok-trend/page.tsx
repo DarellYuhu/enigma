@@ -1,7 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import HashtagGraph from "./components/HashtagGraph";
 import InterestGraph from "./components/InterestGraph";
-import { GraphFilter } from "./components/Filter";
 import TypeSelection from "./components/TypeSelection";
 
 const Trend = () => {
@@ -17,7 +15,7 @@ const Trend = () => {
         </CardContent>
       </Card>
 
-      <div className="col-span-full">
+      {/* <div className="col-span-full">
         <GraphFilter projectId="0" />
       </div>
 
@@ -28,7 +26,7 @@ const Trend = () => {
         <CardContent className="relative p-0 h-80">
           <HashtagGraph projectId="0" />
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };

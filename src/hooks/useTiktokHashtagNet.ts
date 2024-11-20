@@ -7,7 +7,14 @@ export function useTiktokHashtagNet(payload: {
   graphQuery: string;
 }) {
   return useQuery({
-    queryKey: ["trends", "graphs", "hashtagsNet", payload.params.projectId],
+    queryKey: [
+      "trends",
+      "graphs",
+      "hashtagsNet",
+      payload.params.projectId,
+      payload.graphDate.from,
+      payload.graphDate.to,
+    ],
     queryFn: async () => {
       const response = await fetch(
         `/api/v1/tiktok/${payload.params.projectId}/tag-relation?since=${

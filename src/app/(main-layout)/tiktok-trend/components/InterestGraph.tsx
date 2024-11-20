@@ -39,6 +39,16 @@ const InterestGraph = () => {
     }
   }, [data, type]);
 
+  useEffect(() => {
+    if (data) {
+      setNode(
+        data.normalized.nodes.sort(
+          (a, b) => b.data.centrality - a.data.centrality
+        )[0].data
+      );
+    }
+  }, [data]);
+
   if (!graphData) return null;
 
   return (
@@ -52,8 +62,6 @@ const InterestGraph = () => {
               const node: any = nodes.get(event.nodes[0]);
               if (node && !Array.isArray(node)) {
                 setNode(node.data);
-              } else {
-                setNode(null);
               }
             },
           }}
