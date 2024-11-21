@@ -1,3 +1,4 @@
+import normalizeChannelVids from "@/app/(main-layout)/youtube-projects/[projectId]/utils/normalizeChannelsVids";
 import { useQuery } from "@tanstack/react-query";
 
 export function useYTChannelTopVids(payload: {
@@ -26,7 +27,8 @@ export function useYTChannelTopVids(payload: {
       );
 
       const data: YoutubeChannelTopVids = await response.json();
-      return data;
+      const normalized = normalizeChannelVids(data.tv.view, data.info);
+      return { data, normalized };
     },
   });
 }

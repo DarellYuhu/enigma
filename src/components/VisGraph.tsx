@@ -48,9 +48,9 @@ const defaultOptions = {
   },
 };
 
-export type VisData<TNode = unknown, TEdge = unknown> = {
-  nodes: (Node & { data: TNode })[];
-  edges: (Edge & { data: TEdge })[];
+export type VisData<NodeData = unknown, EdgeData = unknown> = {
+  nodes: (Node & { data: NodeData })[];
+  edges: (Edge & { data: EdgeData })[];
 };
 
 interface VisGraphProps {
