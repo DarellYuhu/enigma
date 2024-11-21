@@ -24,7 +24,7 @@ const queryFn = async (payload: { projectId: string; window: number }) => {
         data: edge,
       })),
     },
-    hashtags: Object.values(data.hashtags)
+    hashtags: Object.values(data.classes)
       .map((item, index) => ({
         ...item,
         color: COLORS[index],
@@ -58,7 +58,7 @@ const useTiktokInterestNet2 = (payload: {
 };
 
 export type InterestNetwork2 = {
-  hashtags: Record<
+  classes: Record<
     number,
     {
       representation: string;
