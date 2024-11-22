@@ -166,7 +166,9 @@ const columns: ColumnProps = (isDisabled, setSelected) => [
       return (
         <Link
           className={badgeVariants({ variant: "default" })}
-          href={`/tiktok-projects/${props.row.original.projectId}`}
+          href={`/tiktok-projects/${props.row.original.projectId}?date=${
+            new Date(props.row.original.lastUpdate).toISOString().split("T")[0]
+          }`}
         >
           {props.row.original.projectName}
         </Link>

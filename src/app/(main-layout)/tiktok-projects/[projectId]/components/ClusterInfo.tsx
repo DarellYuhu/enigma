@@ -23,6 +23,7 @@ import {
   LinearGauge,
   LinearGaugeSeries,
 } from "reaviz";
+import useGraphConfigStore from "../store/graph-config-store";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -41,9 +42,11 @@ const scale = [
 ];
 
 const ClusterInfo = ({ projectId }: { projectId: string }) => {
+  const { to } = useGraphConfigStore();
   const { data } = useTiktokInterestNet2({
     projectId,
     window: 3,
+    date: to!,
   });
   return (
     <Tabs.Root className="space-y-4" defaultValue="0">
@@ -71,29 +74,7 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
           className="w-full grid grid-cols-12 gap-4"
         >
           <div className="grid grid-cols-12 gap-4 col-span-full lg:col-span-8">
-            <Card className="col-span-6 lg:col-span-4">
-              <CardHeader className="p-4">
-                <CardTitle className="text-base">Representation</CardTitle>
-                <CardDescription>{item.representation}</CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="col-span-6 lg:col-span-8">
-              <CardHeader className="p-4">
-                <CardTitle className="text-base">Summary</CardTitle>
-                <CardDescription>{item.summary}</CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="col-span-full">
-              <CardHeader className="p-4">
-                <CardTitle className="text-base">Topics</CardTitle>
-                <CardDescription>
-                  <ReactMarkdown>{item.topics}</ReactMarkdown>
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
-          <div className="col-span-full lg:col-span-4 grid grid-cols-12 gap-4">
-            <Card className="col-span-full">
+            <Card className="col-span-6">
               <CardHeader className="p-4">
                 <CardTitle className="text-base">Metrics</CardTitle>
               </CardHeader>
@@ -121,7 +102,7 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
                 </div>
               </CardContent>
             </Card>
-            <Card className="col-span-full">
+            <Card className="col-span-6">
               <CardHeader className="p-4">
                 <CardTitle className="text-base">Tone</CardTitle>
               </CardHeader>
@@ -154,6 +135,36 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
                   />
                 </div>
               </CardContent>
+            </Card>
+            <Card className="col-span-6 lg:col-span-4">
+              <CardHeader className="p-4">
+                <CardTitle className="text-base">Representation</CardTitle>
+                <CardDescription>{item.representation}</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card className="col-span-6 lg:col-span-8">
+              <CardHeader className="p-4">
+                <CardTitle className="text-base">Summary</CardTitle>
+                <CardDescription>{item.summary}</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card className="col-span-full">
+              <CardHeader className="p-4">
+                <CardTitle className="text-base">Topics</CardTitle>
+                <CardDescription>
+                  <ReactMarkdown>{item.topics}</ReactMarkdown>
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+          <div className="col-span-full lg:col-span-4 grid grid-cols-12 gap-4">
+            <Card className="col-span-full">
+              <CardHeader className="p-4">
+                <CardTitle className="text-base">
+                  Top Content and Author
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="h-80">Huhi</CardContent>
             </Card>
             <div className="col-span-full h-96">
               <HorizontalBarChart

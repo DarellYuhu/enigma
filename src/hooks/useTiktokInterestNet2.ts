@@ -1,9 +1,13 @@
 import { COLORS } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
 
-const queryFn = async (payload: { projectId: string; window: number }) => {
+type Payload = { projectId: string; window: number; date: Date };
+
+const queryFn = async (payload: Payload) => {
   const response = await fetch(
-    `/api/v2/tiktok/${payload.projectId}/interest-network?window=${payload.window}`
+    `/api/v2/tiktok/${payload.projectId}/interest-network?window=${
+      payload.window
+    }&date=${payload.date.toISOString().split("T")[0]}`
   );
   const data: InterestNetwork2 = await response.json();
   const nodes = data.network.nodes.map((node) => ({
@@ -41,10 +45,7 @@ const queryFn = async (payload: { projectId: string; window: number }) => {
   return { data, normalized };
 };
 
-const useTiktokInterestNet2 = (payload: {
-  projectId: string;
-  window: number;
-}) => {
+const useTiktokInterestNet2 = (payload: Payload) => {
   return useQuery({
     queryKey: [
       "tiktok",
@@ -52,12 +53,14 @@ const useTiktokInterestNet2 = (payload: {
       "v2",
       payload.projectId,
       payload.window,
+      payload.date,
     ],
     queryFn: () => queryFn(payload),
   });
 };
 
 export type InterestNetwork2 = {
+  date?: string;
   classes: Record<
     number,
     {
@@ -96,7 +99,9 @@ export type InterestNetwork2 = {
       like: number;
       share: number;
       comment: number;
-      centrality: number;
+      centrality_pr: number; // <-- PageRank
+      centrality_bw: number; // <-- Betweenness
+      centrality_dg: number; // <-- Degree
     }[];
   };
 };

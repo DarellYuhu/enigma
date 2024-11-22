@@ -1,23 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 
-export function useTiktokBoards({
-  projectId,
-  from,
-  to,
-  string,
-}: {
+export function useTiktokBoards(paylaod: {
   projectId: string;
   from?: Date;
   to?: Date;
   string: string;
 }) {
   return useQuery({
-    queryKey: ["boards", projectId],
+    queryKey: ["tiktok", "boards", paylaod.projectId],
+    enabled: false,
     queryFn: async () => {
       const response = await fetch(
-        `/api/v1/tiktok/${projectId}/boards?since=${
-          from?.toISOString().split("T")[0]
-        }&until=${to?.toISOString().split("T")[0]}&string=${string}`
+        `/api/v1/tiktok/${paylaod.projectId}/boards?since=${
+          paylaod.from?.toISOString().split("T")[0]
+        }&until=${paylaod.to?.toISOString().split("T")[0]}&string=${
+          paylaod.string
+        }`
       );
       const data: BoardsData = await response.json();
       const normalize = {

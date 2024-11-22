@@ -1,3 +1,4 @@
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import normalizeTagRelation from "@/utils/normalizeTagRelation";
 import { useQuery } from "@tanstack/react-query";
 
@@ -18,10 +19,14 @@ export function useTiktokHashtagNet(payload: {
     queryFn: async () => {
       const response = await fetch(
         `/api/v1/tiktok/${payload.params.projectId}/tag-relation?since=${
-          payload.graphDate.from?.toISOString().split("T")[0]
-        }&until=${payload.graphDate.to?.toISOString().split("T")[0]}&string=${
-          payload.graphQuery
-        }`
+          new Date(adjustDateByFactor(-3, payload.graphDate.to!))
+            .toISOString()
+            .split("T")[0]
+        }&until=${
+          new Date(adjustDateByFactor(1, payload.graphDate.to!))
+            .toISOString()
+            .split("T")[0]
+        }&string=${payload.graphQuery}`
       );
 
       const data: TagRelationNetwork = await response.json();

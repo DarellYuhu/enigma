@@ -3,7 +3,7 @@
 import useCategoryStore from "@/store/category-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import { ColumnDef } from "@tanstack/react-table";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -31,7 +31,7 @@ import { useTiktokComments } from "@/hooks/useTiktokComments";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Datatable from "@/components/Datatable";
-import useSelectionStore from "../hooks/selection-store";
+import useSelectionStore from "../store/selection-store";
 
 type Props = {
   projectId: string;
@@ -44,8 +44,11 @@ const Board = ({ projectId }: Props) => {
   const { from, to } = useStatisticDateStore();
   const { query } = useQueryFilterStore();
   const { type } = useSelectionStore();
-  const boards = useTiktokBoards({ projectId, string: query, from, to });
   const comments = useTiktokComments();
+  const boards = useTiktokBoards({ projectId, string: query, from, to });
+  useEffect(() => {
+    boards.refetch();
+  }, []);
   return (
     <div className="flex flex-col bg-white rounded-md">
       <div className="flex flex-row items-center justify-end m-2"></div>

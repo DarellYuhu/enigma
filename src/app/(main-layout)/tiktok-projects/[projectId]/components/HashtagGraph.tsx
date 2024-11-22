@@ -4,21 +4,21 @@ import TagInformation from "@/components/TagInformation";
 import { Button } from "@/components/ui/button";
 import VisGraph from "@/components/VisGraph";
 import { useTiktokHashtagNet } from "@/hooks/useTiktokHashtagNet";
-import useGraphDateStore from "@/store/graph-date-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import tagRelationExport from "@/utils/tagRelationExport";
 import React, { useState } from "react";
 import { DataSet } from "vis-data";
+import useGraphConfigStore from "../store/graph-config-store";
 
 const HashtagGraph = ({ projectId }: { projectId: string }) => {
   const [tagNode, setTagNode] = useState(null);
-  const { from, to } = useGraphDateStore();
+  const { from, to } = useGraphConfigStore();
   const { query } = useQueryFilterStore();
   const { data } = useTiktokHashtagNet({
     params: { projectId },
     graphDate: {
-      from,
       to,
+      from,
     },
     graphQuery: query,
   });
