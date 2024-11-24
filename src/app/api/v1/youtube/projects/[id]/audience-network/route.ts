@@ -24,6 +24,6 @@ export async function GET(
     },
   });
 
-  const data = await response.text();
+  const data = await response.json();
   return Response.json(data);
 }

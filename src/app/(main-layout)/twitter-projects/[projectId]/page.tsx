@@ -6,6 +6,7 @@ import HashtagEvoSankey from "./components/HashtagEvoSankey";
 import ScatterTopics from "./components/ScatterTopics";
 import TopAccount from "./components/TopAccount";
 import BoardConfig from "./components/BoardConfig";
+import TimeSeries from "./components/TimeSeries";
 
 const TwitterProjectDetail = ({
   params,
@@ -14,6 +15,15 @@ const TwitterProjectDetail = ({
 }) => {
   return (
     <div className="grid grid-cols-12 gap-4">
+      <Card className="col-span-full">
+        <CardHeader>
+          <CardTitle>Time Series</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <TimeSeries projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
       <Card className="col-span-full">
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle>Board</CardTitle>

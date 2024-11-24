@@ -27,7 +27,6 @@ const useTiktokClusterInfo = (payload: {
 
       return { data, chart };
     },
-    throwOnError: true,
     enabled: !!payload.cluster && !!payload.date,
   });
 };

@@ -2,7 +2,9 @@ import { create } from "zustand";
 
 type SelectionState = {
   type:
-    | "centrality"
+    | "centrality_pr"
+    | "centrality_bw"
+    | "centrality_dg"
     | "num_contents"
     | "num_authors"
     | "num_audience"
@@ -17,7 +19,7 @@ type SelectionAction = {
 };
 
 const useSelectionStore = create<SelectionState & SelectionAction>((set) => ({
-  type: "centrality",
+  type: "centrality_pr",
   setType(type) {
     set({ type });
   },
