@@ -62,21 +62,21 @@ const SankeyChartJs = ({ item }: { item: HashtagEvolution }) => {
       },
     },
     plugins: {
-      zoom: {
-        pan: {
-          enabled: true,
-          mode: "xy",
-        },
-        zoom: {
-          wheel: {
-            enabled: true,
-          },
-          pinch: {
-            enabled: true,
-          },
-          mode: "xy",
-        },
-      },
+      // zoom: {
+      //   pan: {
+      //     enabled: true,
+      //     mode: "xy",
+      //   },
+      //   zoom: {
+      //     wheel: {
+      //       enabled: true,
+      //     },
+      //     pinch: {
+      //       enabled: true,
+      //     },
+      //     mode: "xy",
+      //   },
+      // },
       legend: { position: "top" as const },
       colors: {
         forceOverride: true,

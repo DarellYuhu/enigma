@@ -53,7 +53,7 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
     }
   }, [data]);
   return (
-    <div className="relative w-full h-[500px] shadow-inner">
+    <div className="relative w-full h-[400px] shadow-inner">
       <CosmographProvider
         links={data?.normalized.network.links}
         nodes={data?.normalized.network.nodes}

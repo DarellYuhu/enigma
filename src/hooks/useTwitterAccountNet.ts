@@ -19,7 +19,7 @@ export default function useTwitterAccountNet(payload: Payload) {
       );
       const data: AccountNetwork = await response.json();
       const classes = Object.keys(data.classes);
-      const colors = generateNodeColors(classes);
+      const colors = generateNodeColors(classes, "other");
       const MAX_CENTRALITY_PR = data.network.nodes.sort(
         (a, b) => b.centrality_pr - a.centrality_pr
       )[0].centrality_pr;
@@ -65,7 +65,7 @@ export default function useTwitterAccountNet(payload: Payload) {
   });
 }
 
-type AccountNetwork = {
+export type AccountNetwork = {
   date: string; // <-- YYYY-MM-DD
   classes: Record<
     number,

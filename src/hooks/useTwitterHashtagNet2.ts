@@ -1,6 +1,7 @@
 import { VisData } from "@/components/VisGraph";
 import generateNodeColors from "@/utils/generateNodeColors";
 import { useQuery } from "@tanstack/react-query";
+import { size } from "lodash";
 
 type Payload = {
   projectId: string;
@@ -24,8 +25,10 @@ export default function useTwitterHashtagNet2(payload: Payload) {
         data: node,
         id: node.id,
         label: node.id,
-        shape: "dot",
+        shape: "text",
         color: colors[node.class],
+        size: Math.log(node.num_authors),
+        font: { size: 5 * Math.log(node.num_authors) },
       }));
       const normalized: {
         network: VisData;

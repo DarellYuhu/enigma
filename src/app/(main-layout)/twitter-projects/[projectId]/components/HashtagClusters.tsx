@@ -113,11 +113,6 @@ const HashtagClusters = ({ projectId }: { projectId: string }) => {
                     {abbreviateNumber(item.total_replies)}
                     <p className="text-sm">Replies</p>
                   </div>
-                  <Separator orientation="vertical" className="h-11" />
-                  <div className="flex flex-col items-center">
-                    {abbreviateNumber(item.total_bookmarks)}
-                    <p className="text-sm">Bookmarks</p>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -179,15 +174,17 @@ const HashtagClusters = ({ projectId }: { projectId: string }) => {
           <div className="col-span-full lg:col-span-4 grid grid-cols-12 gap-4">
             <Card className="col-span-full">
               <CardHeader className="p-4">
-                <CardTitle className="text-base">
-                  Top Content and Author
-                </CardTitle>
+                <CardTitle className="text-base">Top Authors</CardTitle>
               </CardHeader>
-              <CardContent className="h-80">
-                <Datatable
-                  columns={columns}
-                  data={clusterInfo.data?.data.authors || []}
-                />
+              <CardContent>
+                <ScrollArea className="h-80">
+                  <Datatable
+                    columns={columns}
+                    data={clusterInfo.data?.data.authors || []}
+                    initialPageSize={10}
+                    pagination={false}
+                  />
+                </ScrollArea>
               </CardContent>
             </Card>
             <div className="col-span-full h-96">

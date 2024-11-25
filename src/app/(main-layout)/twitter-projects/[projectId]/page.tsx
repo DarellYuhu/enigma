@@ -8,6 +8,7 @@ import ClusterStatistics from "./components/ClusterStatistics";
 import HashtagClusters from "./components/HashtagClusters";
 import AccountNetGraph from "./components/AccountNetGraph";
 import AccountCluster from "./components/AccountCluster";
+import TopCentralityAccount from "./components/TopCentralityAccount";
 
 const TwitterProjectDetail = ({
   params,
@@ -46,6 +47,15 @@ const TwitterProjectDetail = ({
 
       <Card className="col-span-full">
         <CardHeader>
+          <CardTitle>Hashtag Evolution</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <HashtagEvoSankey projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full">
+        <CardHeader>
           <CardTitle>Hashtag Network</CardTitle>
         </CardHeader>
         <CardContent>
@@ -53,23 +63,9 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card>
 
-      <Card className="col-span-full">
-        <CardHeader>
-          <CardTitle>Hashtag Network Clusters</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <HashtagClusters projectId={params.projectId} />
-        </CardContent>
-      </Card>
-
-      <Card className="col-span-full">
-        <CardHeader>
-          <CardTitle>Hashtag Evolution</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <HashtagEvoSankey projectId={params.projectId} />
-        </CardContent>
-      </Card>
+      <div className="col-span-full">
+        <HashtagClusters projectId={params.projectId} />
+      </div>
 
       {/* <Card className="col-span-full">
         <CardHeader>
@@ -80,7 +76,7 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card> */}
 
-      <Card className="col-span-full">
+      <Card className="col-span-8">
         <CardHeader>
           <CardTitle>Actor Network</CardTitle>
         </CardHeader>
@@ -89,14 +85,18 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card>
 
-      <Card className="col-span-full">
+      <Card className="col-span-4">
         <CardHeader>
-          <CardTitle>Actor Network Clusters</CardTitle>
+          <CardTitle>Top Viewed Accounts</CardTitle>
         </CardHeader>
         <CardContent>
-          <AccountCluster projectId={params.projectId} />
+          <TopCentralityAccount projectId={params.projectId} />
         </CardContent>
       </Card>
+
+      <div className="col-span-full">
+        <AccountCluster projectId={params.projectId} />
+      </div>
 
       {/* <Card className="col-span-6">
         <CardHeader>

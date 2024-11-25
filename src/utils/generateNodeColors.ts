@@ -1,12 +1,26 @@
+import { COLORS } from "@/constants";
 import chroma from "chroma-js";
 
-const generateNodeColors = (indicators: string[]) => {
-  const colors = chroma
-    .scale(["#e23670", "#e88c30", "#2eb88a", "#af57db", "#2662d9"])
-    .mode("lch")
-    .colors(indicators.length);
+const generateNodeColors = (
+  indicators: string[],
+  type: "chroma" | "other" = "chroma"
+) => {
+  let colors: string[];
 
-  // shuffle(colors);
+  switch (type) {
+    case "chroma":
+      colors = chroma
+        .scale(["#e23670", "#e88c30", "#2eb88a", "#af57db", "#2662d9"])
+        .mode("lch")
+        .colors(indicators.length);
+      break;
+
+    case "other":
+      colors = Array.from({ length: indicators.length }).map(
+        (_, index) => COLORS[index % COLORS.length]
+      );
+      break;
+  }
 
   return indicators.reduce((acc, curr, index) => {
     acc[curr] = colors[index];
