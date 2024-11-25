@@ -6,27 +6,25 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const searchParams = request.nextUrl.searchParams;
-  const since = searchParams.get("since");
-  const until = searchParams.get("until");
-  const string = searchParams.get("string");
-
+  const date = searchParams.get("date");
+  const window = searchParams.get("window");
+  const cluster = searchParams.get("cluster");
   const response = await fetch(
-    `${await getTwitterApi()}/api/v1/project/statistics`,
+    `${await getTwitterApi()}/api/v2/project/clusters`,
     {
       method: "POST",
       body: JSON.stringify({
-        type: "statistics",
+        type: "hashtagNetwork",
         project: params.id,
-        since,
-        until,
-        string,
+        date,
+        window,
+        cluster,
       }),
       headers: {
         "Content-Type": "application/json",
       },
     }
   );
-
   const data = await response.json();
   return Response.json(data);
 }

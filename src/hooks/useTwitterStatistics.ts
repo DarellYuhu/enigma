@@ -1,3 +1,4 @@
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { useQuery } from "@tanstack/react-query";
 
 type Payload = {
@@ -14,9 +15,9 @@ export default function useTwitterStatistics(payload: Payload) {
       const response = await fetch(
         `/api/v2/twitter/${payload.projectId}/statistics?since=${
           payload.since.toISOString().split("T")[0]
-        }&until=${payload.until.toISOString().split("T")[0]}&string=${
-          payload.string
-        }`
+        }&until=${
+          adjustDateByFactor(1, payload.until).toISOString().split("T")[0]
+        }&string=${payload.string}`
       );
       const data: TwitterStatistics = await response.json();
       const periods = ["daily", "weekly", "monthly"] as const;

@@ -1,12 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Board from "./components/Board";
 import HashtagNetGraph from "./components/HashtagNetGraph";
-import AccountNetGraph from "./components/AccountNetGraph";
 import HashtagEvoSankey from "./components/HashtagEvoSankey";
-import ScatterTopics from "./components/ScatterTopics";
-import TopAccount from "./components/TopAccount";
 import BoardConfig from "./components/BoardConfig";
 import TimeSeries from "./components/TimeSeries";
+import ClusterStatistics from "./components/ClusterStatistics";
+import HashtagClusters from "./components/HashtagClusters";
 
 const TwitterProjectDetail = ({
   params,
@@ -21,6 +20,15 @@ const TwitterProjectDetail = ({
         </CardHeader>
         <CardContent>
           <TimeSeries projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full">
+        <CardHeader>
+          <CardTitle>Cluster Statistics</CardTitle>
+        </CardHeader>
+        <CardContent className="h-80">
+          <ClusterStatistics projectId={params.projectId} />
         </CardContent>
       </Card>
 
@@ -45,6 +53,15 @@ const TwitterProjectDetail = ({
 
       <Card className="col-span-full">
         <CardHeader>
+          <CardTitle>Hashtag Network Clusters</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <HashtagClusters projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full">
+        <CardHeader>
           <CardTitle>Hashtag Evolution</CardTitle>
         </CardHeader>
         <CardContent>
@@ -52,7 +69,7 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card>
 
-      <Card className="col-span-full">
+      {/* <Card className="col-span-full">
         <CardHeader>
           <CardTitle>Topics</CardTitle>
         </CardHeader>
@@ -77,7 +94,7 @@ const TwitterProjectDetail = ({
         <CardContent>
           <TopAccount projectId={params.projectId} />
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };

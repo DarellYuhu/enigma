@@ -6,10 +6,11 @@ import { ArrowRight, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import useTwitterBoards from "@/hooks/useTwitterBoards";
 import useBoardConfigStore from "../store/board-config-store";
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 
 const BoardConfig = ({ projectId }: { projectId: string }) => {
   const [toggleValue, setToggleValue] = useState("3");
-  const { from, to, string, setDate, setString, reset } = useBoardConfigStore();
+  const { from, to, string, setDate, setString } = useBoardConfigStore();
   const { refetch } = useTwitterBoards({
     project: projectId,
     string: string,
@@ -18,27 +19,23 @@ const BoardConfig = ({ projectId }: { projectId: string }) => {
   });
 
   useEffect(() => {
-    reset();
-  }, []);
-
-  useEffect(() => {
     switch (toggleValue) {
       case "1":
         setDate({
-          from: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-          to: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+          from: adjustDateByFactor(-1, new Date(Date.now())),
+          to: new Date(Date.now()),
         });
         break;
       case "3":
         setDate({
-          from: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-          to: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+          from: adjustDateByFactor(-3, new Date(Date.now())),
+          to: new Date(Date.now()),
         });
         break;
       case "7":
         setDate({
-          from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-          to: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+          from: adjustDateByFactor(-7, new Date(Date.now())),
+          to: new Date(Date.now()),
         });
         break;
     }

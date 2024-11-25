@@ -1,17 +1,35 @@
 "use client";
 
 import VisGraph from "@/components/VisGraph";
-import useTwitterHashtagNet from "@/hooks/useTwitterHashtagNet";
+import useTwitterHashtagNet2 from "@/hooks/useTwitterHashtagNet2";
 import { Edge, Node } from "vis-network/declarations/entry-esnext";
+import useBoardConfigStore from "../store/board-config-store";
+import { useEffect } from "react";
+import useClusterStore from "../store/cluster-store";
 
 const HashtagNetGraph = ({ projectId }: { projectId: string }) => {
-  // const { from, to } = useStatisticDateStore();
-  const { data } = useTwitterHashtagNet({
-    project: projectId,
-    string: "",
-    since: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-    until: new Date(),
+  const { to } = useBoardConfigStore();
+  const { setHashtag } = useClusterStore();
+  // const { data } = useTwitterHashtagNet({
+  //   project: projectId,
+  //   string: "",
+  //   since: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+  //   until: new Date(),
+  // });
+  const { data } = useTwitterHashtagNet2({
+    projectId,
+    date: to!,
+    window: 2,
   });
+
+  useEffect(() => {
+    if (data) {
+      const firstNonEmptyClassKey = Object.keys(data.data.classes).find(
+        (key) => data.data.classes[key].representation !== ""
+      );
+      if (firstNonEmptyClassKey) setHashtag(firstNonEmptyClassKey);
+    }
+  }, [data]);
   return (
     <div className="w-full h-80 shadow-inner">
       {/* <Graph
@@ -29,7 +47,9 @@ const HashtagNetGraph = ({ projectId }: { projectId: string }) => {
       /> */}
 
       <VisGraph
-        data={(data as { nodes: Node[]; edges: Edge[] }) ?? []}
+        data={
+          (data?.normalized.network as { nodes: Node[]; edges: Edge[] }) ?? []
+        }
         type="tagRelation"
         minVelocity={0.5}
       />

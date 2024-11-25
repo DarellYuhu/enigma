@@ -9,13 +9,12 @@ export async function GET(
   const since = searchParams.get("since");
   const until = searchParams.get("until");
   const string = searchParams.get("string");
-
   const response = await fetch(
     `${await getTwitterApi()}/api/v1/project/statistics`,
     {
       method: "POST",
       body: JSON.stringify({
-        type: "statistics",
+        type: "clusters",
         project: params.id,
         since,
         until,
