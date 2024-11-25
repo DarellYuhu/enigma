@@ -6,6 +6,8 @@ import BoardConfig from "./components/BoardConfig";
 import TimeSeries from "./components/TimeSeries";
 import ClusterStatistics from "./components/ClusterStatistics";
 import HashtagClusters from "./components/HashtagClusters";
+import AccountNetGraph from "./components/AccountNetGraph";
+import AccountCluster from "./components/AccountCluster";
 
 const TwitterProjectDetail = ({
   params,
@@ -76,9 +78,9 @@ const TwitterProjectDetail = ({
         <CardContent>
           <ScatterTopics projectId={params.projectId} />
         </CardContent>
-      </Card>
+      </Card> */}
 
-      <Card className="col-span-6">
+      <Card className="col-span-full">
         <CardHeader>
           <CardTitle>Actor Network</CardTitle>
         </CardHeader>
@@ -87,7 +89,16 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card>
 
-      <Card className="col-span-6">
+      <Card className="col-span-full">
+        <CardHeader>
+          <CardTitle>Actor Network Clusters</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AccountCluster projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      {/* <Card className="col-span-6">
         <CardHeader>
           <CardTitle>Top Central Actors</CardTitle>
         </CardHeader>

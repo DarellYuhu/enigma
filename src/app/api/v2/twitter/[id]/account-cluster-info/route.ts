@@ -6,23 +6,25 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const searchParams = request.nextUrl.searchParams;
-  const window = searchParams.get("window");
-
+  // const date = searchParams.get("date");
+  // const window = searchParams.get("window");
+  const cluster = searchParams.get("cluster");
   const response = await fetch(
-    `${await getTwitterApi()}/api/v2/project/graphs`,
+    `${await getTwitterApi()}/api/v2/project/clusters`,
     {
       method: "POST",
       body: JSON.stringify({
         type: "accountNetwork",
         project: params.id,
-        window,
+        date: "2024-11-23",
+        window: 1,
+        cluster,
       }),
       headers: {
         "Content-Type": "application/json",
       },
     }
   );
-
   const data = await response.json();
   return Response.json(data);
 }
