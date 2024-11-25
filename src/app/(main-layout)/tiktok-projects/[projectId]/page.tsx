@@ -1,4 +1,4 @@
-import { StatisticsFilter } from "./components/Filter";
+import StatisticsFilter from "./components/StatisticsFilter";
 import Category from "./components/Category";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Weekly from "./components/Weekly";
@@ -11,6 +11,7 @@ import TopCentrality from "./components/TopCentrality";
 import ClusterInfo from "./components/ClusterInfo";
 import Board from "./components/Board";
 import TypeSelection from "./components/TypeSelection";
+import GraphFilter from "./components/GraphFilter";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   return (
@@ -69,6 +70,10 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         </CardContent>
       </Card>
 
+      <div className="col-span-full">
+        <GraphFilter />
+      </div>
+
       <Card className="col-span-full flex flex-col">
         <CardHeader>
           <CardTitle>Hashtag Map</CardTitle>
@@ -77,10 +82,6 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
           <HashtagGraph projectId={params.projectId} />
         </CardContent>
       </Card>
-
-      {/* <div className="col-span-full">
-        <GraphFilter />
-      </div> */}
 
       <Card className="col-span-full md:col-span-6 lg:col-span-8 flex flex-col">
         <CardHeader>

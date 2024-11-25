@@ -17,7 +17,9 @@ const TypeSelection = () => {
         <SelectValue placeholder="Select a type" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="centrality">Centrality</SelectItem>
+        <SelectItem value="centrality_pr">Centrality PR</SelectItem>
+        <SelectItem value="centrality_bw">Centrality BW</SelectItem>
+        <SelectItem value="centrality_dg">Centrality DG</SelectItem>
         <SelectItem value="num_contents">Number of contents</SelectItem>
         <SelectItem value="num_authors">Number of authors</SelectItem>
         <SelectItem value="num_audience">Number of audience</SelectItem>

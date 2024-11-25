@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useSelectionStore from "../hooks/selection-store";
+import useSelectionStore from "../store/selection-store";
 
 const TypeSelection = () => {
   const { type, setType } = useSelectionStore();

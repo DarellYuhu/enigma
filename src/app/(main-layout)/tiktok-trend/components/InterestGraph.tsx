@@ -43,7 +43,7 @@ const InterestGraph = () => {
     if (data) {
       setNode(
         data.normalized.nodes.sort(
-          (a, b) => b.data.centrality - a.data.centrality
+          (a, b) => b.data.centrality_pr - a.data.centrality_pr
         )[0].data
       );
     }

@@ -11,18 +11,21 @@ import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import React from "react";
+import useGraphConfigStore from "../store/graph-config-store";
 
 const TopCentrality = ({ projectId }: { projectId: string }) => {
+  const { to } = useGraphConfigStore();
   const { data } = useTiktokInterestNet2({
     projectId,
     window: 3,
+    date: to!,
   });
   if (!data) return null;
   return (
     <ScrollArea className="h-80">
       <Datatable
         data={data?.normalized.network.nodes
-          .sort((a, b) => b.data.centrality - a.data.centrality)
+          .sort((a, b) => b.data.centrality_pr - a.data.centrality_pr)
           .slice(0, 10)
           .map((item) => ({
             ...item.data,

@@ -1,4 +1,4 @@
-import { getTiktokApi } from "@/app/api/utils";
+import { getTwitterApi } from "@/app/api/utils";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -6,18 +6,17 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const searchParams = request.nextUrl.searchParams;
-  const window = searchParams.get("window");
   const date = searchParams.get("date");
-
+  const window = searchParams.get("window");
   const response = await fetch(
-    `${await getTiktokApi()}/api/v2/project/graphs`,
+    `${await getTwitterApi()}/api/v2/project/graphs`,
     {
       method: "POST",
       body: JSON.stringify({
-        type: "interestNet",
+        type: "hashtagNetwork",
         project: params.id,
-        window,
         date,
+        window,
       }),
       headers: {
         "Content-Type": "application/json",

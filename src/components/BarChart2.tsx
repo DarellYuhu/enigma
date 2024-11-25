@@ -21,6 +21,7 @@ type Props<T = unknown> = {
   brush?: boolean;
   fill?: string;
   yAxis?: boolean;
+  xAxis?: boolean;
 };
 
 const BarChart2 = ({
@@ -33,6 +34,7 @@ const BarChart2 = ({
   brush = false,
   fill = "#3b82f6",
   yAxis = true,
+  xAxis = false,
 }: Props) => {
   return (
     <ResponsiveContainer>
@@ -58,6 +60,7 @@ const BarChart2 = ({
             tickMargin={10}
             axisLine={false}
             tickFormatter={(value) => new Date(value).toLocaleDateString()}
+            hide={!xAxis}
           />
           {yAxis && (
             <YAxis

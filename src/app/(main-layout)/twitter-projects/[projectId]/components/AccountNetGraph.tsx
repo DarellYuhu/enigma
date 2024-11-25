@@ -14,7 +14,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import useTwitterAccountNetwork from "@/hooks/useTwitterAccountNetwork";
+import useTwitterAccountNet from "@/hooks/useTwitterAccountNet";
 import useTwitterBoards, { TwitterBoardItem } from "@/hooks/useTwitterBoards";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import {
@@ -23,26 +23,40 @@ import {
   CosmographSearch,
 } from "@cosmograph/react";
 import { ColumnDef } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useBoardConfigStore from "../store/board-config-store";
+import useClusterStore from "../store/cluster-store";
 
 const AccountNetGraph = ({ projectId }: { projectId: string }) => {
+  const { setAccount } = useClusterStore();
   const [node, setNode] = useState<CosmosNode | null>(null);
+  const [selectedNode, setSelectedNode] = useState<CosmosNode | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { data } = useTwitterAccountNetwork({
-    project: projectId,
-    window: "1",
+  const { to } = useBoardConfigStore();
+  const { data } = useTwitterAccountNet({
+    projectId,
+    Window: 3,
+    date: to,
   });
   const boards = useTwitterBoards({
     project: projectId,
-    string: node?.label ?? "",
+    string: selectedNode?.data.user_screen_name ?? "",
     since: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
     until: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
   });
+
+  useEffect(() => {
+    if (data) {
+      setAccount(
+        data.normalized.classes.filter((item) => !!item.representation)[0].id
+      );
+    }
+  }, [data]);
   return (
     <div className="relative w-full h-[500px] shadow-inner">
       <CosmographProvider
-        links={data?.normalized.links}
-        nodes={data?.normalized.nodes}
+        links={data?.normalized.network.links}
+        nodes={data?.normalized.network.nodes}
       >
         <div className=" bg-[#222222] absolute top-0 w-full z-10 px-2">
           <CosmographSearch
@@ -64,22 +78,24 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
           simulationGravity={0.25}
           simulationRepulsion={1}
           simulationRepulsionTheta={1.15}
-          simulationLinkSpring={0.5}
+          simulationLinkSpring={1}
           simulationLinkDistance={10}
           simulationFriction={0.85}
           linkVisibilityDistanceRange={[100, 500]}
           linkVisibilityMinTransparency={0.2}
           selectedNode={node}
-          linkArrows={true}
           data={
-            (data?.normalized as CosmographData<CosmosNode, CosmosLink>) ?? []
+            (data?.normalized.network as CosmographData<
+              CosmosNode,
+              CosmosLink
+            >) ?? []
           }
           onClick={(node) => {
             if (node) {
-              setNode(node);
+              setSelectedNode(node);
               setIsOpen(true);
             } else {
-              setNode(null);
+              setSelectedNode(null);
             }
           }}
         />

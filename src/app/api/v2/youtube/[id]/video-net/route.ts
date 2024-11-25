@@ -16,6 +16,7 @@ export async function GET(
         type: "interestNet",
         project: params.id,
         window,
+        date: "",
       }),
       headers: {
         "Content-Type": "application/json",

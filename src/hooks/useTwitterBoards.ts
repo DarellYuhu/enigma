@@ -1,3 +1,4 @@
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { useQuery } from "@tanstack/react-query";
 
 type Payload = {
@@ -13,9 +14,10 @@ const useTwitterBoards = (payload: Payload) => {
       const response = await fetch(
         `/api/v1/twitter/${
           payload.project
-        }/boards?since=${payload.since?.toISOString()}&until=${payload.until?.toISOString()}&string=${
-          payload.string
-        }`
+        }/boards?since=${payload.since?.toISOString()}&until=${adjustDateByFactor(
+          1,
+          payload.until!
+        ).toISOString()}&string=${payload.string}`
       );
       const data: TwitterBoards = await response.json();
       return data;

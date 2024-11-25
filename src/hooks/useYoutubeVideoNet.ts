@@ -1,5 +1,5 @@
 import { CosmosLink, CosmosNode } from "@/components/Graph";
-import generateNodeColors from "@/utils/generateNodeColors";
+import { COLORS } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
 
 const useYoutubeVideoNet = (payload: { projectId: string; window: number }) => {
@@ -10,11 +10,9 @@ const useYoutubeVideoNet = (payload: { projectId: string; window: number }) => {
         `/api/v2/youtube/${payload.projectId}/video-net?window=${payload.window}`
       );
       const data: VideoNetwork = await response.json();
-      const classes = Object.keys(data.classes);
-      const colors = generateNodeColors(classes);
       const nodes = data.network.nodes.map((node) => ({
         data: node,
-        fill: colors[node.class],
+        fill: COLORS[parseInt(node.class, 10)],
         id: node.id,
         label: node.author_name,
       }));
@@ -30,7 +28,7 @@ const useYoutubeVideoNet = (payload: { projectId: string; window: number }) => {
             acc[key] = {
               ...value,
               videos: data.network.nodes.filter((node) => node.class === key),
-              colors: colors[key],
+              colors: COLORS[parseInt(key, 10)],
             };
             return acc;
           },

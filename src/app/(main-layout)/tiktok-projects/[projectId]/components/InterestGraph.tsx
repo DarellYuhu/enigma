@@ -4,21 +4,22 @@ import Graph from "@/components/Graph";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
-import useGraphDateStore from "@/store/graph-date-store";
 import { interestNetExport2 } from "@/utils/interestNetExport";
 import Link from "next/link";
 import React, { useState } from "react";
+import useGraphConfigStore from "../store/graph-config-store";
 
 const InterestGraph = ({ projectId }: { projectId: string }) => {
   const [label, setLabel] = useState(false);
   const [node, setNode] = useState<any>(null);
-  const { from, to } = useGraphDateStore();
+  const { from, to } = useGraphConfigStore();
   const { data } = useTiktokInterestNet2({
     projectId,
     window: 3,
+    date: to!,
   });
 
-  if (!data) return null;
+  if (!data?.data.date) return null;
 
   return (
     <>

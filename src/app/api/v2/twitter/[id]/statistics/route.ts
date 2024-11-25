@@ -1,4 +1,4 @@
-import { getTiktokApi } from "@/app/api/utils";
+import { getTwitterApi } from "@/app/api/utils";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -6,18 +6,20 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const searchParams = request.nextUrl.searchParams;
-  const window = searchParams.get("window");
-  const date = searchParams.get("date");
+  const since = searchParams.get("since");
+  const until = searchParams.get("until");
+  const string = searchParams.get("string");
 
   const response = await fetch(
-    `${await getTiktokApi()}/api/v2/project/graphs`,
+    `${await getTwitterApi()}/api/v1/project/statistics`,
     {
       method: "POST",
       body: JSON.stringify({
-        type: "interestNet",
+        type: "statistics",
         project: params.id,
-        window,
-        date,
+        since,
+        until,
+        string,
       }),
       headers: {
         "Content-Type": "application/json",

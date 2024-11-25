@@ -35,7 +35,6 @@ const useTiktokGlobalClusters = (payload: { window: number }) => {
       };
       return { data, normalized };
     },
-    throwOnError: true,
   });
 };
 
@@ -58,7 +57,9 @@ export type ClusterTrends = {
       total_likes: number;
       total_comments: number;
       total_shares: number;
-      centrality: number;
+      centrality_pr: number;
+      centrality_bw: number;
+      centrality_dg: number;
       class: string; // probably a number
     }[];
   };

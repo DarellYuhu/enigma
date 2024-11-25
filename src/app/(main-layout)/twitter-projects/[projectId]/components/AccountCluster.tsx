@@ -1,6 +1,9 @@
 "use client";
 
-import HorizontalBarChart from "@/components/HorizontalBarChart";
+import useBoardConfigStore from "../store/board-config-store";
+import useClusterStore from "../store/cluster-store";
+import * as Tabs from "@radix-ui/react-tabs";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Card,
   CardContent,
@@ -8,22 +11,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
 import abbreviateNumber from "@/utils/abbreviateNumber";
-import * as Tabs from "@radix-ui/react-tabs";
-import chroma from "chroma-js";
-import { Frown, Meh, Smile } from "lucide-react";
-import React from "react";
-import ReactMarkdown from "react-markdown";
+import { Separator } from "@/components/ui/separator";
 import {
   DiscreteLegend,
   DiscreteLegendEntry,
   LinearGauge,
   LinearGaugeSeries,
 } from "reaviz";
-import useGraphConfigStore from "../store/graph-config-store";
+import chroma from "chroma-js";
+import { Frown, Meh, Smile } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import useTwitterAccountNet from "@/hooks/useTwitterAccountNet";
+import useTwitterAccountClusterInfo, {
+  ClusterInfo,
+} from "@/hooks/useTwitterAccountClusterInfo";
+import Datatable from "@/components/Datatable";
+import { ColumnDef } from "@tanstack/react-table";
+import HorizontalBarChart from "@/components/HorizontalBarChart";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -41,36 +46,46 @@ const scale = [
   },
 ];
 
-const ClusterInfo = ({ projectId }: { projectId: string }) => {
-  const { to } = useGraphConfigStore();
-  const { data } = useTiktokInterestNet2({
+const AccountCluster = ({ projectId }: { projectId: string }) => {
+  const { account, setAccount } = useClusterStore();
+  const { to } = useBoardConfigStore();
+  const { data } = useTwitterAccountNet({
+    projectId,
+    Window: 3,
+    date: to,
+  });
+  const clusterInfo = useTwitterAccountClusterInfo({
+    cluster: account,
+    date: to,
     projectId,
     window: 3,
-    date: to!,
   });
+
   return (
-    <Tabs.Root className="space-y-4" defaultValue="0">
+    <Tabs.Root className="space-y-4" value={account} onValueChange={setAccount}>
       <ScrollArea className="w-full overflow-x-auto ">
         <Tabs.TabsList className="flex flex-row w-full bg-gray-300 rounded-md p-2 gap-2">
-          {data?.normalized.hashtags.map((item, index) => (
-            <Tabs.TabsTrigger
-              key={index}
-              value={index.toString()}
-              className={
-                "p-2 w-10 h-10w-10 rounded-md data-[state=active]:opacity-35 data-[state=active]:shadow-md transition-all duration-300"
-              }
-              style={{
-                backgroundColor: item.color,
-              }}
-            />
-          ))}
+          {data?.normalized.classes
+            .filter((item) => !!item.representation)
+            .map((item, index) => (
+              <Tabs.TabsTrigger
+                key={index}
+                value={item.id}
+                className={
+                  "p-2 w-10 h-10w-10 rounded-md data-[state=active]:opacity-35 data-[state=active]:shadow-md transition-all duration-300"
+                }
+                style={{
+                  backgroundColor: item.color,
+                }}
+              />
+            ))}
         </Tabs.TabsList>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      {data?.normalized.hashtags.map((item, index) => (
+      {data?.normalized.classes.map((item, index) => (
         <Tabs.TabsContent
           key={index}
-          value={index.toString()}
+          value={item.id}
           className="w-full grid grid-cols-12 gap-4"
         >
           <div className="grid grid-cols-12 gap-4 col-span-full lg:col-span-8">
@@ -86,18 +101,23 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
                   </div>
                   <Separator orientation="vertical" className="h-11" />
                   <div className="flex flex-col items-center">
-                    {abbreviateNumber(item.total_likes)}
+                    {abbreviateNumber(item.total_favorites)}
                     <p className="text-sm">Likes</p>
                   </div>
                   <Separator orientation="vertical" className="h-11" />
                   <div className="flex flex-col items-center">
-                    {abbreviateNumber(item.total_comments)}
-                    <p className="text-sm">Comments</p>
+                    {abbreviateNumber(item.total_retweets)}
+                    <p className="text-sm">Retweets</p>
                   </div>
                   <Separator orientation="vertical" className="h-11" />
                   <div className="flex flex-col items-center">
-                    {abbreviateNumber(item.total_shares)}
-                    <p className="text-sm">Shares</p>
+                    {abbreviateNumber(item.total_replies)}
+                    <p className="text-sm">Replies</p>
+                  </div>
+                  <Separator orientation="vertical" className="h-11" />
+                  <div className="flex flex-col items-center">
+                    {abbreviateNumber(item.total_bookmarks)}
+                    <p className="text-sm">Bookmarks</p>
                   </div>
                 </div>
               </CardContent>
@@ -160,15 +180,18 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
           <div className="col-span-full lg:col-span-4 grid grid-cols-12 gap-4">
             <Card className="col-span-full">
               <CardHeader className="p-4">
-                <CardTitle className="text-base">
-                  Top Content and Author
-                </CardTitle>
+                <CardTitle className="text-base">Top Authors</CardTitle>
               </CardHeader>
-              <CardContent className="h-80">Huhi</CardContent>
+              <CardContent className="h-80">
+                <Datatable
+                  columns={columns}
+                  data={clusterInfo.data?.data.authors || []}
+                />
+              </CardContent>
             </Card>
             <div className="col-span-full h-96">
               <HorizontalBarChart
-                data={item.hashtags!}
+                data={clusterInfo.data?.normalized || []}
                 dataKey="value"
                 labelKey="hashtag"
                 label="Value"
@@ -182,4 +205,15 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
   );
 };
 
-export default ClusterInfo;
+const columns: ColumnDef<ClusterInfo["authors"][0]>[] = [
+  {
+    accessorKey: "user_screen_name",
+    header: "Author",
+  },
+  {
+    accessorKey: "reply_count",
+    header: "Replies",
+  },
+];
+
+export default AccountCluster;

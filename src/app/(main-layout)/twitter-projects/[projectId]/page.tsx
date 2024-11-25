@@ -1,11 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Board from "./components/Board";
 import HashtagNetGraph from "./components/HashtagNetGraph";
-import AccountNetGraph from "./components/AccountNetGraph";
 import HashtagEvoSankey from "./components/HashtagEvoSankey";
-import ScatterTopics from "./components/ScatterTopics";
-import TopAccount from "./components/TopAccount";
 import BoardConfig from "./components/BoardConfig";
+import TimeSeries from "./components/TimeSeries";
+import ClusterStatistics from "./components/ClusterStatistics";
+import HashtagClusters from "./components/HashtagClusters";
+import AccountNetGraph from "./components/AccountNetGraph";
+import AccountCluster from "./components/AccountCluster";
 
 const TwitterProjectDetail = ({
   params,
@@ -14,6 +16,24 @@ const TwitterProjectDetail = ({
 }) => {
   return (
     <div className="grid grid-cols-12 gap-4">
+      <Card className="col-span-full">
+        <CardHeader>
+          <CardTitle>Time Series</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <TimeSeries projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full">
+        <CardHeader>
+          <CardTitle>Cluster Statistics</CardTitle>
+        </CardHeader>
+        <CardContent className="h-80">
+          <ClusterStatistics projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
       <Card className="col-span-full">
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle>Board</CardTitle>
@@ -35,6 +55,15 @@ const TwitterProjectDetail = ({
 
       <Card className="col-span-full">
         <CardHeader>
+          <CardTitle>Hashtag Network Clusters</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <HashtagClusters projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full">
+        <CardHeader>
           <CardTitle>Hashtag Evolution</CardTitle>
         </CardHeader>
         <CardContent>
@@ -42,16 +71,16 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card>
 
-      <Card className="col-span-full">
+      {/* <Card className="col-span-full">
         <CardHeader>
           <CardTitle>Topics</CardTitle>
         </CardHeader>
         <CardContent>
           <ScatterTopics projectId={params.projectId} />
         </CardContent>
-      </Card>
+      </Card> */}
 
-      <Card className="col-span-6">
+      <Card className="col-span-full">
         <CardHeader>
           <CardTitle>Actor Network</CardTitle>
         </CardHeader>
@@ -60,14 +89,23 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card>
 
-      <Card className="col-span-6">
+      <Card className="col-span-full">
+        <CardHeader>
+          <CardTitle>Actor Network Clusters</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AccountCluster projectId={params.projectId} />
+        </CardContent>
+      </Card>
+
+      {/* <Card className="col-span-6">
         <CardHeader>
           <CardTitle>Top Central Actors</CardTitle>
         </CardHeader>
         <CardContent>
           <TopAccount projectId={params.projectId} />
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };

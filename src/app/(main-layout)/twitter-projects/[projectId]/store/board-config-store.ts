@@ -1,3 +1,4 @@
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { create } from "zustand";
 
 type BoardConfigState = {
@@ -14,8 +15,8 @@ type BoardConfigAction = {
 
 const useBoardConfigStore = create<BoardConfigState & BoardConfigAction>(
   (set) => ({
-    from: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-    to: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+    from: adjustDateByFactor(-3, new Date(Date.now())),
+    to: new Date(Date.now()),
     string: "",
     setDate(date) {
       set(date);
@@ -25,8 +26,8 @@ const useBoardConfigStore = create<BoardConfigState & BoardConfigAction>(
     },
     reset() {
       set({
-        from: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-        to: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+        from: adjustDateByFactor(-3, new Date(Date.now())),
+        to: new Date(Date.now()),
         string: "",
       });
     },
