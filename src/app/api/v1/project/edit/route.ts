@@ -2,7 +2,7 @@ import { getTiktokApi } from "@/app/api/utils";
 import { auth } from "@/lib/auth";
 
 export const POST = auth(async function POST(request) {
-  if (request.auth?.user.role === "USER")
+  if (request.auth?.user.role === "VIEWER")
     return Response.json({ message: "Unauthorized" }, { status: 403 });
   const { projectId, keywords, status } = await request.json();
   const response1 = fetch(`${await getTiktokApi()}/api/v1/project/edit`, {

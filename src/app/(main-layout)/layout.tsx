@@ -23,6 +23,7 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { SessionProvider } from "next-auth/react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -63,6 +64,7 @@ export default function MainLayout({
             </div>
           </SidebarInset>
         </SidebarProvider>
+        <ReactQueryDevtools position="right" />
       </QueryClientProvider>
     </SessionProvider>
   );

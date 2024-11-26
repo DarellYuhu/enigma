@@ -20,7 +20,7 @@ export const PATCH = auth(async function PATCH(
   request,
   { params }: { params?: { id?: string } }
 ) {
-  if (request.auth?.user.role === "USER")
+  if (request.auth?.user.role === "VIEWER")
     return Response.json({ message: "Unauthorized" }, { status: 403 });
   const { keywords, status } = await request.json();
   const response1 = fetch(`${await getTwitterApi()}/api/v1/project/edit`, {

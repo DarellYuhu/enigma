@@ -21,7 +21,7 @@ const YoutubeProjects = () => {
     <div className="flex flex-col gap-3">
       <Dialog>
         <DialogTrigger
-          disabled={session?.user.role === "USER"}
+          disabled={session?.user.role === "VIEWER"}
           className={cn(buttonVariants(), "self-end")}
         >
           Create New
@@ -31,7 +31,7 @@ const YoutubeProjects = () => {
       <div className="card dark:bg-slate-600 rounded-md shadow-md">
         <Dialog onOpenChange={(open) => !open && setSelected(undefined)}>
           <Datatable
-            columns={columns(session?.user.role === "USER", setSelected)}
+            columns={columns(session?.user.role === "VIEWER", setSelected)}
             data={projects.data?.projects || []}
           />
           {selected && <EditDialog item={selected} />}

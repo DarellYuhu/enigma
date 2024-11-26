@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useTwitterProjects = () => {
   return useQuery({
-    queryKey: ["projects", "twitter"],
+    queryKey: ["twitter", "projects"],
     queryFn: async () => {
       const response = await fetch("/api/v1/twitter");
       const data: TTwitterProjects = await response.json();

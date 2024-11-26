@@ -92,7 +92,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         </CardContent>
       </Card>
 
-      <Card className="col-span-full md:col-span-6 lg:col-span-4">
+      <Card className="col-span-full md:col-span-6 lg:col-span-4 relative">
         <CardHeader>
           <CardTitle>Top Centrality Contents</CardTitle>
         </CardHeader>

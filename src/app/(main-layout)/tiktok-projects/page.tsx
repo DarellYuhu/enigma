@@ -76,7 +76,7 @@ const Projects = () => {
     <div className="flex flex-col gap-3">
       <Dialog>
         <DialogTrigger
-          disabled={session?.user.role === "USER"}
+          disabled={session?.user.role === "VIEWER"}
           className={cn(buttonVariants(), "self-end")}
         >
           Create New
@@ -139,7 +139,7 @@ const Projects = () => {
       <div className="card bg-white dark:bg-slate-600 rounded-md">
         <Dialog onOpenChange={(open) => !open && selected}>
           <Datatable
-            columns={columns(session?.user.role === "USER", setSelected)}
+            columns={columns(session?.user.role === "VIEWER", setSelected)}
             data={projectsQuery.data?.projects || []}
           />
           <DialogContent>

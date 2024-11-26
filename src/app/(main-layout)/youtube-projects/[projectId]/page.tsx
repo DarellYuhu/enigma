@@ -1,4 +1,3 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ChannelNetGraph from "./components/ChannelNetGraph";
 import VideoNetGraph from "./components/VideoNetGraph";
@@ -60,7 +59,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-12 gap-3">
-        <Card className="col-span-7">
+        <Card className="col-span-8">
           <CardHeader>
             <CardTitle>Video Network</CardTitle>
           </CardHeader>
@@ -69,25 +68,18 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
           </CardContent>
         </Card>
 
-        <Card className="col-span-5">
+        <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Top Centrality</CardTitle>
           </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-80">
-              <TopCentrality projectId={params.projectId} />
-            </ScrollArea>
+          <CardContent className="h-80">
+            <TopCentrality projectId={params.projectId} />
           </CardContent>
         </Card>
 
-        <Card className="col-span-full">
-          <CardHeader>
-            <CardTitle>Cluster Info</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ClusterInfo projectId={params.projectId} />
-          </CardContent>
-        </Card>
+        <div className="col-span-full">
+          <ClusterInfo projectId={params.projectId} />
+        </div>
 
         {/* <div className="card flex flex-col col-span-4 h-96">
           <h2>Top Publication Channels</h2>
@@ -126,7 +118,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
           )}
         </div> */}
 
-        <Card className="col-span-full">
+        <Card className="col-span-8">
           <CardHeader>
             <CardTitle>Channel Network</CardTitle>
           </CardHeader>
@@ -135,11 +127,11 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
           </CardContent>
         </Card>
 
-        <Card className="col-span-full">
+        <Card className="col-span-4 relative">
           <CardHeader>
-            <CardTitle>Top Contribution Videos for Channel</CardTitle>
+            <CardTitle>Top Videos from Channel</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="h-80">
             <ContributionVideos projectId={params.projectId} />
           </CardContent>
         </Card>

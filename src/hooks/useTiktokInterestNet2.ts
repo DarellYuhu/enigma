@@ -28,9 +28,11 @@ const queryFn = async (payload: Payload) => {
         data: edge,
       })),
     },
-    hashtags: Object.values(data.classes)
-      .map((item, index) => ({
+    hashtags: Object.entries(data.classes)
+      .map(([key, item], index) => ({
         ...item,
+        contents: data.network.nodes.filter((node) => node.class === key),
+        id: key,
         color: COLORS[index],
         hashtags: item.hashtags
           ? item.hashtags.hashtags.map((tag, index) => ({
@@ -80,6 +82,11 @@ export type InterestNetwork2 = {
         hashtags: string[];
         values: number[];
       };
+      top_authors: {
+        author_id: string;
+        author_name: string;
+        play: number;
+      }[];
     }
   >;
   network: {

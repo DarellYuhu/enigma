@@ -3,18 +3,11 @@ import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const window = searchParams.get("window");
-  const date = searchParams.get("date");
-
-  console.log(date);
-
-  const response = await fetch(`${await getTiktokApi()}/api/v2/global/graphs`, {
+  const since = searchParams.get("since");
+  const until = searchParams.get("until");
+  const response = await fetch(`${await getTiktokApi()}/api/v1/global/flows`, {
     method: "POST",
-    body: JSON.stringify({
-      type: "clusterNet",
-      window,
-      date,
-    }),
+    body: JSON.stringify({ since, until }),
     headers: {
       "Content-Type": "application/json",
     },

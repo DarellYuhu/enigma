@@ -8,7 +8,7 @@ const useTwitterHashtagEvo = (payload: {
   string: string;
 }) => {
   return useQuery({
-    queryKey: ["twitterHashtagEvo", payload.project],
+    queryKey: ["twitterHashtagEvo", payload.project, payload.until],
     queryFn: async () => {
       const response = await fetch(
         `/api/v1/twitter/${
@@ -27,6 +27,7 @@ const useTwitterHashtagEvo = (payload: {
 export type HashtagEvolution = {
   flow: { from: string; to: string; flow: number }[];
   thread: Record<string, { class: string; window: number }>;
+  class?: Record<string, string>;
   window: Record<string, string>; // <-- T is this format 2024-11-05
 };
 
