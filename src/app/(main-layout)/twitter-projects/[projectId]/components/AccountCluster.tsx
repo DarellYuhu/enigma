@@ -1,6 +1,5 @@
 "use client";
 
-import useBoardConfigStore from "../store/board-config-store";
 import useClusterStore from "../store/cluster-store";
 import * as Tabs from "@radix-ui/react-tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -29,6 +28,7 @@ import useTwitterAccountClusterInfo, {
 import Datatable from "@/components/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import HorizontalBarChart from "@/components/HorizontalBarChart";
+import useAccountStore from "../store/account-config-store";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -48,15 +48,15 @@ const scale = [
 
 const AccountCluster = ({ projectId }: { projectId: string }) => {
   const { account, setAccount } = useClusterStore();
-  const { to } = useBoardConfigStore();
+  const { date } = useAccountStore();
   const { data } = useTwitterAccountNet({
     projectId,
     Window: 3,
-    date: to,
+    date,
   });
   const clusterInfo = useTwitterAccountClusterInfo({
     cluster: account,
-    date: to,
+    date,
     projectId,
     window: 3,
   });

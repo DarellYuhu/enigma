@@ -1,7 +1,6 @@
 import { VisData } from "@/components/VisGraph";
 import generateNodeColors from "@/utils/generateNodeColors";
 import { useQuery } from "@tanstack/react-query";
-import { size } from "lodash";
 
 type Payload = {
   projectId: string;

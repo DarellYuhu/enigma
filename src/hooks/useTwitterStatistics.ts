@@ -3,20 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 
 type Payload = {
   projectId: string;
-  since: Date;
-  until: Date;
+  since?: Date;
+  until?: Date;
   string: string;
 };
 
 export default function useTwitterStatistics(payload: Payload) {
   return useQuery({
-    queryKey: ["twitter", "statistics", payload],
+    queryKey: ["twitter", "statistics", payload.projectId],
     queryFn: async () => {
       const response = await fetch(
         `/api/v2/twitter/${payload.projectId}/statistics?since=${
-          payload.since.toISOString().split("T")[0]
+          payload.since?.toISOString().split("T")[0]
         }&until=${
-          adjustDateByFactor(1, payload.until).toISOString().split("T")[0]
+          adjustDateByFactor(1, payload.until!).toISOString().split("T")[0]
         }&string=${payload.string}`
       );
       const data: TwitterStatistics = await response.json();
@@ -41,7 +41,7 @@ type Item = {
   tweets: number[];
 };
 
-type TwitterStatistics = {
+export type TwitterStatistics = {
   ts: {
     daily: Item;
     weekly: Item;

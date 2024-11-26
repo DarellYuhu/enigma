@@ -4,38 +4,32 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import useTwitterBoards from "@/hooks/useTwitterBoards";
 import useBoardConfigStore from "../store/board-config-store";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 
-const BoardConfig = ({ projectId }: { projectId: string }) => {
+const BoardConfig = () => {
+  const [query, setQuery] = useState("");
   const [toggleValue, setToggleValue] = useState("3");
-  const { from, to, string, setDate, setString } = useBoardConfigStore();
-  const { refetch } = useTwitterBoards({
-    project: projectId,
-    string: string,
-    since: from,
-    until: to,
-  });
+  const { setDate, setString } = useBoardConfigStore();
 
   useEffect(() => {
     switch (toggleValue) {
       case "1":
         setDate({
-          from: adjustDateByFactor(-1, new Date(Date.now())),
-          to: new Date(Date.now()),
+          from: adjustDateByFactor(-1, new Date()),
+          to: new Date(),
         });
         break;
       case "3":
         setDate({
-          from: adjustDateByFactor(-3, new Date(Date.now())),
-          to: new Date(Date.now()),
+          from: adjustDateByFactor(-3, new Date()),
+          to: new Date(),
         });
         break;
       case "7":
         setDate({
-          from: adjustDateByFactor(-7, new Date(Date.now())),
-          to: new Date(Date.now()),
+          from: adjustDateByFactor(-7, new Date()),
+          to: new Date(),
         });
         break;
     }
@@ -66,7 +60,7 @@ const BoardConfig = ({ projectId }: { projectId: string }) => {
           className="peer pe-9 ps-9"
           placeholder="Search..."
           type="search"
-          onChange={(event) => setString({ string: event.currentTarget.value })}
+          onChange={(event) => setQuery(event.currentTarget.value)}
         />
         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
           <Search size={16} strokeWidth={2} />
@@ -74,7 +68,9 @@ const BoardConfig = ({ projectId }: { projectId: string }) => {
         <button
           className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 ring-offset-background transition-shadow hover:text-foreground focus-visible:border focus-visible:border-ring focus-visible:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
           aria-label="Submit search"
-          onClick={() => refetch()}
+          onClick={() => {
+            setString({ string: query });
+          }}
         >
           <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
         </button>

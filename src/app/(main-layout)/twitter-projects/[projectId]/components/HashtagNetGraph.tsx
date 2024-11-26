@@ -3,22 +3,16 @@
 import VisGraph from "@/components/VisGraph";
 import useTwitterHashtagNet2 from "@/hooks/useTwitterHashtagNet2";
 import { Edge, Node } from "vis-network/declarations/entry-esnext";
-import useBoardConfigStore from "../store/board-config-store";
 import { useEffect } from "react";
 import useClusterStore from "../store/cluster-store";
+import useHashtagStore from "../store/hashtag-config-store";
 
 const HashtagNetGraph = ({ projectId }: { projectId: string }) => {
-  const { to } = useBoardConfigStore();
+  const { date } = useHashtagStore();
   const { setHashtag } = useClusterStore();
-  // const { data } = useTwitterHashtagNet({
-  //   project: projectId,
-  //   string: "",
-  //   since: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-  //   until: new Date(),
-  // });
   const { data } = useTwitterHashtagNet2({
     projectId,
-    date: to!,
+    date,
     window: 2,
   });
 

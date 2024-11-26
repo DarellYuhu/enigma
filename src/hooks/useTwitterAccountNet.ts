@@ -38,7 +38,7 @@ export default function useTwitterAccountNet(payload: Payload) {
             data: node,
             fill: colors[node.class],
             id: node.user_id,
-            label: node.user_name,
+            label: node.user_screen_name,
             size:
               Math.sqrt(
                 1 - Math.pow(node.centrality_pr / MAX_CENTRALITY_PR - 1, 2)

@@ -24,25 +24,26 @@ import {
 } from "@cosmograph/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import useBoardConfigStore from "../store/board-config-store";
 import useClusterStore from "../store/cluster-store";
+import useAccountStore from "../store/account-config-store";
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 
 const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const { setAccount } = useClusterStore();
   const [node, setNode] = useState<CosmosNode | null>(null);
   const [selectedNode, setSelectedNode] = useState<CosmosNode | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { to } = useBoardConfigStore();
+  const { date } = useAccountStore();
   const { data } = useTwitterAccountNet({
     projectId,
     Window: 3,
-    date: to,
+    date,
   });
   const boards = useTwitterBoards({
     project: projectId,
     string: selectedNode?.data.user_screen_name ?? "",
-    since: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-    until: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+    since: adjustDateByFactor(-3, date),
+    until: adjustDateByFactor(1, date),
   });
 
   useEffect(() => {
