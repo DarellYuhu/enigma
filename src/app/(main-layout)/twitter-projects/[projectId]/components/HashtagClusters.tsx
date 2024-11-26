@@ -1,6 +1,5 @@
 "use client";
 
-import useBoardConfigStore from "../store/board-config-store";
 import useTwitterHashtageClusterInfo, {
   ClusterInfo,
 } from "@/hooks/useTwitterHashtagClusterInfo";
@@ -29,6 +28,7 @@ import ReactMarkdown from "react-markdown";
 import HorizontalBarChart from "@/components/HorizontalBarChart";
 import Datatable from "@/components/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
+import useHashtagStore from "../store/hashtag-config-store";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -47,16 +47,16 @@ const scale = [
 ];
 
 const HashtagClusters = ({ projectId }: { projectId: string }) => {
-  const { to } = useBoardConfigStore();
+  const { date } = useHashtagStore();
   const { hashtag, setHashtag } = useClusterStore();
   const graph = useTwitterHashtagNet2({
     projectId,
-    date: to!,
+    date,
     window: 2,
   });
   const clusterInfo = useTwitterHashtageClusterInfo({
     projectId,
-    date: to,
+    date,
     window: 2,
     cluster: hashtag,
   });
@@ -112,11 +112,6 @@ const HashtagClusters = ({ projectId }: { projectId: string }) => {
                   <div className="flex flex-col items-center">
                     {abbreviateNumber(item.total_replies)}
                     <p className="text-sm">Replies</p>
-                  </div>
-                  <Separator orientation="vertical" className="h-11" />
-                  <div className="flex flex-col items-center">
-                    {abbreviateNumber(item.total_bookmarks)}
-                    <p className="text-sm">Bookmarks</p>
                   </div>
                 </div>
               </CardContent>
@@ -179,15 +174,17 @@ const HashtagClusters = ({ projectId }: { projectId: string }) => {
           <div className="col-span-full lg:col-span-4 grid grid-cols-12 gap-4">
             <Card className="col-span-full">
               <CardHeader className="p-4">
-                <CardTitle className="text-base">
-                  Top Content and Author
-                </CardTitle>
+                <CardTitle className="text-base">Top Viewed Accounts</CardTitle>
               </CardHeader>
-              <CardContent className="h-80">
-                <Datatable
-                  columns={columns}
-                  data={clusterInfo.data?.data.authors || []}
-                />
+              <CardContent>
+                <ScrollArea className="h-80">
+                  <Datatable
+                    columns={columns}
+                    data={clusterInfo.data?.data.authors || []}
+                    initialPageSize={10}
+                    pagination={false}
+                  />
+                </ScrollArea>
               </CardContent>
             </Card>
             <div className="col-span-full h-96">

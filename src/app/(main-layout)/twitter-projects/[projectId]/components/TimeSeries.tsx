@@ -1,132 +1,111 @@
 "use client";
 
-import useTwitterStatistics from "@/hooks/useTwitterStatistics";
-import useBoardConfigStore from "../store/board-config-store";
+import useTwitterStatistics, {
+  TwitterStatistics,
+} from "@/hooks/useTwitterStatistics";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import BarChart2 from "@/components/BarChart2";
+import SingleSelect from "@/components/SingleSelect";
+import { useState } from "react";
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
+import DateRangePicker from "@/components/ui/date-range-picker";
+import SearchInput from "@/components/SearchInput";
 
 const TimeSeries = ({ projectId }: { projectId: string }) => {
-  const { from, to } = useBoardConfigStore();
-  const { data } = useTwitterStatistics({
+  const [date, setDate] = useState<{ since?: Date; until?: Date }>({
+    since: adjustDateByFactor(-30, new Date()),
+    until: new Date(),
+  });
+  const [string, setString] = useState("");
+  const [type, setType] = useState<keyof TwitterStatistics["ts"]>("daily");
+  const { data, refetch } = useTwitterStatistics({
     projectId,
-    since: from,
-    until: to,
-    string: "",
+    since: date.since,
+    until: date.until,
+    string,
   });
 
   if (!data) return null;
   return (
-    <div className="grid grid-cols-12 gap-4">
-      <Card className="col-span-2">
-        <CardHeader>
-          <CardTitle>Daily</CardTitle>
-          <CardDescription>Authors</CardDescription>
-        </CardHeader>
-        <CardContent className="h-60">
-          <BarChart2
-            yAxis={false}
-            topLabel={false}
-            xAxis={false}
-            data={data.normalized.daily}
-            dataKey="authors"
-            labelKey="date"
-            label="Authors"
-          />
-        </CardContent>
-      </Card>
-      <Card className="col-span-2">
-        <CardHeader>
-          <CardTitle>Daily</CardTitle>
-          <CardDescription>Tweets</CardDescription>
-        </CardHeader>
-        <CardContent className="h-60">
-          <BarChart2
-            yAxis={false}
-            topLabel={false}
-            xAxis={false}
-            data={data.normalized.daily}
-            dataKey="tweets"
-            labelKey="date"
-            label="Tweets"
-          />
-        </CardContent>
-      </Card>
-      <Card className="col-span-2">
-        <CardHeader>
-          <CardTitle>Weekly</CardTitle>
-          <CardDescription>Authors</CardDescription>
-        </CardHeader>
-        <CardContent className="h-60">
-          <BarChart2
-            yAxis={false}
-            topLabel={false}
-            xAxis={false}
-            data={data.normalized.weekly}
-            dataKey="authors"
-            labelKey="date"
-            label="Authors"
-          />
-        </CardContent>
-      </Card>
-      <Card className="col-span-2">
-        <CardHeader>
-          <CardTitle>Weekly</CardTitle>
-          <CardDescription>Tweets</CardDescription>
-        </CardHeader>
-        <CardContent className="h-60">
-          <BarChart2
-            yAxis={false}
-            topLabel={false}
-            xAxis={false}
-            data={data.normalized.weekly}
-            dataKey="tweets"
-            labelKey="date"
-            label="Tweets"
-          />
-        </CardContent>
-      </Card>
-      <Card className="col-span-2">
-        <CardHeader>
-          <CardTitle>Monthly</CardTitle>
-          <CardDescription>Authors</CardDescription>
-        </CardHeader>
-        <CardContent className="h-60">
-          <BarChart2
-            yAxis={false}
-            topLabel={false}
-            xAxis={false}
-            data={data.normalized.monthly}
-            dataKey="authors"
-            labelKey="date"
-            label="Authors"
-          />
-        </CardContent>
-      </Card>
-      <Card className="col-span-2">
-        <CardHeader>
-          <CardTitle>Monthly</CardTitle>
-          <CardDescription>Tweets</CardDescription>
-        </CardHeader>
-        <CardContent className="h-60">
-          <BarChart2
-            yAxis={false}
-            topLabel={false}
-            xAxis={false}
-            data={data.normalized.monthly}
-            dataKey="tweets"
-            labelKey="date"
-            label="Tweets"
-          />
-        </CardContent>
-      </Card>
-    </div>
+    <>
+      <div className="grid grid-cols-12 gap-4">
+        <Card className="col-span-6">
+          <CardHeader>
+            <CardDescription>Accounts</CardDescription>
+          </CardHeader>
+          <CardContent className="h-60">
+            <BarChart2
+              yAxis={false}
+              topLabel={false}
+              xAxis={false}
+              data={data.normalized[type]}
+              dataKey="authors"
+              labelKey="date"
+              label="Authors"
+            />
+          </CardContent>
+        </Card>
+        <Card className="col-span-6">
+          <CardHeader>
+            <CardDescription>Tweets</CardDescription>
+          </CardHeader>
+          <CardContent className="h-60">
+            <BarChart2
+              yAxis={false}
+              topLabel={false}
+              xAxis={false}
+              data={data.normalized[type]}
+              dataKey="tweets"
+              labelKey="date"
+              label="Tweets"
+            />
+          </CardContent>
+        </Card>
+      </div>
+      <div className="absolute top-4 right-4 flex flex-row gap-3">
+        <DateRangePicker
+          date={{ from: date.since, to: date.until }}
+          setDate={(value) =>
+            setDate({
+              since: value?.from,
+              until: value?.to,
+            })
+          }
+        />
+        <SearchInput
+          onChange={setString}
+          onClick={() => {
+            refetch();
+          }}
+        />
+        <SingleSelect
+          selections={selections}
+          value={type}
+          setValue={(value) => setType(value as typeof type)}
+        />
+      </div>
+    </>
   );
 };
+
+const selections = [
+  {
+    label: "Daily",
+    value: "daily",
+  },
+  {
+    label: "Weekly",
+    value: "weekly",
+  },
+  {
+    label: "Monthly",
+    value: "monthly",
+  },
+];
 
 export default TimeSeries;

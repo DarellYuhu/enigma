@@ -1,3 +1,4 @@
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { useQuery } from "@tanstack/react-query";
 
 type Payload = {
@@ -14,9 +15,9 @@ export default function useTwitterClusterStats(payload: Payload) {
       const response = await fetch(
         `/api/v1/twitter/${payload.projectId}/cluster-statistics?since=${
           payload.since.toISOString().split("T")[0]
-        }&until=${payload.until.toISOString().split("T")[0]}&string=${
-          payload.string
-        }`
+        }&until=${
+          adjustDateByFactor(1, payload.until).toISOString().split("T")[0]
+        }&string=${payload.string}`
       );
 
       const data: ClusterStats = await response.json();
@@ -28,10 +29,11 @@ export default function useTwitterClusterStats(payload: Payload) {
       }));
       return { data, normalized };
     },
+    enabled: !!payload.since && !!payload.until,
   });
 }
 
-type ClusterStats = {
+export type ClusterStats = {
   ts: {
     date: string[];
     num_cc: number[];

@@ -1,6 +1,5 @@
 "use client";
 
-import useBoardConfigStore from "../store/board-config-store";
 import useClusterStore from "../store/cluster-store";
 import * as Tabs from "@radix-ui/react-tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -29,6 +28,7 @@ import useTwitterAccountClusterInfo, {
 import Datatable from "@/components/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import HorizontalBarChart from "@/components/HorizontalBarChart";
+import useAccountStore from "../store/account-config-store";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -48,15 +48,15 @@ const scale = [
 
 const AccountCluster = ({ projectId }: { projectId: string }) => {
   const { account, setAccount } = useClusterStore();
-  const { to } = useBoardConfigStore();
+  const { date } = useAccountStore();
   const { data } = useTwitterAccountNet({
     projectId,
     Window: 3,
-    date: to,
+    date,
   });
   const clusterInfo = useTwitterAccountClusterInfo({
     cluster: account,
-    date: to,
+    date,
     projectId,
     window: 3,
   });
@@ -113,11 +113,6 @@ const AccountCluster = ({ projectId }: { projectId: string }) => {
                   <div className="flex flex-col items-center">
                     {abbreviateNumber(item.total_replies)}
                     <p className="text-sm">Replies</p>
-                  </div>
-                  <Separator orientation="vertical" className="h-11" />
-                  <div className="flex flex-col items-center">
-                    {abbreviateNumber(item.total_bookmarks)}
-                    <p className="text-sm">Bookmarks</p>
                   </div>
                 </div>
               </CardContent>
@@ -180,13 +175,19 @@ const AccountCluster = ({ projectId }: { projectId: string }) => {
           <div className="col-span-full lg:col-span-4 grid grid-cols-12 gap-4">
             <Card className="col-span-full">
               <CardHeader className="p-4">
-                <CardTitle className="text-base">Top Authors</CardTitle>
+                <CardTitle className="text-base">
+                  Top Replied Accounts
+                </CardTitle>
               </CardHeader>
-              <CardContent className="h-80">
-                <Datatable
-                  columns={columns}
-                  data={clusterInfo.data?.data.authors || []}
-                />
+              <CardContent>
+                <ScrollArea className="h-80">
+                  <Datatable
+                    pagination={false}
+                    columns={columns}
+                    data={clusterInfo.data?.data.authors || []}
+                    initialPageSize={10}
+                  />
+                </ScrollArea>
               </CardContent>
             </Card>
             <div className="col-span-full h-96">
@@ -213,6 +214,9 @@ const columns: ColumnDef<ClusterInfo["authors"][0]>[] = [
   {
     accessorKey: "reply_count",
     header: "Replies",
+    cell(props) {
+      return abbreviateNumber(props.row.original.reply_count);
+    },
   },
 ];
 

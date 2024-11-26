@@ -1,7 +1,6 @@
 "use client";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import useTwitterAccountNetwork from "@/hooks/useTwitterAccountNetwork";
 import useTwitterBoards from "@/hooks/useTwitterBoards";
 import useTwitterHashtagEvo from "@/hooks/useTwitterHashtagEvo";
 import useTwitterHashtagNet from "@/hooks/useTwitterHashtagNet";
@@ -41,11 +40,6 @@ const Window = ({ projectId }: { projectId: string }) => {
     until: to,
   });
 
-  const account = useTwitterAccountNetwork({
-    project: projectId,
-    window: toggleValue,
-  });
-
   useEffect(() => {
     switch (toggleValue) {
       case "1":
@@ -65,7 +59,6 @@ const Window = ({ projectId }: { projectId: string }) => {
     scatterTopics.refetch();
     hashtagNet.refetch();
     hashtagEvo.refetch();
-    account.refetch();
   }, [toggleValue]);
   return (
     <ToggleGroup

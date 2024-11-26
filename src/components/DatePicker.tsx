@@ -17,7 +17,7 @@ import { SelectSingleEventHandler } from "react-day-picker";
 export function DatePicker({
   date = new Date(),
   onDateChange,
-  toDate,
+  toDate = new Date(),
 }: {
   date?: Date;
   toDate?: Date;
