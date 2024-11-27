@@ -6,8 +6,6 @@ export async function GET(request: NextRequest) {
   const window = searchParams.get("window");
   const date = searchParams.get("date");
 
-  console.log(date);
-
   const response = await fetch(`${await getTiktokApi()}/api/v2/global/graphs`, {
     method: "POST",
     body: JSON.stringify({

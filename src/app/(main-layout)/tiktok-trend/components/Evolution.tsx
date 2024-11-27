@@ -13,7 +13,6 @@ const Evolution = () => {
     since: adjustDateByFactor(-1, date),
     until: date,
   });
-  console.log("before", date);
   return <div className="h-full">{data && <SankeyChartJs item={data} />}</div>;
 };
 

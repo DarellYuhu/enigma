@@ -17,8 +17,10 @@ import {
 } from "@/components/ui/carousel";
 import { AnimatePresence, motion } from "framer-motion";
 import useYoutubeChannelNet from "@/hooks/useYoutubeChannelNet";
+import useConfigStore from "../store/config-store";
 
 const ContributionVideos = ({ projectId }: { projectId: string }) => {
+  const { date } = useConfigStore();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState<string>();
   const { from, to } = useStatisticDateStore();
@@ -33,6 +35,7 @@ const ContributionVideos = ({ projectId }: { projectId: string }) => {
   const channelGraph = useYoutubeChannelNet({
     projectId: projectId,
     window: 5,
+    date,
   });
 
   if (!data) return null;

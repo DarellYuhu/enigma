@@ -7,6 +7,7 @@ export async function GET(
 ) {
   const searchParams = req.nextUrl.searchParams;
   const window = searchParams.get("window");
+  const date = searchParams.get("date");
 
   const response = await fetch(
     `${await getYoutubeApi()}/api/v2/project/graphs`,
@@ -14,8 +15,9 @@ export async function GET(
       method: "POST",
       body: JSON.stringify({
         type: "channelNet",
-        project: params.id,
+        projectId: params.id,
         window,
+        date,
       }),
       headers: {
         "Content-Type": "application/json",

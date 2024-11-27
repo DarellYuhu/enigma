@@ -1,7 +1,9 @@
 "use client";
 
 import { badgeVariants } from "@/components/ui/badge";
-import useYoutubeVideoNet from "@/hooks/useYoutubeVideoNet";
+import useYoutubeVideoNet, {
+  NodeVideoNetwork,
+} from "@/hooks/useYoutubeVideoNet";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { Heart, MessageCircle, Play, XIcon } from "lucide-react";
 import {
@@ -14,20 +16,33 @@ import {
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import useConfigStore from "../store/config-store";
+import SingleSelect from "@/components/SingleSelect";
 // import SingleSelect from "@/components/SingleSelect";
 
 const TopCentrality = ({ projectId }: { projectId: string }) => {
-  // const [type, setType] = useState<>("");
+  const [type, setType] =
+    useState<
+      keyof Pick<
+        NodeVideoNetwork,
+        "centrality_bw" | "centrality_dg" | "centrality_pr"
+      >
+    >("centrality_pr");
+  const { date } = useConfigStore();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState<string | null>(null);
-  const { data } = useYoutubeVideoNet({ projectId: projectId, window: 5 });
+  const { data } = useYoutubeVideoNet({
+    projectId: projectId,
+    window: 5,
+    date,
+  });
   if (!data) return null;
   return (
     <>
       <Carousel>
         <CarouselContent>
           {data.data.network.nodes
-            .sort((a, b) => b.centrality - a.centrality)
+            .sort((a, b) => b[type] - a[type])
             .slice(0, 10)
             .map((video, index) => (
               <CarouselItem key={index}>
@@ -130,24 +145,30 @@ const TopCentrality = ({ projectId }: { projectId: string }) => {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* <SingleSelect selections={selections} /> */}
+      <div className="absolute top-4 right-4">
+        <SingleSelect
+          selections={selections}
+          value={type}
+          setValue={(value) => setType(value as typeof type)}
+        />
+      </div>
     </>
   );
 };
 
-// const selections = [
-//   {
-//     label: "PageRank",
-//     value: "centrality_pr",
-//   },
-//   {
-//     label: "Betweenness",
-//     value: "centrality_bw",
-//   },
-//   {
-//     label: "Degree",
-//     value: "centrality_dg",
-//   },
-// ];
+const selections = [
+  {
+    label: "PageRank",
+    value: "centrality_pr",
+  },
+  {
+    label: "Betweenness",
+    value: "centrality_bw",
+  },
+  {
+    label: "Degree",
+    value: "centrality_dg",
+  },
+];
 
 export default TopCentrality;

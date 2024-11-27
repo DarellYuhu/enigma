@@ -14,7 +14,6 @@ export default function useGlobalEvolution(payload: Payload) {
       payload.until.toISOString().split("T")[0],
     ],
     queryFn: async () => {
-      console.log("when fetch", payload.until);
       const response = await fetch(
         `/api/v2/tiktok/evolution?since=${
           payload.since.toISOString().split("T")[0]

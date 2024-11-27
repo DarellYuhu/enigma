@@ -175,7 +175,7 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <TabsRoot defaultValue="author" className="w-[400px]">
+                <TabsRoot defaultValue="author">
                   <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="author">Author</TabsTrigger>
                     <TabsTrigger value="content">Content</TabsTrigger>
