@@ -62,7 +62,6 @@ const useYoutubeVideoNet = (payload: {
       };
       return { data, normalized, classesWithVideos };
     },
-    throwOnError: true,
   });
 };
 

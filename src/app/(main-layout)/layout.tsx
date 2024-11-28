@@ -3,6 +3,7 @@
 import {
   Clapperboard,
   ServerCrash,
+  TrendingUp,
   Twitter,
   UserCog,
   Youtube,
@@ -78,6 +79,12 @@ const data = {
   },
   navMain: [
     {
+      title: "Trends",
+      url: "trends",
+      icon: TrendingUp,
+      isActive: true,
+    },
+    {
       title: "Tiktok",
       url: "#",
       icon: Clapperboard,
@@ -93,7 +100,6 @@ const data = {
         },
       ],
     },
-
     {
       title: "Twitter",
       url: "#",

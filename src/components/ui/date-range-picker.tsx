@@ -11,7 +11,9 @@ const DateRangePicker = ({
   className,
   date,
   setDate,
+  numberOfMonths = 1,
 }: {
+  numberOfMonths?: number;
   max?: number;
   className?: string;
   date?: DateRange | undefined;
@@ -53,6 +55,7 @@ const DateRangePicker = ({
             onSelect={setDate}
             toDate={new Date(Date.now() + 1000 * 60 * 60 * 24 * 1)}
             max={max}
+            numberOfMonths={numberOfMonths}
           />
         </PopoverContent>
       </Popover>

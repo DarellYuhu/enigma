@@ -5,7 +5,6 @@ import { DatePicker } from "@/components/DatePicker";
 
 const Configuration = () => {
   const { date, setDate } = useConfigStore();
-  console.log("before fetch", date);
   return (
     <DatePicker
       date={date}

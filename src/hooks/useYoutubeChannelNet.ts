@@ -16,7 +16,6 @@ const useYoutubeChannelNet = (payload: {
       payload.date,
     ],
     queryFn: async () => {
-      console.log(payload.date, payload.date.toISOString());
       const response = await fetch(
         `/api/v2/youtube/${payload.projectId}/channel-net?date=${
           payload.date.toISOString().split("T")[0]
@@ -58,7 +57,6 @@ const useYoutubeChannelNet = (payload: {
       };
       return { data, normalized };
     },
-    throwOnError: true,
   });
 };
 
