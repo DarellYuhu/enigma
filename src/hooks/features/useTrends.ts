@@ -52,7 +52,7 @@ export default function useTrends(payload: Payload) {
           return {
             date,
             ...record,
-          };
+          } as NormalizedData;
         }),
         month: data.data["1m"].datestr.map((date, index) => {
           const record = keys.reduce(
@@ -67,12 +67,46 @@ export default function useTrends(payload: Payload) {
           return {
             date,
             ...record,
-          };
+          } as NormalizedData;
         }),
       };
-      return { data, normalized, colors, keys };
+      const latestMonthly = normalized.month.slice(-2);
+      const rankMonthly = data.dic
+        .map((item) => ({
+          key: item.key,
+          name: item.name,
+          prev: ((latestMonthly[0][item.key] as number) * 100).toFixed(2),
+          curr: ((latestMonthly[1][item.key] as number) * 100).toFixed(2),
+        }))
+        .sort((a, b) => parseFloat(b.curr) - parseFloat(a.curr))
+        .map((item, index) => ({
+          ...item,
+          rank: index + 1,
+          diff: (parseFloat(item.curr) - parseFloat(item.prev)).toFixed(2),
+        }));
+
+      const latestWeekly = normalized.week.slice(-2);
+      const rankWeekly = data.dic
+        .map((item) => ({
+          key: item.key,
+          name: item.name,
+          prev: ((latestWeekly[0][item.key] as number) * 100).toFixed(2),
+          curr: ((latestWeekly[1][item.key] as number) * 100).toFixed(2),
+        }))
+        .sort((a, b) => parseFloat(b.curr) - parseFloat(a.curr))
+        .map((item, index) => ({
+          ...item,
+          rank: index + 1,
+          diff: (parseFloat(item.curr) - parseFloat(item.prev)).toFixed(2),
+        }));
+      const rank = { rankMonthly, rankWeekly };
+      return { data, normalized, colors, rank };
     },
   });
+}
+
+interface NormalizedData {
+  [key: string]: number | string;
 }
 
 type Data = {

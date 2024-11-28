@@ -12,6 +12,9 @@ import useTrends from "@/hooks/features/useTrends";
 import dateFormatter from "@/utils/dateFormatter";
 import useConfigStore from "./store/config-store";
 import Configuration from "./components/Configuration";
+import { TrendingDown, TrendingUp } from "lucide-react";
+import Datatable from "@/components/Datatable";
+import { ColumnDef } from "@tanstack/react-table";
 
 const TrendsPage = () => {
   const { category, level, details, since, until } = useConfigStore();
@@ -23,11 +26,13 @@ const TrendsPage = () => {
     until: until!,
   });
   return (
-    <div className="space-y-4">
-      <Configuration />
+    <div className="grid grid-cols-12 gap-3">
+      <div className="col-span-full">
+        <Configuration />
+      </div>
       {data && (
         <>
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Daily</CardTitle>
               <CardDescription>
@@ -51,9 +56,9 @@ const TrendsPage = () => {
                 data={data.normalized.day}
               />
             </CardContent>
-          </Card>
+          </Card> */}
 
-          <Card>
+          <Card className="col-span-8">
             <CardHeader>
               <CardTitle>Weekly</CardTitle>
               <CardDescription>
@@ -85,9 +90,45 @@ const TrendsPage = () => {
                 }
               />
             </CardContent>
+            {/* <CardFooter>
+              {data.rank.rankWeekly.map((item, index) => (
+                <div>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>{`#${index + 1} ${item.name}`}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex flex-row gap-3">
+                      <p>{item.prev}</p>
+                      {item.curr > item.prev ? (
+                        <TrendingUp className="text-green-500" />
+                      ) : (
+                        <TrendingDown className="text-red-500" />
+                      )}
+                      <p>{item.curr}</p>
+                    </CardContent>
+                  </Card>
+                  <p>
+                    {(parseFloat(item.curr) - parseFloat(item.prev)).toFixed(2)}
+                  </p>
+                </div>
+              ))}
+            </CardFooter> */}
           </Card>
 
-          <Card>
+          <Card className="col-span-4">
+            <CardHeader>
+              <CardTitle>Rank</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Datatable
+                columns={columns}
+                data={data.rank.rankWeekly}
+                pagination={false}
+              />
+            </CardContent>
+          </Card>
+
+          <Card className="col-span-8">
             <CardHeader>
               <CardTitle>Monthly</CardTitle>
               <CardDescription>
@@ -115,10 +156,60 @@ const TrendsPage = () => {
               />
             </CardContent>
           </Card>
+
+          <Card className="col-span-4">
+            <CardHeader>
+              <CardTitle>Rank</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Datatable
+                columns={columns}
+                data={data.rank.rankMonthly}
+                pagination={false}
+              />
+            </CardContent>
+          </Card>
         </>
       )}
     </div>
   );
 };
+
+const columns: ColumnDef<
+  NonNullable<ReturnType<typeof useTrends>["data"]>["rank"]["rankMonthly"]["0"]
+>[] = [
+  {
+    accessorKey: "rank",
+    header: "Rank",
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "curr",
+    header: "Current",
+  },
+  {
+    accessorKey: "prev",
+    header: "Previous",
+  },
+  {
+    accessorKey: "diff",
+    header: "Change",
+    cell({ row }) {
+      return (
+        <span className="flex flex-row items-center gap-2">
+          {parseFloat(row.original.diff).toFixed(2)}
+          {parseFloat(row.original.diff) > 0 ? (
+            <TrendingUp className="text-green-500" />
+          ) : (
+            <TrendingDown className="text-red-500" />
+          )}
+        </span>
+      );
+    },
+  },
+];
 
 export default TrendsPage;

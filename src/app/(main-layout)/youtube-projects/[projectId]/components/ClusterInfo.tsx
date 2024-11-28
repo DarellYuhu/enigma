@@ -91,7 +91,25 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
             <div className="col-span-full lg:col-span-4 grid grid-cols-12 gap-4">
               <Card className="col-span-full">
                 <CardHeader className="p-4">
-                  <CardTitle className="text-base">Metrics</CardTitle>
+                  <CardTitle className="text-base">Overview Metrics</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-row justify-evenly">
+                    <div className="flex flex-col items-center">
+                      {abbreviateNumber(item.num_authors)}
+                      <p className="text-sm">Channels</p>
+                    </div>
+                    <Separator orientation="vertical" className="h-11" />
+                    <div className="flex flex-col items-center">
+                      {abbreviateNumber(item.num_contents)}
+                      <p className="text-sm">Contents</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="col-span-full">
+                <CardHeader className="p-4">
+                  <CardTitle className="text-base">Content Metrics</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-row justify-evenly">
@@ -109,7 +127,6 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
                       {abbreviateNumber(item.total_comments)}
                       <p className="text-sm">Comments</p>
                     </div>
-                    <Separator orientation="vertical" className="h-11" />
                   </div>
                 </CardContent>
               </Card>

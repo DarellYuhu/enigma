@@ -79,7 +79,7 @@ const data = {
   },
   navMain: [
     {
-      title: "Trends",
+      title: "Online Public Attention",
       url: "trends",
       icon: TrendingUp,
       isActive: true,
