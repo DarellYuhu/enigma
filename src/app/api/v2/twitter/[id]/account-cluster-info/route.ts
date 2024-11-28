@@ -6,8 +6,8 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const searchParams = request.nextUrl.searchParams;
-  // const date = searchParams.get("date");
-  // const window = searchParams.get("window");
+  const date = searchParams.get("date");
+  const window = searchParams.get("window");
   const cluster = searchParams.get("cluster");
   const response = await fetch(
     `${await getTwitterApi()}/api/v2/project/clusters`,
@@ -16,8 +16,8 @@ export async function GET(
       body: JSON.stringify({
         type: "accountNetwork",
         project: params.id,
-        date: "2024-11-23",
-        window: 1,
+        date,
+        window,
         cluster,
       }),
       headers: {

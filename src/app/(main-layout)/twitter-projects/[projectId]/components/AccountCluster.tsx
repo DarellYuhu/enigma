@@ -58,7 +58,7 @@ const AccountCluster = ({ projectId }: { projectId: string }) => {
     cluster: account,
     date,
     projectId,
-    window: 3,
+    window: 1,
   });
 
   return (

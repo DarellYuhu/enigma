@@ -13,6 +13,7 @@ const Evolution = () => {
     since: adjustDateByFactor(-1, date),
     until: date,
   });
+  if (!Array.isArray(data?.flow)) return null;
   return <div className="h-full">{data && <SankeyChartJs item={data} />}</div>;
 };
 
