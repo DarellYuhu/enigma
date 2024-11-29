@@ -17,7 +17,7 @@ type ConfigAction = {
 };
 
 const useConfigStore = create<ConfigState & ConfigAction>((set) => ({
-  category: "1",
+  category: "2",
   level: "1",
   details: "PH-00",
   since: adjustDateByFactor(-360, new Date()),

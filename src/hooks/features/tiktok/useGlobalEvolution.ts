@@ -1,5 +1,6 @@
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 type Payload = {
   since: Date;
@@ -10,16 +11,15 @@ export default function useGlobalEvolution(payload: Payload) {
     queryKey: [
       "tiktok",
       "global-evolution",
-      payload.since.toISOString().split("T")[0],
-      payload.until.toISOString().split("T")[0],
+      format(payload.since, "yyyy-MM-dd"),
+      format(payload.until, "yyyy-MM-dd"),
     ],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v2/tiktok/evolution?since=${
-          payload.since.toISOString().split("T")[0]
-        }&until=${
-          adjustDateByFactor(1, payload.until).toISOString().split("T")[0]
-        }`
+        `/api/v2/tiktok/evolution?since=${format(
+          payload.since,
+          "yyyy-MM-dd"
+        )}&until=${format(adjustDateByFactor(1, payload.until), "yyyy-MM-dd")}`
       );
       const data: GlobalEvolutionData = await response.json();
       return data;

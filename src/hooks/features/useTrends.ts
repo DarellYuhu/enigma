@@ -1,5 +1,6 @@
 import generateNodeColors from "@/utils/generateNodeColors";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 type Payload = {
   category: string;
@@ -16,9 +17,10 @@ export default function useTrends(payload: Payload) {
       const response = await fetch(
         `/api/v2/trends?category=${payload.category}&level=${
           payload.level
-        }&since=${payload.since.toISOString().split("T")[0]}&until=${
-          payload.until.toISOString().split("T")[0]
-        }&details=${payload.details}`
+        }&since=${format(payload.since, "yyyy-MM-dd")}&until=${format(
+          payload.until,
+          "yyyy-MM-dd"
+        )}&details=${payload.details}`
       );
       const data: TrendsData = await response.json();
       const keys = data.dic.map((item) => item.key);

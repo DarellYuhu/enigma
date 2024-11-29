@@ -1,5 +1,6 @@
 import { COLORS } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 type Payload = { projectId: string; window: number; date: Date };
 
@@ -7,7 +8,7 @@ const queryFn = async (payload: Payload) => {
   const response = await fetch(
     `/api/v2/tiktok/${payload.projectId}/interest-network?window=${
       payload.window
-    }&date=${payload.date.toISOString().split("T")[0]}`
+    }&date=${format(payload.date, "yyyy-MM-dd")}`
   );
   const data: InterestNetwork2 = await response.json();
   const nodes = data.network.nodes.map((node) => ({

@@ -1,6 +1,7 @@
 import { VisData } from "@/components/VisGraph";
 import generateNodeColors from "@/utils/generateNodeColors";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 const useYoutubeChannelNet = (payload: {
   projectId: string;
@@ -17,9 +18,10 @@ const useYoutubeChannelNet = (payload: {
     ],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v2/youtube/${payload.projectId}/channel-net?date=${
-          payload.date.toISOString().split("T")[0]
-        }&window=${payload.window}`
+        `/api/v2/youtube/${payload.projectId}/channel-net?date=${format(
+          payload.date,
+          "yyyy-MM-dd"
+        )}&window=${payload.window}`
       );
       const data: ChannelNetwork = await response.json();
       if (data.network.nodes.length === 0) return null;

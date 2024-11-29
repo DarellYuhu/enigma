@@ -5,6 +5,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "./ui/chart";
+import { format } from "date-fns";
 
 type Props = {
   config: { dataKey: string; labelKey: string; label: string; color: string }[];
@@ -15,7 +16,7 @@ const RechartMultiLine = ({
   config,
   data,
   tickFormatter = (value) =>
-    value ? new Date(value).toISOString().split("T")[0] : "",
+    value ? format(new Date(value), "yyyy-MM-dd") : "",
 }: Props) => {
   return (
     <ChartContainer

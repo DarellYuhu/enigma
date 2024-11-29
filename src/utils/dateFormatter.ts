@@ -1,9 +1,11 @@
+import { format } from "date-fns";
+
 type Type = "ISO" | "DMY" | "MY" | "MD" | "M";
 
 export default function dateFormatter(type: Type, date: Date) {
   switch (type) {
     case "ISO":
-      return date.toISOString().split("T")[0];
+      return format(date, "yyyy-MM-dd");
     case "DMY":
       return `${date.getDate()} ${date.toLocaleString("default", {
         month: "long",

@@ -1,4 +1,5 @@
 import { getTiktokApi } from "@/app/api/utils";
+import { format } from "date-fns";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -14,7 +15,7 @@ export async function GET(
     {
       method: "POST",
       body: JSON.stringify({
-        date: new Date(date || "").toISOString().split("T")[0],
+        date: format(new Date(date || ""), "yyyy-MM-dd"),
         window,
         cluster: params.id,
       }),

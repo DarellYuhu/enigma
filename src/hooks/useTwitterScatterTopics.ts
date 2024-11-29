@@ -2,15 +2,17 @@ import { CosmosLink, CosmosNode } from "@/components/Graph";
 import generateNodeColors from "@/utils/generateNodeColors";
 import { CosmographData } from "@cosmograph/react";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 const useTwitterScatterTopics = (payload: { project: string; date: Date }) => {
   return useQuery({
     queryKey: ["twitterScatterTopics", payload.project],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v1/twitter/${
-          payload.project
-        }/scatter-topics?date=${payload.date?.toISOString()}`
+        `/api/v1/twitter/${payload.project}/scatter-topics?date=${format(
+          payload.date,
+          "yyyy-MM-dd"
+        )}`
       );
 
       const data: ScatterTopics = await response.json();

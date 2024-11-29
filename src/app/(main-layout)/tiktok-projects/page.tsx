@@ -41,6 +41,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { badgeVariants } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 type Project = {
   projectId: string;
@@ -166,9 +167,10 @@ const columns: ColumnProps = (isDisabled, setSelected) => [
       return (
         <Link
           className={badgeVariants({ variant: "default" })}
-          href={`/tiktok-projects/${props.row.original.projectId}?date=${
-            new Date(props.row.original.lastUpdate).toISOString().split("T")[0]
-          }`}
+          href={`/tiktok-projects/${props.row.original.projectId}?date=${format(
+            new Date(props.row.original.lastUpdate),
+            "yyyy-MM-dd"
+          )}`}
         >
           {props.row.original.projectName}
         </Link>
