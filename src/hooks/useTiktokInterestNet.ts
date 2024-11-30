@@ -2,6 +2,7 @@ import { CosmosLink, CosmosNode } from "@/components/Graph";
 import { COLORS } from "@/constants";
 import { CosmographData } from "@cosmograph/react";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 export function useTiktokInterestNet(payload: {
   params: { projectId: string };
@@ -15,8 +16,8 @@ export function useTiktokInterestNet(payload: {
         method: "POST",
         body: JSON.stringify({
           project: payload.params.projectId,
-          since: payload.graphDate.from?.toISOString().split("T")[0],
-          until: payload.graphDate.to?.toISOString().split("T")[0],
+          since: format(payload.graphDate.from!, "yyyy-MM-dd"),
+          until: format(payload.graphDate.to!, "yyyy-MM-dd"),
           string: payload.graphQuery,
         }),
         headers: {

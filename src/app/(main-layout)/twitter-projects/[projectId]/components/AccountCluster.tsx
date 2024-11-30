@@ -51,14 +51,14 @@ const AccountCluster = ({ projectId }: { projectId: string }) => {
   const { date } = useAccountStore();
   const { data } = useTwitterAccountNet({
     projectId,
-    Window: 3,
+    Window: 1,
     date,
   });
   const clusterInfo = useTwitterAccountClusterInfo({
     cluster: account,
     date,
     projectId,
-    window: 3,
+    window: 1,
   });
 
   return (

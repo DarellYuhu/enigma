@@ -1,5 +1,6 @@
 import normalizeChannelVids from "@/app/(main-layout)/youtube-projects/[projectId]/utils/normalizeChannelsVids";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 export function useYTChannelTopVids(payload: {
   params: { projectId: string };
@@ -21,9 +22,10 @@ export function useYTChannelTopVids(payload: {
       const response = await fetch(
         `/api/v1/youtube/projects/${payload.params.projectId}/top-channels/${
           payload.selectedTopChannel
-        }?since=${payload.from?.toISOString()}&until=${payload.to?.toISOString()}&string=${
-          payload.string
-        }`
+        }?since=${format(payload.from!, "yyyy-MM-dd")}&until=${format(
+          payload.to!,
+          "yyyy-MM-dd"
+        )}&string=${payload.string}`
       );
 
       const data: YoutubeChannelTopVids = await response.json();

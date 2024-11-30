@@ -37,7 +37,7 @@ const CreateSheet = () => {
       username: "",
       password: "",
       displayName: "",
-      role: "USER",
+      role: "VIEWER",
     },
   });
   const onSubmit = (values: z.infer<typeof create>) => {

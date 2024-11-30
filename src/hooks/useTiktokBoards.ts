@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 export function useTiktokBoards(paylaod: {
   projectId: string;
@@ -11,11 +12,10 @@ export function useTiktokBoards(paylaod: {
     enabled: false,
     queryFn: async () => {
       const response = await fetch(
-        `/api/v1/tiktok/${paylaod.projectId}/boards?since=${
-          paylaod.from?.toISOString().split("T")[0]
-        }&until=${paylaod.to?.toISOString().split("T")[0]}&string=${
-          paylaod.string
-        }`
+        `/api/v1/tiktok/${paylaod.projectId}/boards?since=${format(
+          paylaod.from!,
+          "yyyy-MM-dd"
+        )}&until=${format(paylaod.to!, "yyyy-MM-dd")}&string=${paylaod.string}`
       );
       const data: BoardsData = await response.json();
       const normalize = {

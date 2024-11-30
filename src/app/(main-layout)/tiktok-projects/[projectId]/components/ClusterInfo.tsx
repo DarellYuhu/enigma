@@ -10,7 +10,9 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
+import useTiktokInterestNet2, {
+  InterestNetwork2,
+} from "@/hooks/useTiktokInterestNet2";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import * as Tabs from "@radix-ui/react-tabs";
 import chroma from "chroma-js";
@@ -24,6 +26,14 @@ import {
   LinearGaugeSeries,
 } from "reaviz";
 import useGraphConfigStore from "../store/graph-config-store";
+import {
+  Tabs as TabsRoot,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import Datatable from "@/components/Datatable";
+import { ColumnDef } from "@tanstack/react-table";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -164,7 +174,37 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
                   Top Content and Author
                 </CardTitle>
               </CardHeader>
-              <CardContent className="h-80">Huhi</CardContent>
+              <CardContent>
+                <TabsRoot defaultValue="author">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="author">Author</TabsTrigger>
+                    <TabsTrigger value="content">Content</TabsTrigger>
+                  </TabsList>
+                  <ScrollArea className="h-80">
+                    <TabsContent value="author">
+                      {
+                        <Datatable
+                          initialPageSize={10}
+                          columns={authorColumns}
+                          data={item.top_authors}
+                          pagination={false}
+                        />
+                      }
+                    </TabsContent>
+                    <TabsContent value="content">
+                      {
+                        <Datatable
+                          initialPageSize={10}
+                          columns={contentColumns}
+                          data={item.contents}
+                          pagination={false}
+                        />
+                      }
+                    </TabsContent>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
+                </TabsRoot>
+              </CardContent>
             </Card>
             <div className="col-span-full h-96">
               <HorizontalBarChart
@@ -181,5 +221,39 @@ const ClusterInfo = ({ projectId }: { projectId: string }) => {
     </Tabs.Root>
   );
 };
+
+const authorColumns: ColumnDef<
+  InterestNetwork2["classes"][0]["top_authors"][0]
+>[] = [
+  {
+    accessorKey: "author_name",
+    header: "Author",
+  },
+  {
+    accessorKey: "play",
+    header: "Views",
+    cell(props) {
+      return abbreviateNumber(props.row.original.play);
+    },
+  },
+];
+
+const contentColumns: ColumnDef<InterestNetwork2["network"]["nodes"][0]>[] = [
+  {
+    accessorKey: "author_name",
+    header: "Author",
+  },
+  {
+    accessorKey: "desc",
+    header: "Description",
+  },
+  {
+    accessorKey: "play",
+    header: "Views",
+    cell(props) {
+      return abbreviateNumber(props.row.original.play);
+    },
+  },
+];
 
 export default ClusterInfo;

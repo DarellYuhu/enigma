@@ -41,6 +41,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { badgeVariants } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 type Project = {
   projectId: string;
@@ -76,7 +77,7 @@ const Projects = () => {
     <div className="flex flex-col gap-3">
       <Dialog>
         <DialogTrigger
-          disabled={session?.user.role === "USER"}
+          disabled={session?.user.role === "VIEWER"}
           className={cn(buttonVariants(), "self-end")}
         >
           Create New
@@ -139,7 +140,7 @@ const Projects = () => {
       <div className="card bg-white dark:bg-slate-600 rounded-md">
         <Dialog onOpenChange={(open) => !open && selected}>
           <Datatable
-            columns={columns(session?.user.role === "USER", setSelected)}
+            columns={columns(session?.user.role === "VIEWER", setSelected)}
             data={projectsQuery.data?.projects || []}
           />
           <DialogContent>
@@ -166,9 +167,10 @@ const columns: ColumnProps = (isDisabled, setSelected) => [
       return (
         <Link
           className={badgeVariants({ variant: "default" })}
-          href={`/tiktok-projects/${props.row.original.projectId}?date=${
-            new Date(props.row.original.lastUpdate).toISOString().split("T")[0]
-          }`}
+          href={`/tiktok-projects/${props.row.original.projectId}?date=${format(
+            new Date(props.row.original.lastUpdate),
+            "yyyy-MM-dd"
+          )}`}
         >
           {props.row.original.projectName}
         </Link>

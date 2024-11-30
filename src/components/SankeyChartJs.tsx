@@ -14,6 +14,9 @@ import {
 import { Chart as ChartJs } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
 import { HashtagEvolution } from "@/hooks/useTwitterHashtagEvo";
+import generateNodeColors from "@/utils/generateNodeColors";
+import { GlobalEvolutionData } from "@/hooks/features/tiktok/useGlobalEvolution";
+import { useEffect } from "react";
 
 Chart.register(
   SankeyController,
@@ -26,36 +29,60 @@ Chart.register(
 );
 
 const SankeyChartJs = ({ item }: { item: HashtagEvolution }) => {
-  const data = {
-    labels: ["From", "To", "Flow"],
-    datasets: [
-      {
-        label: "My sankey",
-        data: item.flow,
-        colorMode: "gradient",
-        alpha: 0.5,
-        labels: Object.fromEntries(
+  const objectMap = (
+    obj: GlobalEvolutionData["thread"],
+    fn: (v: GlobalEvolutionData["thread"][0]) => void
+  ) => Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, fn(v)]));
+
+  const colors =
+    item.class &&
+    Object.values(
+      generateNodeColors(
+        Array.from({ length: 10 }).map((_, index) => index.toString())
+      )
+    );
+  const assigned: Record<string, string> = {};
+  const cv = (name: string) => {
+    if (!colors) return "#808080";
+    return (
+      assigned[name] ||
+      (assigned[name] = colors[Object.keys(assigned).length % colors.length])
+    );
+  };
+  const option: any = {
+    labels: item["class"]
+      ? objectMap(item["thread"], (v) => item["class"]?.[v["class"]])
+      : Object.fromEntries(
           Object.entries(item.thread).map(([key, item]) => [key, item.class])
         ),
-        column: Object.fromEntries(
-          Object.entries(item.thread).map(([key, item]) => [key, item.window])
-        ),
-        priority: Object.fromEntries(
-          Object.entries(item.thread).map(([key, item]) => [key, item.window])
-        ),
-        size: "max", // or 'min' if flow overlap is preferred
-      },
-    ],
+    borderWidth: 2,
+    borderColor: "black",
+    alpha: 0.2,
+    label: "My sankey",
+    data: item.flow,
+    colorMode: "gradient",
+    column: Object.fromEntries(
+      Object.entries(item.thread).map(([key, item]) => [key, item.window])
+    ),
+
+    priority: Object.fromEntries(
+      Object.entries(item.thread).map(([key, item]) => [key, item.window])
+    ),
+    size: "max", // or 'min' if flow overlap is preferred
+  };
+  const data = {
+    labels: ["From", "To", "Flow"],
+    datasets: [option],
   };
 
   const options = {
     maintainAspectRatio: false,
     responsive: true,
+    font: { size: item.class ? 10 : 15 },
     sankey: {
       node: {
         label: {
           fontName: "Times-Roman",
-          fontSize: 20,
           bold: true,
           italic: true,
         },
@@ -107,10 +134,40 @@ const SankeyChartJs = ({ item }: { item: HashtagEvolution }) => {
       } as TooltipOptions,
     },
     scales: {
-      x: { display: false },
-      y: { display: false },
+      x: {
+        display: true,
+        ticks: {
+          beginAtZero: true,
+          callback: function (value: string) {
+            if (Number.isInteger(value)) {
+              return item["window"][value];
+            }
+          },
+          stepSize: 1,
+        },
+      },
+      y: { type: "linear", reverse: true, offset: true },
     },
   };
+
+  useEffect(() => {
+    if (item.class) {
+      option.colorFrom = (c: any) =>
+        item.class &&
+        cv(
+          item["class"][
+            item["thread"][c.dataset.data[c.dataIndex].from]["class"]
+          ].split(" | ")[0]
+        );
+      option.colorTo = (c: any) =>
+        item.class &&
+        cv(
+          item["class"][
+            item["thread"][c.dataset.data[c.dataIndex].to]["class"]
+          ].split(" | ")[0]
+        );
+    }
+  }, [item]);
 
   // @ts-ignore
   return <ChartJs type="sankey" data={data as any} options={options} />;

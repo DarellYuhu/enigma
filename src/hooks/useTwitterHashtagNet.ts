@@ -1,5 +1,6 @@
 import { COLORS } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { Edge, Node } from "vis-network/declarations/entry-esnext";
 
 type Props = {
@@ -13,9 +14,10 @@ const useTwitterHashtagNet = (payload: Props) => {
   return useQuery({
     queryFn: async () => {
       const response = await fetch(
-        `/api/v1/twitter/${
-          payload.project
-        }/hashtag-network?since=${payload.since?.toISOString()}&until=${payload.until?.toISOString()}&string=${
+        `/api/v1/twitter/${payload.project}/hashtag-network?since=${format(
+          payload.since!,
+          "yyyy-MM-dd"
+        )}&until=${format(payload.until!, "yyyy-MM-dd")}&string=${
           payload.string
         }`
       );

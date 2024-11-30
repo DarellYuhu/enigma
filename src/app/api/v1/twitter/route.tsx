@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { getTwitterApi } from "../../utils";
 
 export const POST = auth(async function POST(request) {
-  if (request.auth?.user.role === "USER")
+  if (request.auth?.user.role === "VIEWER")
     return Response.json({ message: "Unauthorized" }, { status: 403 });
   const { projectName, keywords } = await request.json();
   const response = await fetch(

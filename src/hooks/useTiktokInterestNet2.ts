@@ -1,5 +1,6 @@
 import { COLORS } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 type Payload = { projectId: string; window: number; date: Date };
 
@@ -7,7 +8,7 @@ const queryFn = async (payload: Payload) => {
   const response = await fetch(
     `/api/v2/tiktok/${payload.projectId}/interest-network?window=${
       payload.window
-    }&date=${payload.date.toISOString().split("T")[0]}`
+    }&date=${format(payload.date, "yyyy-MM-dd")}`
   );
   const data: InterestNetwork2 = await response.json();
   const nodes = data.network.nodes.map((node) => ({
@@ -28,9 +29,11 @@ const queryFn = async (payload: Payload) => {
         data: edge,
       })),
     },
-    hashtags: Object.values(data.classes)
-      .map((item, index) => ({
+    hashtags: Object.entries(data.classes)
+      .map(([key, item], index) => ({
         ...item,
+        contents: data.network.nodes.filter((node) => node.class === key),
+        id: key,
         color: COLORS[index],
         hashtags: item.hashtags
           ? item.hashtags.hashtags.map((tag, index) => ({
@@ -80,6 +83,11 @@ export type InterestNetwork2 = {
         hashtags: string[];
         values: number[];
       };
+      top_authors: {
+        author_id: string;
+        author_name: string;
+        play: number;
+      }[];
     }
   >;
   network: {

@@ -22,7 +22,7 @@ const TopCentralityAccount = ({ projectId }: { projectId: string }) => {
   const { date } = useAccountStore();
   const { data } = useTwitterAccountNet({
     projectId,
-    Window: 3,
+    Window: 1,
     date,
   });
 

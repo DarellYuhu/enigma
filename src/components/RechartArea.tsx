@@ -19,6 +19,7 @@ type Props = {
 const RechartArea = (props: Props) => {
   return (
     <ChartContainer
+      className="h-full w-full"
       config={
         {
           [props.dataKey]: {

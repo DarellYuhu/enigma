@@ -9,7 +9,7 @@ declare type Menus = {
     url: string;
     icon: any;
     isActive: boolean;
-    items: {
+    items?: {
       title: string;
       url: string;
     }[];

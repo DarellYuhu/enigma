@@ -1,13 +1,27 @@
 import { CosmosLink, CosmosNode } from "@/components/Graph";
 import { COLORS } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
-const useYoutubeVideoNet = (payload: { projectId: string; window: number }) => {
+const useYoutubeVideoNet = (payload: {
+  projectId: string;
+  window: number;
+  date: Date;
+}) => {
   return useQuery({
-    queryKey: ["youtube", "videoNet", payload.projectId, payload.window],
+    queryKey: [
+      "youtube",
+      "videoNet",
+      payload.projectId,
+      payload.window,
+      payload.date,
+    ],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v2/youtube/${payload.projectId}/video-net?window=${payload.window}`
+        `/api/v2/youtube/${payload.projectId}/video-net?date=${format(
+          payload.date,
+          "yyyy-MM-dd"
+        )}&window=${payload.window}`
       );
       const data: VideoNetwork = await response.json();
       const nodes = data.network.nodes.map((node) => ({
@@ -64,7 +78,9 @@ export type NodeVideoNetwork = {
   play: number;
   like: number;
   comment: number;
-  centrality: number;
+  centrality_pr: number;
+  centrality_bw: number;
+  centrality_dg: number;
 };
 
 type Class = {

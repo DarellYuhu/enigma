@@ -1,4 +1,5 @@
 import { getYoutubeApi } from "@/app/api/utils";
+import { format } from "date-fns";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -14,8 +15,8 @@ export async function GET(
     body: JSON.stringify({
       type: "video-stats",
       projectId: params.id,
-      since: new Date(since || "").toISOString().split("T")[0],
-      until: new Date(until || "").toISOString().split("T")[0],
+      since: format(new Date(since || ""), "yyyy-MM-dd"),
+      until: format(new Date(until || ""), "yyyy-MM-dd"),
       details: params.videoId,
     }),
     headers: {

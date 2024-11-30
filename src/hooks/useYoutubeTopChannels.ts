@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 export function useYoutubeTopChannels(payload: {
   params: { projectId: string };
@@ -12,9 +13,10 @@ export function useYoutubeTopChannels(payload: {
       const response = await fetch(
         `/api/v1/youtube/projects/${
           payload.params.projectId
-        }/top-channels?since=${payload.from?.toISOString()}&until=${payload.to?.toISOString()}&string=${
-          payload.string
-        }`
+        }/top-channels?since=${format(
+          payload.from!,
+          "yyyy-MM-dd"
+        )}&until=${format(payload.to!, "yyyy-MM-dd")}&string=${payload.string}`
       );
       const data: YoutubeTopChannels = await response.json();
       return data;

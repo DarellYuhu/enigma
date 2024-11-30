@@ -1,4 +1,5 @@
 import { getTwitterApi } from "@/app/api/utils";
+import { format } from "date-fns";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -15,7 +16,7 @@ export async function GET(
       body: JSON.stringify({
         type: "topics",
         project: params.id,
-        date: new Date(date || "").toISOString().split("T")[0],
+        date: format(new Date(date || ""), "yyyy-MM-dd"),
       }),
       headers: {
         "Content-Type": "application/json",

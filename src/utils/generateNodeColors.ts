@@ -1,9 +1,9 @@
-import { COLORS } from "@/constants";
+import { COLORS, GLASBEY_COLORS } from "@/constants";
 import chroma from "chroma-js";
 
 const generateNodeColors = (
   indicators: string[],
-  type: "chroma" | "other" = "chroma"
+  type: "chroma" | "other" | "random" = "chroma"
 ) => {
   let colors: string[];
 
@@ -20,7 +20,15 @@ const generateNodeColors = (
         (_, index) => COLORS[index % COLORS.length]
       );
       break;
+
+    case "random":
+      colors = Array.from({ length: indicators.length }).map(
+        (_, index) => GLASBEY_COLORS[index % GLASBEY_COLORS.length]
+      );
+      break;
   }
+
+  // shuffle(colors);
 
   return indicators.reduce((acc, curr, index) => {
     acc[curr] = colors[index];

@@ -2,6 +2,7 @@ import { CosmosLink, CosmosNode } from "@/components/Graph";
 import { COLORS } from "@/constants";
 import { CosmographData } from "@cosmograph/react";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 export function useYoutubeAudienceNet(payload: {
   params: { projectId: string };
@@ -20,9 +21,10 @@ export function useYoutubeAudienceNet(payload: {
       const response = await fetch(
         `/api/v1/youtube/projects/${
           payload.params.projectId
-        }/audience-network?since=${payload.from?.toISOString()}&until=${payload.to?.toISOString()}&string=${
-          payload.string
-        }`
+        }/audience-network?since=${format(
+          payload.from!,
+          "yyyy-MM-dd"
+        )}&until=${format(payload.to!, "yyyy-MM-dd")}&string=${payload.string}`
       );
 
       const data = await response.json();

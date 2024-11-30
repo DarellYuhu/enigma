@@ -3,6 +3,7 @@
 import {
   Clapperboard,
   ServerCrash,
+  TrendingUp,
   Twitter,
   UserCog,
   Youtube,
@@ -23,6 +24,7 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { SessionProvider } from "next-auth/react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -63,6 +65,7 @@ export default function MainLayout({
             </div>
           </SidebarInset>
         </SidebarProvider>
+        <ReactQueryDevtools position="right" />
       </QueryClientProvider>
     </SessionProvider>
   );
@@ -75,6 +78,12 @@ const data = {
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
+    {
+      title: "Online Public Attention",
+      url: "trends",
+      icon: TrendingUp,
+      isActive: true,
+    },
     {
       title: "Tiktok",
       url: "#",
@@ -91,7 +100,6 @@ const data = {
         },
       ],
     },
-
     {
       title: "Twitter",
       url: "#",

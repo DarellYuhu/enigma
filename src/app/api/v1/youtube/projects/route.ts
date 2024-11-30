@@ -4,7 +4,7 @@ import YoutubeSchema from "@/schemas/youtube";
 import { z } from "zod";
 
 export const POST = auth(async function POST(request) {
-  if (request.auth?.user.role === "USER")
+  if (request.auth?.user.role === "VIEWER")
     return Response.json({ message: "Unauthorized" }, { status: 403 });
   const {
     APIs,

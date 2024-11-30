@@ -30,7 +30,7 @@ export const PATCH = auth(async function PATCH(req) {
     runEvery,
     status,
   }: z.infer<typeof YoutubeSchema.update> = await req.json();
-  if (req.auth?.user.role === "USER")
+  if (req.auth?.user.role === "VIEWER")
     return Response.json({ message: "Unauthorized" }, { status: 403 });
   const response = await fetch(`${await getYoutubeApi()}/api/v1/project/edit`, {
     method: "POST",

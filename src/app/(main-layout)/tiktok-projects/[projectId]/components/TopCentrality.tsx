@@ -6,14 +6,23 @@ import { badgeVariants } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useTiktokInterestNet2, {
   GetInterestGraphs,
+  InterestNetwork2,
 } from "@/hooks/useTiktokInterestNet2";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import useGraphConfigStore from "../store/graph-config-store";
+import SingleSelect from "@/components/SingleSelect";
 
 const TopCentrality = ({ projectId }: { projectId: string }) => {
+  const [type, setType] =
+    useState<
+      keyof Pick<
+        InterestNetwork2["network"]["nodes"]["0"],
+        "centrality_pr" | "centrality_bw" | "centrality_dg"
+      >
+    >("centrality_pr");
   const { to } = useGraphConfigStore();
   const { data } = useTiktokInterestNet2({
     projectId,
@@ -22,21 +31,45 @@ const TopCentrality = ({ projectId }: { projectId: string }) => {
   });
   if (!data) return null;
   return (
-    <ScrollArea className="h-80">
-      <Datatable
-        data={data?.normalized.network.nodes
-          .sort((a, b) => b.data.centrality_pr - a.data.centrality_pr)
-          .slice(0, 10)
-          .map((item) => ({
-            ...item.data,
-          }))}
-        columns={columns}
-        pagination={false}
-        initialPageSize={10}
-      />
-    </ScrollArea>
+    <>
+      <ScrollArea className="h-80">
+        <Datatable
+          data={data?.normalized.network.nodes
+            .sort((a, b) => b.data[type] - a.data[type])
+            .slice(0, 10)
+            .map((item) => ({
+              ...item.data,
+            }))}
+          columns={columns}
+          pagination={false}
+          initialPageSize={10}
+        />
+      </ScrollArea>
+      <div className="absolute top-4 right-4">
+        <SingleSelect
+          selections={selections}
+          setValue={(value) => setType(value as typeof type)}
+          value={type}
+        />
+      </div>
+    </>
   );
 };
+
+const selections = [
+  {
+    label: "PageRank",
+    value: "centrality_pr",
+  },
+  {
+    label: "Betweenness",
+    value: "centrality_bw",
+  },
+  {
+    label: "Degree",
+    value: "centrality_dg",
+  },
+];
 
 const columns: ColumnDef<
   GetInterestGraphs["normalized"]["network"]["nodes"][0]["data"]
