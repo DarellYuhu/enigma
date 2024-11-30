@@ -24,7 +24,7 @@ export default function useTrends(payload: Payload) {
       );
       const data: TrendsData = await response.json();
       const keys = data.dic.map((item) => item.key);
-      const colors = Object.values(generateNodeColors(keys));
+      const colors = generateNodeColors(keys, "random");
       const normalized = {
         day: data.data["1d"].datestr.map((date, index) => {
           const record = keys.reduce(
