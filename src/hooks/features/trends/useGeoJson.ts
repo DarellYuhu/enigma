@@ -26,7 +26,7 @@ type PctData = {
   rank: number;
 };
 
-type GeoJson = {
+export type GeoJson = {
   pct_data: {
     "1d": PctData[];
     "1w": PctData[];

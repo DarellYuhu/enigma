@@ -1,3 +1,4 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import useTrends from "@/hooks/features/useTrends";
 import React from "react";
@@ -14,18 +15,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const Configuration = () => {
-  const {
-    category,
-    details,
-    level,
-    since,
-    until,
-    setCategory,
-    setDate,
-    setDetails,
-    setLevel,
-  } = useConfigStore();
+const Configuration = ({ details }: { details: string }) => {
+  const { category, level, since, until, setCategory, setDate, setLevel } =
+    useConfigStore();
   const { refetch } = useTrends({
     category,
     level,
@@ -57,10 +49,6 @@ const Configuration = () => {
             value={level}
             onChange={(e) => setLevel(e.target.value)}
           />
-        </div>
-        <div>
-          <Label>Details</Label>
-          <Input value={details} onChange={(e) => setDetails(e.target.value)} />
         </div>
         <div>
           <Label>Date Range</Label>
