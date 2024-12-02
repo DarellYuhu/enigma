@@ -21,12 +21,14 @@ export default function useActorNetwork(payload: Payload) {
           from: edge.from,
           to: edge.to,
         })),
-        nodes: data.network.nodes.map((node) => ({
-          shape: "text",
-          id: node.key,
-          label: node.name,
-          data: node,
-        })),
+        nodes: data.network.nodes
+          .filter((item) => item.is_mst !== 0)
+          .map((node) => ({
+            shape: "text",
+            id: node.key,
+            label: node.name,
+            data: node,
+          })),
       };
       return { data, normalized };
     },

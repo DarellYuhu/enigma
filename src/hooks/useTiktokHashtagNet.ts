@@ -1,4 +1,5 @@
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
+import dateFormatter from "@/utils/dateFormatter";
 import normalizeTagRelation from "@/utils/normalizeTagRelation";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -11,11 +12,10 @@ export function useTiktokHashtagNet(payload: {
   return useQuery({
     queryKey: [
       "trends",
-      "graphs",
-      "hashtagsNet",
+      "hashtag-net",
       payload.params.projectId,
-      payload.graphDate.from,
-      payload.graphDate.to,
+      payload.graphDate.from && dateFormatter("ISO", payload.graphDate.from),
+      payload.graphDate.to && dateFormatter("ISO", payload.graphDate.to),
     ],
     queryFn: async () => {
       const response = await fetch(
@@ -31,5 +31,6 @@ export function useTiktokHashtagNet(payload: {
       const data: TagRelationNetwork = await response.json();
       return { data, normalized: normalizeTagRelation(data) };
     },
+    enabled: !!payload.graphDate.from && !!payload.graphDate.to,
   });
 }

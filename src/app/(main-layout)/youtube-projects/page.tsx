@@ -12,6 +12,7 @@ import Link from "next/link";
 import { badgeVariants } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 const YoutubeProjects = () => {
   const [selected, setSelected] = useState<YoutubeProject | undefined>();
@@ -55,7 +56,9 @@ const columns: ColumnProps = (isDisabled, setSelected) => {
         return (
           <Link
             className={badgeVariants()}
-            href={`/youtube-projects/${props.row.original.projectID}`}
+            href={`/youtube-projects/${
+              props.row.original.projectID
+            }?date=${format(props.row.original.lastTracking, "yyyy-MM-dd")}`}
           >
             {props.row.original.projectName}
           </Link>

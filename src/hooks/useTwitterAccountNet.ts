@@ -1,11 +1,10 @@
 import { CosmosLink, CosmosNode } from "@/components/Graph";
 import generateNodeColors from "@/utils/generateNodeColors";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
 
 type Payload = {
   projectId: string;
-  date: Date;
+  date: string;
   Window: number;
 };
 
@@ -14,10 +13,7 @@ export default function useTwitterAccountNet(payload: Payload) {
     queryKey: ["twitter", "account-net", payload],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v2/twitter/${payload.projectId}/account-net?date=${format(
-          payload.date,
-          "yyyy-MM-dd"
-        )}&window=${payload.Window}`
+        `/api/v2/twitter/${payload.projectId}/account-net?date=${payload.date}&window=${payload.Window}`
       );
       const data: AccountNetwork = await response.json();
       const classes = Object.keys(data.classes);

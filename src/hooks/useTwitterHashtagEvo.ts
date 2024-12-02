@@ -1,24 +1,16 @@
-import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
 
 const useTwitterHashtagEvo = (payload: {
   project: string;
-  since?: Date;
-  until?: Date;
+  since?: string;
+  until?: string;
   string: string;
 }) => {
   return useQuery({
-    queryKey: ["twitterHashtagEvo", payload.project, payload.until],
+    queryKey: ["twitter", "hashtag-evo", payload.project, payload.until],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v1/twitter/${payload.project}/hashtag-evo?since=${format(
-          payload.since!,
-          "yyyy-MM-dd"
-        )}&until=${format(
-          adjustDateByFactor(1, payload.until!),
-          "yyyy-MM-dd"
-        )}&string=${payload.string}`
+        `/api/v1/twitter/${payload.project}/hashtag-evo?since=${payload.since}&until=${payload.until}&string=${payload.string}`
       );
       const data: HashtagEvolution = await response.json();
       return data;

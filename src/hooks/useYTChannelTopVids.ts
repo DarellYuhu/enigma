@@ -12,9 +12,8 @@ export function useYTChannelTopVids(payload: {
   return useQuery({
     queryKey: [
       "youtube",
-      "projects",
-      payload.params.projectId,
       "top-channels",
+      payload.params.projectId,
       payload.selectedTopChannel,
     ],
     enabled: !!payload.selectedTopChannel,

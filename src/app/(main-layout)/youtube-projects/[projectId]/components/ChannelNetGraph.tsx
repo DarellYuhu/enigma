@@ -2,10 +2,11 @@
 
 import VisGraph from "@/components/VisGraph";
 import useYoutubeChannelNet from "@/hooks/useYoutubeChannelNet";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import useSelectedChannelStore from "../store/selected-channel-store";
 import { DataSet } from "vis-data";
 import useConfigStore from "../store/config-store";
+import dateFormatter from "@/utils/dateFormatter";
 
 const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
   const { date } = useConfigStore();
@@ -13,7 +14,7 @@ const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
   const { data } = useYoutubeChannelNet({
     projectId: projectId,
     window: 5,
-    date,
+    date: dateFormatter("ISO", date),
   });
 
   useEffect(() => {

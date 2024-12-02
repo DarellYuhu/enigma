@@ -2,15 +2,16 @@
 
 import Graph from "@/components/Graph";
 import useYoutubeVideoNet from "@/hooks/useYoutubeVideoNet";
-import React from "react";
+
 import useConfigStore from "../store/config-store";
+import dateFormatter from "@/utils/dateFormatter";
 
 const VideoNetGraph = ({ projectId }: { projectId: string }) => {
   const { date } = useConfigStore();
   const { data } = useYoutubeVideoNet({
     projectId,
     window: 5,
-    date,
+    date: dateFormatter("ISO", date),
   });
   if (!data) return null;
   return <Graph data={data.normalized} />;

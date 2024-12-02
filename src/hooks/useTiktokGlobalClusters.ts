@@ -1,11 +1,12 @@
 import { VisData } from "@/components/VisGraph";
+import dateFormatter from "@/utils/dateFormatter";
 import generateNodeColors from "@/utils/generateNodeColors";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
 const useTiktokGlobalClusters = (payload: { window: number; date: Date }) => {
   return useQuery({
-    queryKey: ["tiktok", "global", "cluster", payload.date],
+    queryKey: ["tiktok", "global-cluster", dateFormatter("ISO", payload.date)],
     queryFn: async () => {
       const response = await fetch(
         `/api/v2/tiktok/cluster?date=${format(

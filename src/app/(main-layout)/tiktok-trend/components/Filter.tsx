@@ -10,7 +10,7 @@ import useGraphDateStore from "@/store/graph-date-store";
 import { useGraphQueryStore } from "@/store/graph-query-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 const StatisticsFilter = ({ projectId }: { projectId: string }) => {
   const { query, setQuery, reset: queryReset } = useQueryFilterStore();

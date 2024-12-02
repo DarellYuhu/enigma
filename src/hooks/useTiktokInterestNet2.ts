@@ -1,4 +1,5 @@
 import { COLORS } from "@/constants";
+import dateFormatter from "@/utils/dateFormatter";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
@@ -53,12 +54,12 @@ const useTiktokInterestNet2 = (payload: Payload) => {
     queryKey: [
       "tiktok",
       "interest-network",
-      "v2",
       payload.projectId,
       payload.window,
-      payload.date,
+      payload.date && dateFormatter("ISO", payload.date),
     ],
     queryFn: () => queryFn(payload),
+    enabled: !!payload.date,
   });
 };
 

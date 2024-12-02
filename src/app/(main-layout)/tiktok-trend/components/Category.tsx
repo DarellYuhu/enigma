@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import useCategoryStore from "@/store/category-store";
 import CategoryButton from "@/components/CategoryButton";
 import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";

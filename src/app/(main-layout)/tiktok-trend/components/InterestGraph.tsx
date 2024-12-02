@@ -4,7 +4,7 @@ import VisGraph, { VisData } from "@/components/VisGraph";
 import useTiktokGlobalClusters, {
   ClusterTrends,
 } from "@/hooks/useTiktokGlobalClusters";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DataSet } from "vis-data";
 import ClusterInfo from "./ClusterInfo";
 import useSelectionStore from "../hooks/selection-store";

@@ -29,6 +29,7 @@ import Datatable from "@/components/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import HorizontalBarChart from "@/components/HorizontalBarChart";
 import useAccountStore from "../store/account-config-store";
+import dateFormatter from "@/utils/dateFormatter";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -52,11 +53,11 @@ const AccountCluster = ({ projectId }: { projectId: string }) => {
   const { data } = useTwitterAccountNet({
     projectId,
     Window: 1,
-    date,
+    date: date ? dateFormatter("ISO", date) : "",
   });
   const clusterInfo = useTwitterAccountClusterInfo({
     cluster: account,
-    date,
+    date: date ? dateFormatter("ISO", date) : "",
     projectId,
     window: 1,
   });

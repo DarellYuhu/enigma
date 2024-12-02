@@ -1,26 +1,18 @@
-import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
 
 type Payload = {
   projectId: string;
-  since: Date;
-  until: Date;
+  since: string;
+  until: string;
   string: string;
 };
 
 export default function useTwitterClusterStats(payload: Payload) {
   return useQuery({
-    queryKey: ["twitter", "clusters", "stats", payload],
+    queryKey: ["twitter", "cluster-stats", payload],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v1/twitter/${payload.projectId}/cluster-statistics?since=${format(
-          payload.since,
-          "yyyy-MM-dd"
-        )}&until=${format(
-          adjustDateByFactor(1, payload.until),
-          "yyyy-MM-dd"
-        )}&string=${payload.string}`
+        `/api/v1/twitter/${payload.projectId}/cluster-statistics?since=${payload.since}&until=${payload.until}&string=${payload.string}`
       );
 
       const data: ClusterStats = await response.json();

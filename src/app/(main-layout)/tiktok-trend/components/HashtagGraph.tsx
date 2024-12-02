@@ -7,7 +7,7 @@ import { useTiktokHashtagNet } from "@/hooks/useTiktokHashtagNet";
 import useGraphDateStore from "@/store/graph-date-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import tagRelationExport from "@/utils/tagRelationExport";
-import React, { useState } from "react";
+import { useState } from "react";
 import { DataSet } from "vis-data";
 
 const HashtagGraph = ({ projectId }: { projectId: string }) => {

@@ -6,7 +6,7 @@ import { Toggle } from "@/components/ui/toggle";
 import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
 import { interestNetExport2 } from "@/utils/interestNetExport";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import useGraphConfigStore from "../store/graph-config-store";
 
 const InterestGraph = ({ projectId }: { projectId: string }) => {

@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 import useClusterStore from "../store/cluster-store";
 import useAccountStore from "../store/account-config-store";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
+import dateFormatter from "@/utils/dateFormatter";
 
 const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const { setAccount } = useClusterStore();
@@ -37,7 +38,7 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const { data } = useTwitterAccountNet({
     projectId,
     Window: 1,
-    date,
+    date: date ? dateFormatter("ISO", date) : "",
   });
   const boards = useTwitterBoards({
     project: projectId,

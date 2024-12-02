@@ -3,13 +3,13 @@ import { format } from "date-fns";
 
 type Payload = {
   projectId: string;
-  date: Date;
+  date: string;
   window: number;
   cluster?: string;
 };
 export default function useTwitterHashtageClusterInfo(payload: Payload) {
   return useQuery({
-    queryKey: ["twitter", "hashtag", "cluster", payload],
+    queryKey: ["twitter", "hashtag-cluster", payload],
     queryFn: async () => {
       const response = await fetch(
         `/api/v2/twitter/${

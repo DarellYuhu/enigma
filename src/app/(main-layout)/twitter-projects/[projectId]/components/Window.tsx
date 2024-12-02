@@ -7,6 +7,7 @@ import useTwitterHashtagNet from "@/hooks/useTwitterHashtagNet";
 import useTwitterScatterTopics from "@/hooks/useTwitterScatterTopics";
 import useGraphDateStore from "@/store/graph-date-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";
+import dateFormatter from "@/utils/dateFormatter";
 import { useEffect, useState } from "react";
 
 const Window = ({ projectId }: { projectId: string }) => {
@@ -36,8 +37,8 @@ const Window = ({ projectId }: { projectId: string }) => {
   const hashtagEvo = useTwitterHashtagEvo({
     project: projectId,
     string: query,
-    since: from,
-    until: to,
+    since: from ? dateFormatter("ISO", from) : "",
+    until: to ? dateFormatter("ISO", to) : "",
   });
 
   useEffect(() => {

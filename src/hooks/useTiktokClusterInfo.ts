@@ -1,3 +1,4 @@
+import dateFormatter from "@/utils/dateFormatter";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
@@ -8,8 +9,10 @@ const useTiktokClusterInfo = (payload: {
 }) => {
   return useQuery({
     queryKey: [
-      "tiktok-global-cluster",
-      payload.date,
+      "tiktok",
+      "globa-cluster",
+      "info",
+      payload.date && dateFormatter("ISO", payload.date),
       payload.window,
       payload.cluster,
     ],

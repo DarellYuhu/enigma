@@ -7,7 +7,7 @@ import { useTiktokBoards } from "@/hooks/useTiktokBoards";
 import { useTiktokTrends } from "@/hooks/useTiktokTrends";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 const StatisticsFilter = ({ projectId }: { projectId: string }) => {
   const { query, setQuery, reset: queryReset } = useQueryFilterStore();
@@ -50,7 +50,9 @@ const StatisticsFilter = ({ projectId }: { projectId: string }) => {
         value={query}
         placeholder="Filter"
       />
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button onClick={handleSubmit} disabled={!from || !to}>
+        Submit
+      </Button>
     </div>
   );
 };

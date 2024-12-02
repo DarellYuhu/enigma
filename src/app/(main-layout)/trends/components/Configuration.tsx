@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import useTrends from "@/hooks/features/useTrends";
-import React from "react";
+
 import useConfigStore from "../store/config-store";
 import { Label } from "@/components/ui/label";
 import DateRangePicker from "@/components/ui/date-range-picker";
