@@ -24,18 +24,22 @@ export default function useActorNetwork(payload: Payload) {
         nodes: data.network.nodes
           .filter((item) => item.is_mst !== 0)
           .map((node) => ({
-            shape: "text",
+            shape: "dot",
             id: node.key,
             label: node.name,
             data: node,
+            color: "#1d4ed8",
           })),
       };
-      return { data, normalized };
+      const centrality = data.network.nodes
+        .sort((a, b) => b.centrality - a.centrality)
+        .slice(0, 10);
+      return { data, normalized, centrality };
     },
   });
 }
 
-type ActorNetwork = {
+export type ActorNetwork = {
   date: string;
   network: {
     edges: {

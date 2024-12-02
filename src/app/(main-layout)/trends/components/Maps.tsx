@@ -2,15 +2,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useConfigStore from "../store/config-store";
 import dateFormatter from "@/utils/dateFormatter";
-import useGeoJson, { GeoJson } from "@/hooks/features/trends/useGeoJson";
+import useGeoJson from "@/hooks/features/trends/useGeoJson";
 import { Fragment, useCallback, useState } from "react";
 import { Layer, Map as MapGl, Source } from "react-map-gl";
 import { useTheme } from "next-themes";
 import PH_JSON from "@/data/geojson/ph.json";
 import { MAP_THEME } from "@/constants";
 import useTrends from "@/hooks/features/useTrends";
+import SingleSelect from "@/components/SingleSelect";
+import RechartPie from "@/components/RechartPie";
 
 const Maps = ({ details }: { details: string }) => {
+  const [type, setType] = useState<"pct_total" | "1w" | "1m">("1m");
   const { theme } = useTheme();
   const { category, since, until, level } = useConfigStore();
   const trends = useTrends({
@@ -26,7 +29,7 @@ const Maps = ({ details }: { details: string }) => {
     until: until && dateFormatter("ISO", until),
   });
   const [feature, setFeature] = useState<{
-    data?: GeoJson[0];
+    data?: NonNullable<ReturnType<typeof useGeoJson>["data"]>[0];
     x: number;
     y: number;
   } | null>(null);
@@ -56,11 +59,11 @@ const Maps = ({ details }: { details: string }) => {
     [geoJson.data]
   );
   return (
-    <Card>
+    <Card className="relative">
       <CardHeader>
         <CardTitle>Maps</CardTitle>
       </CardHeader>
-      <CardContent className="h-96">
+      <CardContent className="h-[450px]">
         {geoJson.data && trends.data && (
           <>
             <MapGl
@@ -95,7 +98,7 @@ const Maps = ({ details }: { details: string }) => {
                       property: "regcode",
                       stops: geoJson.data.map((item) => [
                         item.rid,
-                        trends.data.colors[item.pct_total[0].key],
+                        trends.data.colors[item[type][0].key],
                       ]),
                     },
                     "fill-opacity": 0.5,
@@ -104,27 +107,62 @@ const Maps = ({ details }: { details: string }) => {
               </Source>
               {feature && (
                 <Card
+                  className="backdrop-blur-md bg-white/30"
                   style={{
                     top: feature.y,
                     left: feature.x,
                     position: "absolute",
-                    zIndex: 10,
+                    zIndex: 100,
                   }}
                 >
                   <CardHeader>
                     <CardTitle>{feature.data?.region}</CardTitle>
                   </CardHeader>
-                  <CardContent className="grid grid-cols-12 gap-x-2">
-                    {feature.data?.pct_total.map((item, index) => (
-                      <Fragment key={index}>
-                        <span className="col-span-8">
-                          #{item.rank} {item.name}:
-                        </span>
-                        <div className="col-span-4">
-                          {(item.value * 100).toFixed(2)}
-                        </div>
-                      </Fragment>
-                    ))}
+                  <CardContent className="flex flex-row">
+                    <div className="grid grid-cols-12 gap-x-2">
+                      {feature.data?.[type].map((item, index) => (
+                        <Fragment key={index}>
+                          <div
+                            className={
+                              "col-span-1 shrink-0 rounded-[2px] h-2.5 w-2.5 self-center"
+                            }
+                            style={{
+                              backgroundColor: trends.data.colors[item.key],
+                            }}
+                          />
+                          <span className="col-span-7">
+                            #{item.rank} {item.name}:
+                          </span>
+                          <div className="col-span-4">
+                            {(item.value * 100).toFixed(2)}
+                          </div>
+                        </Fragment>
+                      ))}
+                    </div>
+                    <div>
+                      <div className="h-20 w-20">
+                        {feature.data && (
+                          <RechartPie
+                            tooltip={false}
+                            outerRadius={40}
+                            innerRadius={20}
+                            config={feature.data[type].reduce((acc, curr) => {
+                              acc[curr.key] = {
+                                label: curr.name,
+                                color: trends.data.colors[curr.key],
+                              };
+                              return acc;
+                            }, {} as Record<string, { label: string; color: string }>)}
+                            data={feature.data[type].map((item) => ({
+                              ...item,
+                              fill: trends.data.colors[item.key],
+                            }))}
+                            dataKey="value"
+                            labelKey="key"
+                          />
+                        )}
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               )}
@@ -132,8 +170,30 @@ const Maps = ({ details }: { details: string }) => {
           </>
         )}
       </CardContent>
+      <div className="absolute top-4 right-6">
+        <SingleSelect
+          selections={selections}
+          value={type}
+          setValue={(value) => setType(value as typeof type)}
+        />
+      </div>
     </Card>
   );
 };
+
+const selections = [
+  {
+    label: "Last 1m",
+    value: "1m",
+  },
+  {
+    label: "Last 1w",
+    value: "1w",
+  },
+  {
+    label: "Total",
+    value: "pct_total",
+  },
+];
 
 export default Maps;

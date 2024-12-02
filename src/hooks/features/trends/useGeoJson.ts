@@ -13,7 +13,16 @@ export default function useGeoJson(payload: Payload) {
         `/api/v2/trends/geo-json?category=${payload.category}&since=${payload.since}&until=${payload.until}`
       );
       const data: GeoJson = await response.json();
-      return data;
+      const normalized = data.map((item) => {
+        const { pct_last, ...rest } = item;
+
+        const data = {
+          ...rest,
+          ...pct_last,
+        };
+        return data;
+      });
+      return normalized;
     },
     enabled: !!payload.since && !!payload.until && !!payload.category,
   });
@@ -27,7 +36,7 @@ type PctData = {
 };
 
 export type GeoJson = {
-  pct_data: {
+  pct_last: {
     "1d": PctData[];
     "1w": PctData[];
     "1m": PctData[];

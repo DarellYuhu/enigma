@@ -126,20 +126,27 @@ const VisGraph = ({
       } else {
         network.current?.setOptions({
           nodes: {
-            // opacity: 0.0,
-            borderWidth: 0.1,
+            opacity: 1,
+            borderWidth: 0,
+            size: 15,
+            font: {
+              size: 15,
+            },
           },
           edges: {
-            width: 0.8,
+            width: 1.5,
+            smooth: false,
           },
           physics: {
-            solver: "forceAtlas2Based",
-            forceAtlas2Based: {
-              damping: 0.6,
-              springLength: 80,
+            barnesHut: {
+              gravitationalConstant: -16800,
+              centralGravity: 0.1,
+              springLength: 130,
+              springConstant: 1,
+              damping: 0.5,
+              avoidOverlap: 0.5,
             },
-            minVelocity,
-            stabilization: false,
+            minVelocity: 0.75,
           },
         });
       }

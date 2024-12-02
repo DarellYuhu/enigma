@@ -1,5 +1,4 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import useTrends from "@/hooks/features/useTrends";
 
 import useConfigStore from "../store/config-store";
@@ -9,15 +8,12 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 
 const Configuration = ({ details }: { details: string }) => {
-  const { category, level, since, until, setCategory, setDate, setLevel } =
-    useConfigStore();
+  const { category, level, since, until, setDate } = useConfigStore();
   const { refetch } = useTrends({
     category,
     level,
@@ -28,28 +24,28 @@ const Configuration = ({ details }: { details: string }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Configuration</CardTitle>
+        {/* <CardTitle>Configuration</CardTitle>
         <CardDescription>
           Modify this configuration to your needs
-        </CardDescription>
+        </CardDescription> */}
       </CardHeader>
       <CardContent className="space-y-4">
-        <div>
+        {/* <div>
           <Label>Category</Label>
           <Input
             type="number"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           />
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <Label>Level</Label>
           <Input
             type="number"
             value={level}
             onChange={(e) => setLevel(e.target.value)}
           />
-        </div>
+        </div> */}
         <div>
           <Label>Date Range</Label>
           <DateRangePicker
@@ -61,7 +57,7 @@ const Configuration = ({ details }: { details: string }) => {
       </CardContent>
       <CardFooter>
         <Button disabled={!since || !until} onClick={() => refetch()}>
-          Fetch
+          Apply
         </Button>
       </CardFooter>
     </Card>

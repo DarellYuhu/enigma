@@ -36,6 +36,7 @@ enum Role {
   VIEWER
   ANALYST
   ADMIN
+  CREATIVE
 }
 
 enum Type {

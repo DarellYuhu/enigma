@@ -16,10 +16,12 @@ const ActorNetwork = ({ details }: { details: string }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Actor Network</CardTitle>
+        <CardTitle>Correlation Network</CardTitle>
       </CardHeader>
-      <CardContent className="h-80">
-        <VisGraph data={data.normalized} type="interestNet" />
+      <CardContent>
+        <div className="h-80">
+          <VisGraph data={data.normalized} type="interestNet" />
+        </div>
       </CardContent>
     </Card>
   );

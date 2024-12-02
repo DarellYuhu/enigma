@@ -4,7 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useTrends from "@/hooks/features/useTrends";
 import useConfigStore from "../store/config-store";
 import { ColumnDef } from "@tanstack/react-table";
-import { TrendingDown, TrendingUp } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Minus,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
+import React from "react";
 
 const Rank = ({ details }: { details: string }) => {
   const { category, level, since, until, type } = useConfigStore();
@@ -28,6 +35,7 @@ const Rank = ({ details }: { details: string }) => {
           columns={columns}
           data={data.rank[type]}
           pagination={false}
+          initialPageSize={10}
         />
       </CardContent>
     </Card>
@@ -39,7 +47,32 @@ const columns: ColumnDef<
 >[] = [
   {
     accessorKey: "rank",
-    header: "Rank",
+    header: "Rank (#)",
+    cell({ row }) {
+      let icon: JSX.Element;
+      if (row.original.rankDiff > 0) {
+        icon = <ChevronUp height={12} className="text-green-500" />;
+      } else if (row.original.rankDiff < 0) {
+        icon = <ChevronDown height={12} className="text-red-500" />;
+      } else {
+        icon = <Minus height={12} />;
+      }
+      return row.original.rankDiff !== 0 ? (
+        <span className="flex flex-row items-center gap-5">
+          {row.original.rank}{" "}
+          <span
+            className="flex flex-row items-center text-[11px]"
+            style={{
+              color: row.original.rankDiff > 0 ? "#22c55e" : "#ef4444",
+            }}
+          >
+            {icon} {Math.abs(row.original.rankDiff)}
+          </span>
+        </span>
+      ) : (
+        <span>{row.original.rank}</span>
+      );
+    },
   },
   {
     accessorKey: "name",
@@ -47,15 +80,15 @@ const columns: ColumnDef<
   },
   {
     accessorKey: "curr",
-    header: "Current",
+    header: "Current (%)",
   },
   {
     accessorKey: "prev",
-    header: "Previous",
+    header: "Previous (%)",
   },
   {
     accessorKey: "diff",
-    header: "Change",
+    header: "Change (%)",
     cell({ row }) {
       return (
         <span className="flex flex-row items-center gap-2">

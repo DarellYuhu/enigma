@@ -11,9 +11,13 @@ import useTrends from "@/hooks/features/useTrends";
 import dateFormatter from "@/utils/dateFormatter";
 import useConfigStore from "../store/config-store";
 import SingleSelect from "@/components/SingleSelect";
+import MultipleSelector from "@/components/MultiSelect";
+import { useCallback, useEffect, useState } from "react";
 
 const TimeSeries = ({ details }: { details: string }) => {
   const { category, level, since, until, type, setType } = useConfigStore();
+  const [selected, setSelected] =
+    useState<{ label: string; value: string }[]>();
   const { data } = useTrends({
     category,
     level,
@@ -21,7 +25,35 @@ const TimeSeries = ({ details }: { details: string }) => {
     since: since!,
     until: until!,
   });
+
+  const timeSeriesData = useCallback(() => {
+    if (!data) return null;
+    return data.normalized[type].map((item, index) => {
+      const record = selected?.reduce((acc: Record<string, number>, curr) => {
+        acc[curr.value] = parseFloat(
+          data.normalized[type][index][curr.value] as string
+        );
+        return acc;
+      }, {});
+      return {
+        date: item.date,
+        ...record,
+      };
+    });
+  }, [data, selected, type]);
+
+  useEffect(() => {
+    if (data) {
+      setSelected(
+        data.rank.week
+          .slice(0, 5)
+          .map((item) => ({ label: item.name, value: item.key }))
+      );
+    }
+  }, [data]);
+
   if (!data) return null;
+
   return (
     <Card>
       <CardHeader>
@@ -35,11 +67,30 @@ const TimeSeries = ({ details }: { details: string }) => {
             )
           )}
         </CardDescription>
-        <SingleSelect
-          selections={selections}
-          value={type}
-          setValue={(value) => setType(value as typeof type)}
-        />
+        <div className="flex gap-2">
+          <SingleSelect
+            selections={selections}
+            value={type}
+            setValue={(value) => setType(value as typeof type)}
+          />
+          <MultipleSelector
+            commandProps={{
+              label: "Select frameworks",
+            }}
+            value={selected}
+            defaultOptions={data.data.dic.map((item) => ({
+              label: item.name,
+              value: item.key,
+            }))}
+            onChange={setSelected}
+            placeholder="Select frameworks"
+            hideClearAllButton
+            hidePlaceholderWhenSelected
+            emptyIndicator={
+              <p className="text-center text-sm">No results found</p>
+            }
+          />
+        </div>
       </CardHeader>
       <CardContent className="h-80">
         <RechartMultiLine
@@ -49,7 +100,9 @@ const TimeSeries = ({ details }: { details: string }) => {
             label: item.name,
             labelKey: "date",
           }))}
-          data={data.normalized[type]}
+          data={
+            selected?.length !== 0 ? timeSeriesData()! : data.normalized[type]
+          }
           tickFormatter={(value) =>
             value
               ? new Date(value).toLocaleString("en-US", {

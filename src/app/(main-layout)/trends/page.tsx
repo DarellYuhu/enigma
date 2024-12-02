@@ -3,6 +3,9 @@ import TimeSeries from "./components/TimeSeries";
 import Rank from "./components/Rank";
 import Maps from "./components/Maps";
 import ActorNetwork from "./components/ActorNetwork";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import TopCentrality from "./components/TopCentrality";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const TrendsPage = () => {
   return (
@@ -11,11 +14,11 @@ const TrendsPage = () => {
         <Configuration details="PH" />
       </div>
 
-      <div className="col-span-8">
+      <div className="col-span-full">
         <TimeSeries details="PH" />
       </div>
 
-      <div className="col-span-4">
+      <div className="col-span-full">
         <Rank details="PH" />
       </div>
 
@@ -23,9 +26,20 @@ const TrendsPage = () => {
         <Maps details="PH" />
       </div>
 
-      <div className="col-span-full">
+      <div className="col-span-8">
         <ActorNetwork details="PH" />
       </div>
+
+      <Card className="col-span-4">
+        <CardHeader>
+          <CardTitle>Top Candidates</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="h-80">
+            <TopCentrality details="PH" />
+          </ScrollArea>
+        </CardContent>
+      </Card>
     </div>
   );
 };
