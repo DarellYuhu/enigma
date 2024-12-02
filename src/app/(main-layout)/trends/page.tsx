@@ -2,6 +2,7 @@ import Configuration from "./components/Configuration";
 import TimeSeries from "./components/TimeSeries";
 import Rank from "./components/Rank";
 import Maps from "./components/Maps";
+import ActorNetwork from "./components/ActorNetwork";
 
 const TrendsPage = () => {
   return (
@@ -20,6 +21,10 @@ const TrendsPage = () => {
 
       <div className="col-span-full">
         <Maps details="PH" />
+      </div>
+
+      <div className="col-span-full">
+        <ActorNetwork details="PH" />
       </div>
     </div>
   );

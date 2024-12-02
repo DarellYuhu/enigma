@@ -3,6 +3,7 @@ import Configuration from "../components/Configuration";
 import Rank from "../components/Rank";
 import PH_JSON from "@/data/geojson/ph.json";
 import TimeSeries from "../components/TimeSeries";
+import ActorNetwork from "../components/ActorNetwork";
 
 const RegionPage = ({ params }: { params: { regionId: string } }) => {
   return (
@@ -21,6 +22,10 @@ const RegionPage = ({ params }: { params: { regionId: string } }) => {
 
       <div className="col-span-4">
         <Rank details={params.regionId} />
+      </div>
+
+      <div className="col-span-full">
+        <ActorNetwork details={params.regionId} />
       </div>
     </div>
   );

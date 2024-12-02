@@ -80,13 +80,13 @@ const data = {
   navMain: [
     {
       title: "Online Public Attention",
-      url: "trends",
+      url: "/trends",
       icon: TrendingUp,
       isActive: true,
     },
     {
       title: "Tiktok",
-      url: "#",
+      url: "",
       icon: Clapperboard,
       isActive: true,
       items: [
@@ -102,7 +102,7 @@ const data = {
     },
     {
       title: "Twitter",
-      url: "#",
+      url: "",
       icon: Twitter,
       isActive: true,
       items: [
@@ -114,7 +114,7 @@ const data = {
     },
     {
       title: "Youtube",
-      url: "#",
+      url: "",
       icon: Youtube,
       isActive: true,
       items: [
