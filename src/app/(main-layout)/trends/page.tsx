@@ -6,6 +6,7 @@ import ActorNetwork from "./components/ActorNetwork";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TopCentrality from "./components/TopCentrality";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Statistics from "./components/Statistics";
 
 const TrendsPage = () => {
   return (
@@ -38,6 +39,15 @@ const TrendsPage = () => {
           <ScrollArea className="h-80">
             <TopCentrality details="PH" />
           </ScrollArea>
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-full">
+        <CardHeader>
+          <CardTitle>Statistics</CardTitle>
+        </CardHeader>
+        <CardContent className="h-80">
+          <Statistics details="PH" />
         </CardContent>
       </Card>
     </div>

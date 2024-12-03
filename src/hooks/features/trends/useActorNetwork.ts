@@ -31,10 +31,16 @@ export default function useActorNetwork(payload: Payload) {
             color: "#1d4ed8",
           })),
       };
+      const statistics = data.statistics.date.map((item, index) => ({
+        date: item,
+        apl: data.statistics.apl[index],
+        largest_eig: data.statistics.largest_eig[index],
+        largest_eig_pct: data.statistics.largest_eig_pct[index],
+      }));
       const centrality = data.network.nodes
         .sort((a, b) => b.centrality - a.centrality)
         .slice(0, 10);
-      return { data, normalized, centrality };
+      return { data, normalized, centrality, statistics };
     },
   });
 }
@@ -55,8 +61,8 @@ export type ActorNetwork = {
     }[];
   };
   statistics: {
-    apl: number[];
     date: string[];
+    apl: number[];
     largest_eig: number[];
     largest_eig_pct: number[];
   };
