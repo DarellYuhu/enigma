@@ -2,7 +2,7 @@
 
 import { useYTChannelTopVids } from "@/hooks/useYTChannelTopVids";
 import useStatisticDateStore from "@/store/statistic-date-store";
-import React, { useState } from "react";
+import { useState } from "react";
 import useSelectedChannelStore from "../store/selected-channel-store";
 import { Badge, badgeVariants } from "@/components/ui/badge";
 import { Heart, MessageCircle, Play, XIcon } from "lucide-react";
@@ -18,6 +18,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import useYoutubeChannelNet from "@/hooks/useYoutubeChannelNet";
 import useConfigStore from "../store/config-store";
+import dateFormatter from "@/utils/dateFormatter";
 
 const ContributionVideos = ({ projectId }: { projectId: string }) => {
   const { date } = useConfigStore();
@@ -35,7 +36,7 @@ const ContributionVideos = ({ projectId }: { projectId: string }) => {
   const channelGraph = useYoutubeChannelNet({
     projectId: projectId,
     window: 5,
-    date,
+    date: dateFormatter("ISO", date),
   });
 
   if (!data) return null;

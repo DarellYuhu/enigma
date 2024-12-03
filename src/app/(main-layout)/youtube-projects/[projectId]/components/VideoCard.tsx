@@ -5,7 +5,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
-import React from "react";
+
 import useSelectedVideoStore from "../store/selected-video-store";
 import imageLoader from "@/utils/imageLoader";
 

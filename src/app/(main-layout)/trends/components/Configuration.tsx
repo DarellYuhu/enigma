@@ -1,6 +1,6 @@
-import { Input } from "@/components/ui/input";
+"use client";
 import useTrends from "@/hooks/features/useTrends";
-import React from "react";
+
 import useConfigStore from "../store/config-store";
 import { Label } from "@/components/ui/label";
 import DateRangePicker from "@/components/ui/date-range-picker";
@@ -8,24 +8,12 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 
-const Configuration = () => {
-  const {
-    category,
-    details,
-    level,
-    since,
-    until,
-    setCategory,
-    setDate,
-    setDetails,
-    setLevel,
-  } = useConfigStore();
+const Configuration = ({ details }: { details: string }) => {
+  const { category, level, since, until, setDate } = useConfigStore();
   const { refetch } = useTrends({
     category,
     level,
@@ -36,32 +24,28 @@ const Configuration = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Configuration</CardTitle>
+        {/* <CardTitle>Configuration</CardTitle>
         <CardDescription>
           Modify this configuration to your needs
-        </CardDescription>
+        </CardDescription> */}
       </CardHeader>
       <CardContent className="space-y-4">
-        <div>
+        {/* <div>
           <Label>Category</Label>
           <Input
             type="number"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           />
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <Label>Level</Label>
           <Input
             type="number"
             value={level}
             onChange={(e) => setLevel(e.target.value)}
           />
-        </div>
-        <div>
-          <Label>Details</Label>
-          <Input value={details} onChange={(e) => setDetails(e.target.value)} />
-        </div>
+        </div> */}
         <div>
           <Label>Date Range</Label>
           <DateRangePicker
@@ -73,7 +57,7 @@ const Configuration = () => {
       </CardContent>
       <CardFooter>
         <Button disabled={!since || !until} onClick={() => refetch()}>
-          Fetch
+          Apply
         </Button>
       </CardFooter>
     </Card>

@@ -10,6 +10,7 @@ import abbreviateNumber from "@/utils/abbreviateNumber";
 import SingleSelect from "@/components/SingleSelect";
 import { useState } from "react";
 import useAccountStore from "../store/account-config-store";
+import dateFormatter from "@/utils/dateFormatter";
 
 const TopCentralityAccount = ({ projectId }: { projectId: string }) => {
   const [type, setType] =
@@ -23,7 +24,7 @@ const TopCentralityAccount = ({ projectId }: { projectId: string }) => {
   const { data } = useTwitterAccountNet({
     projectId,
     Window: 1,
-    date,
+    date: date ? dateFormatter("ISO", date) : "",
   });
 
   return (

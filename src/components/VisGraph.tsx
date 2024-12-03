@@ -125,17 +125,28 @@ const VisGraph = ({
         });
       } else {
         network.current?.setOptions({
-          physics: {
-            forceAtlas2Based: {
-              theta: 0.8,
-              avoidOverlap: 0.0,
-              springConstant: 0.04,
-              damping: 2.5,
-              gravitationalConstant: -20,
+          nodes: {
+            opacity: 1,
+            borderWidth: 0,
+            size: 15,
+            font: {
+              size: 15,
             },
-            solver: "forceAtlas2Based",
-            minVelocity: 0.2,
-            stabilization: false,
+          },
+          edges: {
+            width: 1.5,
+            smooth: false,
+          },
+          physics: {
+            barnesHut: {
+              gravitationalConstant: -16800,
+              centralGravity: 0.1,
+              springLength: 130,
+              springConstant: 1,
+              damping: 0.5,
+              avoidOverlap: 0.5,
+            },
+            minVelocity: 0.75,
           },
         });
       }

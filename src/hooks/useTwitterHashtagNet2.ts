@@ -1,23 +1,19 @@
 import { VisData } from "@/components/VisGraph";
 import generateNodeColors from "@/utils/generateNodeColors";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
 
 type Payload = {
   projectId: string;
-  date: Date;
+  date: string;
   window: number;
 };
 
 export default function useTwitterHashtagNet2(payload: Payload) {
   return useQuery({
-    queryKey: ["twitter", "hashtag", "net", payload],
+    queryKey: ["twitter", "hashtag-net", payload],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v2/twitter/${payload.projectId}/hashtag-net?date=${format(
-          payload.date,
-          "yyyy-MM-dd"
-        )}&window=${payload.window}`
+        `/api/v2/twitter/${payload.projectId}/hashtag-net?date=${payload.date}&window=${payload.window}`
       );
       const data: HashtagNetwork2 = await response.json();
       const classes = Object.keys(data.classes);

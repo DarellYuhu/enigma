@@ -11,7 +11,7 @@ import useTiktokInterestNet2, {
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import useGraphConfigStore from "../store/graph-config-store";
 import SingleSelect from "@/components/SingleSelect";
 

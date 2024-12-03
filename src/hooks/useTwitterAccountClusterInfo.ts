@@ -1,23 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
 
 type Payload = {
   projectId: string;
-  date: Date;
+  date: string;
   window: number;
   cluster?: string;
 };
 export default function useTwitterAccountClusterInfo(payload: Payload) {
   return useQuery({
-    queryKey: ["twitter", "account", "cluster", "info", payload],
+    queryKey: ["twitter", "account-cluster-info", payload],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v2/twitter/${
-          payload.projectId
-        }/account-cluster-info?date=${format(
-          payload.date,
-          "yyyy-MM-dd"
-        )}&window=${payload.window}&cluster=${payload.cluster}`
+        `/api/v2/twitter/${payload.projectId}/account-cluster-info?date=${payload.date}&window=${payload.window}&cluster=${payload.cluster}`
       );
       const data: ClusterInfo = await response.json();
       const normalized = data.hashtags.hashtags.map((hashtag, index) => ({

@@ -5,11 +5,15 @@ import useTwitterClusterStats, {
 } from "@/hooks/useTwitterClusterStats";
 import RechartArea from "@/components/RechartArea";
 import SingleSelect from "@/components/SingleSelect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DateRangePicker from "@/components/ui/date-range-picker";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
+import { useSearchParams } from "next/navigation";
+import dateFormatter from "@/utils/dateFormatter";
 
 const ClusterStatistics = ({ projectId }: { projectId: string }) => {
+  const searchParams = useSearchParams();
+  const dateParams = searchParams.get("date");
   const [date, setDate] = useState<{ since?: Date; until?: Date }>({
     since: adjustDateByFactor(-3, new Date()),
     until: new Date(),
@@ -18,10 +22,20 @@ const ClusterStatistics = ({ projectId }: { projectId: string }) => {
     useState<keyof Omit<ClusterStats["ts"], "date">>("num_clusters_gc");
   const { data } = useTwitterClusterStats({
     projectId,
-    since: date.since!,
-    until: date.until!,
+    since: date.since ? dateFormatter("ISO", date.since) : "",
+    until: date.until ? dateFormatter("ISO", date.until) : "",
     string: "",
   });
+
+  useEffect(() => {
+    if (dateParams) {
+      setDate({
+        since: adjustDateByFactor(-3, new Date(dateParams)),
+        until: new Date(dateParams),
+      });
+    }
+  }, [dateParams]);
+
   return (
     <>
       <RechartArea

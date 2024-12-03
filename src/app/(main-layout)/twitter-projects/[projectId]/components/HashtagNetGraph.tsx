@@ -6,13 +6,14 @@ import { Edge, Node } from "vis-network/declarations/entry-esnext";
 import { useEffect } from "react";
 import useClusterStore from "../store/cluster-store";
 import useHashtagStore from "../store/hashtag-config-store";
+import dateFormatter from "@/utils/dateFormatter";
 
 const HashtagNetGraph = ({ projectId }: { projectId: string }) => {
   const { date } = useHashtagStore();
   const { setHashtag } = useClusterStore();
   const { data } = useTwitterHashtagNet2({
     projectId,
-    date,
+    date: dateFormatter("ISO", date),
     window: 2,
   });
 

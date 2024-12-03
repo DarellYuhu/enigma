@@ -79,6 +79,10 @@
   }
 }
 
+.mapboxgl-ctrl-bottom-right {
+  display: none;
+}
+
 .style_module_watermark__6b4371ae {
   display: none;
 }

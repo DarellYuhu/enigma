@@ -6,8 +6,11 @@ import { ArrowRight, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import useBoardConfigStore from "../store/board-config-store";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
+import { useSearchParams } from "next/navigation";
 
 const BoardConfig = () => {
+  const searchParams = useSearchParams();
+  const date = searchParams.get("date");
   const [query, setQuery] = useState("");
   const [toggleValue, setToggleValue] = useState("3");
   const { setDate, setString } = useBoardConfigStore();
@@ -16,20 +19,20 @@ const BoardConfig = () => {
     switch (toggleValue) {
       case "1":
         setDate({
-          from: adjustDateByFactor(-1, new Date()),
-          to: new Date(),
+          from: adjustDateByFactor(-1, new Date(date || "")),
+          to: new Date(date || ""),
         });
         break;
       case "3":
         setDate({
-          from: adjustDateByFactor(-3, new Date()),
-          to: new Date(),
+          from: adjustDateByFactor(-3, new Date(date || "")),
+          to: new Date(date || ""),
         });
         break;
       case "7":
         setDate({
-          from: adjustDateByFactor(-7, new Date()),
-          to: new Date(),
+          from: adjustDateByFactor(-7, new Date(date || "")),
+          to: new Date(date || ""),
         });
         break;
     }

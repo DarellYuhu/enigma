@@ -18,6 +18,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import useConfigStore from "../store/config-store";
 import SingleSelect from "@/components/SingleSelect";
+import dateFormatter from "@/utils/dateFormatter";
 // import SingleSelect from "@/components/SingleSelect";
 
 const TopCentrality = ({ projectId }: { projectId: string }) => {
@@ -34,7 +35,7 @@ const TopCentrality = ({ projectId }: { projectId: string }) => {
   const { data } = useYoutubeVideoNet({
     projectId: projectId,
     window: 5,
-    date,
+    date: dateFormatter("ISO", date),
   });
   if (!data) return null;
   return (

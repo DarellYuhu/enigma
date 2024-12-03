@@ -5,7 +5,6 @@ import { useTiktokTrends } from "@/hooks/useTiktokTrends";
 import useCategoryStore from "@/store/category-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
-import React from "react";
 
 const Daily = ({ projectId }: { projectId: string }) => {
   const { from, to } = useStatisticDateStore();

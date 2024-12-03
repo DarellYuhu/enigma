@@ -7,56 +7,6 @@ import ContributionVideos from "./components/ContributionVideos";
 import Configuration from "./components/Configuration";
 
 const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
-  // const [query, setQuery] = useState("");
-  // const [selectedTopChannel, setSelectedTopChannel] = useState<string>();
-  // const { reset, from, to, setFrom, setTo } = useStatisticDateStore();
-  // const [selectedChannel, setSelectedChannel] = useState<
-  //   YoutubeTopChannels["tc"]["0"] | null
-  // >(null);
-  // const [selectedVideo, setSelectedVideo] = useState<
-  //   YoutubeProjectTopVideos["top"]["0"] | null
-  // >(null);
-
-  // const topVideos = useYoutubeTopVideos({ from, to, params, string: query });
-  // const videoStats = useYoutubeVideoStats({ from, to, params, selectedVideo });
-  // const topChannels = useYoutubeTopChannels({
-  //   from,
-  //   to,
-  //   params,
-  //   string: query,
-  // });
-  // const audienceNetwork = useYoutubeAudienceNet({
-  //   params,
-  //   from,
-  //   to,
-  //   string: query,
-  // });
-  // const channelTopVids = useYTChannelTopVids({
-  //   from,
-  //   to,
-  //   params,
-  //   selectedTopChannel,
-  //   string: query,
-  // });
-
-  // useEffect(() => {
-  //   if (!!topVideos.data) {
-  //     setSelectedVideo(topVideos.data?.top[0]);
-  //     setSelectedTopChannel(topVideos.data?.tc[0]?.channel_id);
-  //   }
-  // }, [topVideos.data]);
-
-  // useEffect(() => {
-  //   if (!!topChannels.data) {
-  //     setSelectedChannel(topChannels.data?.tc[0]);
-  //   }
-  // }, [topChannels.data]);
-
-  // useEffect(() => {
-  //   reset();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   return (
     <div className="grid grid-cols-12 gap-3">
       <div className="col-span-full flex justify-self-end">

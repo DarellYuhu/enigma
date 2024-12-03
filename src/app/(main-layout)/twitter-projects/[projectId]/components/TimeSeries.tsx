@@ -15,11 +15,13 @@ import { useState } from "react";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import DateRangePicker from "@/components/ui/date-range-picker";
 import SearchInput from "@/components/SearchInput";
+import { useSearchParams } from "next/navigation";
 
 const TimeSeries = ({ projectId }: { projectId: string }) => {
+  const searchParams = useSearchParams();
   const [date, setDate] = useState<{ since?: Date; until?: Date }>({
-    since: adjustDateByFactor(-30, new Date()),
-    until: new Date(),
+    since: adjustDateByFactor(-30, new Date(searchParams.get("date") || "")),
+    until: new Date(searchParams.get("date") || ""),
   });
   const [string, setString] = useState("");
   const [type, setType] = useState<keyof TwitterStatistics["ts"]>("daily");

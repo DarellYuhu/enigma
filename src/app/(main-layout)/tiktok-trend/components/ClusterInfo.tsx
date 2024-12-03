@@ -19,7 +19,6 @@ import abbreviateNumber from "@/utils/abbreviateNumber";
 import { Scrollbar } from "@radix-ui/react-scroll-area";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import React from "react";
 
 const ClusterInfo = ({
   date,

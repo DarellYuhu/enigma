@@ -29,6 +29,7 @@ import HorizontalBarChart from "@/components/HorizontalBarChart";
 import Datatable from "@/components/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import useHashtagStore from "../store/hashtag-config-store";
+import dateFormatter from "@/utils/dateFormatter";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -51,12 +52,12 @@ const HashtagClusters = ({ projectId }: { projectId: string }) => {
   const { hashtag, setHashtag } = useClusterStore();
   const graph = useTwitterHashtagNet2({
     projectId,
-    date,
+    date: dateFormatter("ISO", date),
     window: 2,
   });
   const clusterInfo = useTwitterHashtageClusterInfo({
     projectId,
-    date,
+    date: dateFormatter("ISO", date),
     window: 2,
     cluster: hashtag,
   });

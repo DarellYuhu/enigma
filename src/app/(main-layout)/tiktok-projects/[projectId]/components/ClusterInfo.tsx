@@ -17,7 +17,6 @@ import abbreviateNumber from "@/utils/abbreviateNumber";
 import * as Tabs from "@radix-ui/react-tabs";
 import chroma from "chroma-js";
 import { Frown, Meh, Smile } from "lucide-react";
-import React from "react";
 import ReactMarkdown from "react-markdown";
 import {
   DiscreteLegend,

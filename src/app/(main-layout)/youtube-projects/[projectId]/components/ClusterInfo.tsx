@@ -31,12 +31,17 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import useConfigStore from "../store/config-store";
+import dateFormatter from "@/utils/dateFormatter";
 
 const ClusterInfo = ({ projectId }: { projectId: string }) => {
   const { date } = useConfigStore();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState<string | null>(null);
-  const { data } = useYoutubeVideoNet({ projectId, window: 5, date });
+  const { data } = useYoutubeVideoNet({
+    projectId,
+    window: 5,
+    date: dateFormatter("ISO", date),
+  });
   if (!data) return null;
   return (
     <>
