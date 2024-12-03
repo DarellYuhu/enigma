@@ -5,7 +5,7 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "./ui/table";
+} from "../ui/table";
 import {
   ColumnDef,
   flexRender,
@@ -16,7 +16,7 @@ import {
   RowSelectionState,
   useReactTable,
 } from "@tanstack/react-table";
-import DataTablePagination from "./datatable/DataTablePagination";
+import DataTablePagination from "./DataTablePagination";
 import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {

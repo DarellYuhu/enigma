@@ -20,7 +20,7 @@ import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import DeleteAlert from "./components/DeleteAlert";
 import ResetPassAlert from "./components/ResetPassAlert";
 import { useState } from "react";
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import { cn } from "@/lib/utils";
 

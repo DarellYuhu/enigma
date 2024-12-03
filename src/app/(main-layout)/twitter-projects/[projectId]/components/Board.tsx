@@ -1,6 +1,6 @@
 "use client";
 
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import useTwitterBoards, { TwitterBoardItem } from "@/hooks/useTwitterBoards";
 import abbreviateNumber from "@/utils/abbreviateNumber";

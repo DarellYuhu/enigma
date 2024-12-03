@@ -1,4 +1,4 @@
-import { CosmosLink, CosmosNode } from "@/components/Graph";
+import { CosmosLink, CosmosNode } from "@/components/charts/Graph";
 import generateNodeColors from "@/utils/generateNodeColors";
 import { useQuery } from "@tanstack/react-query";
 

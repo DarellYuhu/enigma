@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { SessionProvider } from "next-auth/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import AppSidebar from "@/components/AppSidebar";
+import AppSidebar from "@/components/sidebar/AppSidebar";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,6 +57,10 @@ export default function MainLayout({
             </div>
           </SidebarInset>
         </SidebarProvider>
+        {/* <div className="flex flex-1 flex-col p-4">
+          {children}
+          <Toaster />
+        </div> */}
         <ReactQueryDevtools position="right" />
       </QueryClientProvider>
     </SessionProvider>

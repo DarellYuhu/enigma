@@ -1,9 +1,7 @@
-import dateFormatter from "@/utils/dateFormatter";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
 
 const useTiktokClusterInfo = (payload: {
-  date?: Date;
+  date?: string;
   window?: number;
   cluster?: string;
 }) => {
@@ -12,16 +10,13 @@ const useTiktokClusterInfo = (payload: {
       "tiktok",
       "globa-cluster",
       "info",
-      payload.date && dateFormatter("ISO", payload.date),
+      payload.date,
       payload.window,
       payload.cluster,
     ],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v2/tiktok/cluster/${payload.cluster}?date=${format(
-          payload.date!,
-          "yyyy-MM-dd"
-        )}&window=${payload.window}`
+        `/api/v2/tiktok/cluster/${payload.cluster}?date=${payload.date}&window=${payload.window}`
       );
       const data: ClusterInfoData = await response.json();
       const chart: { tag: string; value: number }[] =

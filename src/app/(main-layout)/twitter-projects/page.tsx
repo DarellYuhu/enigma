@@ -10,7 +10,7 @@ import useTwitterProjects, {
 import EditDialog from "./components/EditDialog";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { badgeVariants } from "@/components/ui/badge";
 import Link from "next/link";
 import { useState } from "react";

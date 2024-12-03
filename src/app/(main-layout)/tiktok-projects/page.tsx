@@ -35,7 +35,7 @@ import { useCreateTTProject } from "@/hooks/useCreateTTProject";
 import TiktokSchema from "@/schemas/tiktok";
 import { useSession } from "next-auth/react";
 import EditDialog from "./components/EditDialog";
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { buttonVariants } from "@/components/ui/button";
 import { useState } from "react";
 import Link from "next/link";

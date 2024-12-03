@@ -1,6 +1,6 @@
 "use client";
 
-import HorizontalBarChart from "@/components/HorizontalBarChart";
+import HorizontalBarChart from "@/components/charts/HorizontalBarChart";
 import {
   Card,
   CardContent,
@@ -31,7 +31,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);

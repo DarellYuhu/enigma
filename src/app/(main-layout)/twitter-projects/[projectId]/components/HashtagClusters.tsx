@@ -25,8 +25,8 @@ import {
 import chroma from "chroma-js";
 import { Frown, Meh, Smile } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import HorizontalBarChart from "@/components/HorizontalBarChart";
-import Datatable from "@/components/Datatable";
+import HorizontalBarChart from "@/components/charts/HorizontalBarChart";
+import Datatable from "@/components/datatable/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import useHashtagStore from "../store/hashtag-config-store";
 import dateFormatter from "@/utils/dateFormatter";

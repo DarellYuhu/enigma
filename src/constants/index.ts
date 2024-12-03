@@ -1,4 +1,4 @@
-import { adminMenus } from "./menus";
+import { adminMenus, analystMenus, creativeMenus } from "./menus";
 
 // export const TIKTOK_BASE_API_URL = "http://192.168.1.90:2225"; //local server
 export const TIKTOK_BASE_API_URL = "http://192.53.125.57:2225"; // remote server
@@ -50,4 +50,6 @@ export const MAP_THEME = {
 
 export const MENUS = {
   adminMenus,
+  creativeMenus,
+  analystMenus,
 };

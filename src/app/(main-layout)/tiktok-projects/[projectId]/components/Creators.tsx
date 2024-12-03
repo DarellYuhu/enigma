@@ -1,6 +1,6 @@
 "use client";
 
-import ReavizPie from "@/components/ReavizPie";
+import ReavizPie from "@/components/charts/ReavizPie";
 import { useTiktokTrends } from "@/hooks/useTiktokTrends";
 import useCategoryStore from "@/store/category-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";

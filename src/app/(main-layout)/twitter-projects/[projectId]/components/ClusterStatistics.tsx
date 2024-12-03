@@ -3,7 +3,7 @@
 import useTwitterClusterStats, {
   ClusterStats,
 } from "@/hooks/useTwitterClusterStats";
-import RechartArea from "@/components/RechartArea";
+import RechartArea from "@/components/charts/RechartArea";
 import SingleSelect from "@/components/SingleSelect";
 import { useEffect, useState } from "react";
 import DateRangePicker from "@/components/ui/date-range-picker";

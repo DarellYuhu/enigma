@@ -5,7 +5,9 @@ import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import dynamic from "next/dynamic";
 import useConfigStore from "../hooks/config-store";
 
-const SankeyChartJs = dynamic(() => import("@/components/SankeyChartJs"));
+const SankeyChartJs = dynamic(
+  () => import("@/components/charts/SankeyChartJs")
+);
 
 const Evolution = () => {
   const { date } = useConfigStore();

@@ -1,5 +1,5 @@
 "use client";
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import useActorNetwork, {
   ActorNetwork,
 } from "@/hooks/features/trends/useActorNetwork";

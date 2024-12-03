@@ -2,7 +2,7 @@ import { CalendarRange, Eye, Globe } from "lucide-react";
 import { Separator } from "./ui/separator";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { useTiktokTagInfo } from "@/hooks/useTiktokTagInfo";
-import ReavizPie from "./ReavizPie";
+import ReavizPie from "./charts/ReavizPie";
 
 const TagInformation = ({
   tagNode,

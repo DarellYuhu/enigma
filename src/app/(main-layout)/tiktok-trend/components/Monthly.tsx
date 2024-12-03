@@ -1,6 +1,6 @@
 "use client";
 
-import AreaChart2 from "@/components/AreaChart2";
+import AreaChart2 from "@/components/charts/AreaChart2";
 import { useTiktokTrends } from "@/hooks/useTiktokTrends";
 import useCategoryStore from "@/store/category-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";

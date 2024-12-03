@@ -6,7 +6,7 @@ import CreateDialog from "./components/createdialog";
 import EditDialog from "./components/editdialog";
 import { useYoutubeProjects } from "@/hooks/useYoutubeProjects";
 import { useSession } from "next-auth/react";
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { useState } from "react";
 import Link from "next/link";
 import { badgeVariants } from "@/components/ui/badge";

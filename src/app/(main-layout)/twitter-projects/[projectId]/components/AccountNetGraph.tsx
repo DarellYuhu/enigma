@@ -1,8 +1,8 @@
 "use client";
 
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
-import Graph, { CosmosLink, CosmosNode } from "@/components/Graph";
+import Graph, { CosmosLink, CosmosNode } from "@/components/charts/Graph";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,

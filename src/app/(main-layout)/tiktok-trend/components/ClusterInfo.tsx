@@ -1,5 +1,5 @@
-import Datatable from "@/components/Datatable";
-import HorizontalBarChart from "@/components/HorizontalBarChart";
+import Datatable from "@/components/datatable/Datatable";
+import HorizontalBarChart from "@/components/charts/HorizontalBarChart";
 import { badgeVariants } from "@/components/ui/badge";
 import {
   Card,
@@ -19,6 +19,7 @@ import abbreviateNumber from "@/utils/abbreviateNumber";
 import { Scrollbar } from "@radix-ui/react-scroll-area";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import dateFormatter from "@/utils/dateFormatter";
 
 const ClusterInfo = ({
   date,
@@ -29,7 +30,7 @@ const ClusterInfo = ({
 }) => {
   const { data } = useTiktokClusterInfo({
     cluster: node?.id,
-    date: new Date(date || ""),
+    date: date && dateFormatter("ISO", new Date(date)),
     window: 7,
   });
   return (

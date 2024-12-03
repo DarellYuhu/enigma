@@ -30,7 +30,7 @@ import { useTiktokBoards } from "@/hooks/useTiktokBoards";
 import { useTiktokComments } from "@/hooks/useTiktokComments";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import useSelectionStore from "../store/selection-store";
 
 type Props = {

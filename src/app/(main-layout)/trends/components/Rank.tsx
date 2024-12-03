@@ -1,5 +1,5 @@
 "use client";
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useTrends from "@/hooks/features/useTrends";
 import useConfigStore from "../store/config-store";
@@ -66,7 +66,7 @@ const columns: ColumnDef<
               color: row.original.rankDiff > 0 ? "#22c55e" : "#ef4444",
             }}
           >
-            {icon} {Math.abs(row.original.rankDiff)}
+            {icon} {Math.abs(row.original.rankDiff)} {row.original.prevRank}
           </span>
         </span>
       ) : (

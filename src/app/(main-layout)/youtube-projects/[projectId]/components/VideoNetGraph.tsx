@@ -1,6 +1,6 @@
 "use client";
 
-import Graph from "@/components/Graph";
+import Graph from "@/components/charts/Graph";
 import useYoutubeVideoNet from "@/hooks/useYoutubeVideoNet";
 
 import useConfigStore from "../store/config-store";

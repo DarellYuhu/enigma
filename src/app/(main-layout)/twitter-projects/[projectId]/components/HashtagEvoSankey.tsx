@@ -6,7 +6,9 @@ import useHashtagStore from "../store/hashtag-config-store";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import dateFormatter from "@/utils/dateFormatter";
 
-const SankeyChartJs = dynamic(() => import("@/components/SankeyChartJs"));
+const SankeyChartJs = dynamic(
+  () => import("@/components/charts/SankeyChartJs")
+);
 
 const HashtagEvoSankey = ({ projectId }: { projectId: string }) => {
   const { date } = useHashtagStore();

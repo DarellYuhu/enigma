@@ -10,7 +10,7 @@ import PH_JSON from "@/data/geojson/ph.json";
 import { MAP_THEME } from "@/constants";
 import useTrends from "@/hooks/features/useTrends";
 import SingleSelect from "@/components/SingleSelect";
-import RechartPie from "@/components/RechartPie";
+import RechartPie from "@/components/charts/RechartPie";
 
 const Maps = ({ details }: { details: string }) => {
   const [type, setType] = useState<"pct_total" | "1w" | "1m">("1m");

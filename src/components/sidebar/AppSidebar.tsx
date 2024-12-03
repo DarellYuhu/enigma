@@ -13,12 +13,12 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "./ui/sidebar";
+} from "../ui/sidebar";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "./ui/collapsible";
+} from "../ui/collapsible";
 import Link from "next/link";
 import User from "./User";
 import {
@@ -26,8 +26,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 import { useTheme } from "next-themes";
 import { useSession } from "next-auth/react";
 import { MENUS } from "@/constants";
@@ -49,6 +49,10 @@ const AppSidebar = () => {
     switch (session?.user.role) {
       case "ADMIN":
         return MENUS.adminMenus;
+      case "ANALYST":
+        return MENUS.analystMenus;
+      case "CREATIVE":
+        return MENUS.creativeMenus;
     }
   };
   return (
