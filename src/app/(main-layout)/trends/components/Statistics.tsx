@@ -1,7 +1,5 @@
 "use client";
-import Datatable from "@/components/datatable/Datatable";
 import useActorNetwork from "@/hooks/features/trends/useActorNetwork";
-import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import useConfigStore from "../store/config-store";
 import BarChart2 from "@/components/charts/BarChart2";

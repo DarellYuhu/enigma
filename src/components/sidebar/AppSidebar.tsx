@@ -51,8 +51,6 @@ const AppSidebar = () => {
         return MENUS.adminMenus;
       case "ANALYST":
         return MENUS.analystMenus;
-      case "CREATIVE":
-        return MENUS.creativeMenus;
     }
   };
   return (

@@ -1,6 +1,7 @@
 import { Menus } from "@/components/sidebar/AppSidebar";
 import {
   Clapperboard,
+  MonitorStop,
   ServerCrash,
   TrendingUp,
   Twitter,
@@ -71,6 +72,11 @@ export const adminMenus: Menus = [
         title: "Serivces",
         url: "/services",
         icon: ServerCrash,
+      },
+      {
+        title: "Workspace",
+        url: "/workspace",
+        icon: MonitorStop,
       },
     ],
   },
