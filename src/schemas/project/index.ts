@@ -5,6 +5,9 @@ const create = z.object({
   title: z.string().trim().min(1, "Required"),
   description: z.string().trim().min(1, "Required"),
   sectionId: z.string().trim().min(1, "Required"),
+  image: z.instanceof(File).refine((file) => file.type.startsWith("image/"), {
+    message: "Must be an image file",
+  }),
   links: z.array(
     z.object({
       label: z.string().trim().min(1, "Required"),

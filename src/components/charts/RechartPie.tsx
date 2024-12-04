@@ -16,7 +16,6 @@ type Props = {
   tooltip?: boolean;
 };
 const RechartPie = ({ tooltip = true, ...props }: Props) => {
-  console.log(props);
   return (
     <ChartContainer
       style={{ width: "100%", height: "100%" }}

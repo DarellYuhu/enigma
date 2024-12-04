@@ -66,7 +66,7 @@ const columns: ColumnDef<
               color: row.original.rankDiff > 0 ? "#22c55e" : "#ef4444",
             }}
           >
-            {icon} {Math.abs(row.original.rankDiff)} {row.original.prevRank}
+            {icon} {Math.abs(row.original.rankDiff)}
           </span>
         </span>
       ) : (
@@ -80,7 +80,7 @@ const columns: ColumnDef<
   },
   {
     accessorKey: "curr",
-    header: "Current (%)",
+    header: "Last (%)",
   },
   {
     accessorKey: "prev",

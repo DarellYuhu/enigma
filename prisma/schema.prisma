@@ -36,6 +36,7 @@ model ApiUrl {
 model Workspace {
   id             String           @id @default(uuid())
   name           String
+  description    String?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   Workspace_User Workspace_User[]
@@ -46,6 +47,7 @@ model Workspace {
 model Project {
   id          String    @id @default(uuid())
   title       String
+  imageUrl    String
   description String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -60,6 +62,8 @@ model Link {
   id        Int      @id @default(autoincrement())
   label     String
   url       String
+  // textColor   String   @default("#ffffff")
+  // buttonColor String   @default("#000000")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   projectId String
