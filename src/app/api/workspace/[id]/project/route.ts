@@ -22,7 +22,7 @@ export async function POST(
   const filename = `${Date.now()}-${data.image.name}`;
   const arrayBuffer = await data.image.arrayBuffer();
   const buffer = new Uint8Array(arrayBuffer);
-  await fs.writeFile(`./uploads/${filename}`, buffer);
+  await fs.writeFile(`${process.cwd()}/uploads/${filename}`, buffer);
 
   const project = await prisma.project.create({
     data: {
