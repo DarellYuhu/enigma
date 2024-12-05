@@ -1,3 +1,4 @@
+import dateFormatter from "@/utils/dateFormatter";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
@@ -8,7 +9,12 @@ export function useTiktokBoards(paylaod: {
   string: string;
 }) {
   return useQuery({
-    queryKey: ["tiktok", "boards", paylaod.projectId],
+    queryKey: [
+      "tiktok",
+      "boards",
+      paylaod.projectId,
+      paylaod.to && dateFormatter("ISO", paylaod.to),
+    ],
     enabled: false,
     queryFn: async () => {
       const response = await fetch(

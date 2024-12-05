@@ -6,14 +6,17 @@ import VisGraph from "@/components/VisGraph";
 import { useTiktokHashtagNet } from "@/hooks/useTiktokHashtagNet";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import tagRelationExport from "@/utils/tagRelationExport";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DataSet } from "vis-data";
 import useGraphConfigStore from "../store/graph-config-store";
+import useProjectInfo from "@/hooks/features/useProjectInfo";
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 
 const HashtagGraph = ({ projectId }: { projectId: string }) => {
   const [tagNode, setTagNode] = useState(null);
-  const { from, to } = useGraphConfigStore();
+  const { from, to, setTo } = useGraphConfigStore();
   const { query } = useQueryFilterStore();
+  const projectInfo = useProjectInfo("TIKTOK", projectId);
   const { data } = useTiktokHashtagNet({
     params: { projectId },
     graphDate: {
@@ -22,23 +25,17 @@ const HashtagGraph = ({ projectId }: { projectId: string }) => {
     },
     graphQuery: query,
   });
+
+  useEffect(() => {
+    if (projectInfo.data?.lastUpdate) {
+      setTo(adjustDateByFactor(-1, new Date(projectInfo.data.lastUpdate)));
+    }
+  }, [projectInfo.data?.lastUpdate]);
+
   if (!data?.normalized) return null;
+
   return (
     <>
-      {/* <Graph
-        linkVisibilityDistanceRange={[50, 150]}
-        simulationGravity={0.0}
-        simulationRepulsion={1}
-        simulationLinkSpring={0.4}
-        data={data.normalized}
-        onClick={(node) => {
-          if (node) {
-            setTagNode(node.data);
-          } else {
-            setTagNode(null);
-          }
-        }}
-      /> */}
       <VisGraph
         data={data.normalized ?? []}
         type="tagRelation"

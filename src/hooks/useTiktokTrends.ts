@@ -1,3 +1,4 @@
+import dateFormatter from "@/utils/dateFormatter";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
@@ -7,7 +8,13 @@ export function useTiktokTrends(payload: {
   statisticDate: { from?: Date; to?: Date };
 }) {
   return useQuery({
-    queryKey: ["trends", "statistics", payload.params.projectId],
+    queryKey: [
+      "trends",
+      "statistics",
+      payload.params.projectId,
+      payload.statisticDate.to &&
+        dateFormatter("ISO", payload.statisticDate.to),
+    ],
     queryFn: async () => {
       const response = await fetch(
         `/api/v1/tiktok/${payload.params.projectId}/statistics?since=${format(
