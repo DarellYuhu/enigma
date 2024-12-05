@@ -28,13 +28,15 @@ import useClusterStore from "../store/cluster-store";
 import useAccountStore from "../store/account-config-store";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import dateFormatter from "@/utils/dateFormatter";
+import useProjectInfo from "@/hooks/features/useProjectInfo";
 
 const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const { setAccount } = useClusterStore();
   const [node, setNode] = useState<CosmosNode | null>(null);
   const [selectedNode, setSelectedNode] = useState<CosmosNode | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { date } = useAccountStore();
+  const projectInfo = useProjectInfo("TWITTER", projectId);
+  const { date, setDate } = useAccountStore();
   const { data } = useTwitterAccountNet({
     projectId,
     Window: 1,
@@ -48,9 +50,15 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   });
 
   useEffect(() => {
+    if (projectInfo.data?.lastUpdate) {
+      setDate(adjustDateByFactor(-1, new Date(projectInfo.data.lastUpdate)));
+    }
+  }, [projectInfo.data?.lastUpdate]);
+
+  useEffect(() => {
     if (data) {
       setAccount(
-        data.normalized.classes.filter((item) => !!item.representation)[0].id
+        data.normalized.classes.filter((item) => !!item.representation)[0]?.id
       );
     }
   }, [data]);

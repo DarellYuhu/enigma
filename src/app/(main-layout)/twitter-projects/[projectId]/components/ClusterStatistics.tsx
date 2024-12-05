@@ -10,10 +10,12 @@ import DateRangePicker from "@/components/ui/date-range-picker";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { useSearchParams } from "next/navigation";
 import dateFormatter from "@/utils/dateFormatter";
+import useProjectInfo from "@/hooks/features/useProjectInfo";
 
 const ClusterStatistics = ({ projectId }: { projectId: string }) => {
   const searchParams = useSearchParams();
   const dateParams = searchParams.get("date");
+  const { data: projectInfo } = useProjectInfo("TWITTER", projectId);
   const [date, setDate] = useState<{ since?: Date; until?: Date }>({
     since: adjustDateByFactor(-3, new Date()),
     until: new Date(),
@@ -35,6 +37,15 @@ const ClusterStatistics = ({ projectId }: { projectId: string }) => {
       });
     }
   }, [dateParams]);
+
+  useEffect(() => {
+    if (projectInfo?.lastUpdate) {
+      setDate({
+        ...date,
+        until: new Date(projectInfo.lastUpdate),
+      });
+    }
+  }, [projectInfo?.lastUpdate]);
 
   return (
     <>

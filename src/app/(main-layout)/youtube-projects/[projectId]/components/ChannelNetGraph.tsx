@@ -7,10 +7,13 @@ import useSelectedChannelStore from "../store/selected-channel-store";
 import { DataSet } from "vis-data";
 import useConfigStore from "../store/config-store";
 import dateFormatter from "@/utils/dateFormatter";
+import useProjectInfo from "@/hooks/features/useProjectInfo";
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 
 const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
-  const { date } = useConfigStore();
+  const { date, setDate } = useConfigStore();
   const { setChannel } = useSelectedChannelStore();
+  const { data: projectInfo } = useProjectInfo("YOUTUBE", projectId);
   const { data } = useYoutubeChannelNet({
     projectId: projectId,
     window: 5,
@@ -26,7 +29,15 @@ const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
       );
     }
   }, [data]);
+
+  useEffect(() => {
+    if (projectInfo?.lastUpdate) {
+      setDate(adjustDateByFactor(-1, new Date(projectInfo.lastUpdate)));
+    }
+  }, [projectInfo?.lastUpdate]);
+
   if (!data) return null;
+
   return (
     <VisGraph
       data={data.normalized}

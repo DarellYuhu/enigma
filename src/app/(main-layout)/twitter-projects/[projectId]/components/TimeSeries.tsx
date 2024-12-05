@@ -11,26 +11,37 @@ import {
 } from "@/components/ui/card";
 import BarChart2 from "@/components/charts/BarChart2";
 import SingleSelect from "@/components/SingleSelect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import DateRangePicker from "@/components/ui/date-range-picker";
 import SearchInput from "@/components/SearchInput";
 import { useSearchParams } from "next/navigation";
+import useProjectInfo from "@/hooks/features/useProjectInfo";
 
 const TimeSeries = ({ projectId }: { projectId: string }) => {
   const searchParams = useSearchParams();
+  const [string, setString] = useState("");
+  const [type, setType] = useState<keyof TwitterStatistics["ts"]>("daily");
+  const { data: projectInfo } = useProjectInfo("TWITTER", projectId);
   const [date, setDate] = useState<{ since?: Date; until?: Date }>({
     since: adjustDateByFactor(-30, new Date(searchParams.get("date") || "")),
     until: new Date(searchParams.get("date") || ""),
   });
-  const [string, setString] = useState("");
-  const [type, setType] = useState<keyof TwitterStatistics["ts"]>("daily");
   const { data, refetch } = useTwitterStatistics({
     projectId,
     since: date.since,
     until: date.until,
     string,
   });
+
+  useEffect(() => {
+    if (projectInfo?.lastUpdate) {
+      setDate({
+        ...date,
+        until: new Date(projectInfo.lastUpdate),
+      });
+    }
+  }, [projectInfo?.lastUpdate]);
 
   if (!data) return null;
   return (

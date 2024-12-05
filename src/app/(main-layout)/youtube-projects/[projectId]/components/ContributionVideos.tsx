@@ -2,7 +2,7 @@
 
 import { useYTChannelTopVids } from "@/hooks/useYTChannelTopVids";
 import useStatisticDateStore from "@/store/statistic-date-store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSelectedChannelStore from "../store/selected-channel-store";
 import { Badge, badgeVariants } from "@/components/ui/badge";
 import { Heart, MessageCircle, Play, XIcon } from "lucide-react";
@@ -19,13 +19,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import useYoutubeChannelNet from "@/hooks/useYoutubeChannelNet";
 import useConfigStore from "../store/config-store";
 import dateFormatter from "@/utils/dateFormatter";
+import useProjectInfo from "@/hooks/features/useProjectInfo";
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 
 const ContributionVideos = ({ projectId }: { projectId: string }) => {
   const { date } = useConfigStore();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState<string>();
-  const { from, to } = useStatisticDateStore();
+  const { from, to, setTo } = useStatisticDateStore();
   const { channelId } = useSelectedChannelStore();
+  const { data: projectInfo } = useProjectInfo("YOUTUBE", projectId);
   const { data } = useYTChannelTopVids({
     from,
     to,
@@ -39,51 +42,15 @@ const ContributionVideos = ({ projectId }: { projectId: string }) => {
     date: dateFormatter("ISO", date),
   });
 
+  useEffect(() => {
+    if (projectInfo?.lastUpdate)
+      setTo(adjustDateByFactor(-1, new Date(projectInfo.lastUpdate)));
+  }, [projectInfo?.lastUpdate]);
+
   if (!data) return null;
+
   return (
     <>
-      {/* {data.normalized.map((item, index) => (
-        <Card key={index} className="col-span-3">
-          <CardHeader>
-            <CardTitle className="line-clamp-3">{item.title}</CardTitle>
-            <CardDescription
-              className={cn(
-                badgeVariants({ variant: "outline" }),
-                "flex self-start"
-              )}
-            >
-              <Calendar height={14} />{" "}
-              {new Intl.DateTimeFormat("en-GB", {
-                day: "2-digit",
-                month: "long",
-                year: "numeric",
-              }).format(new Date(item.pub_date))}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <HeroVideoDialog
-              animationStyle="from-center"
-              videoSrc={`https://www.youtube.com/embed/${item.id}`}
-              thumbnailSrc={`https://img.youtube.com/vi/${item.id}/0.jpg`}
-              thumbnailAlt="Hero Video"
-            />
-            <div className="flex flex-row gap-2">
-              <div className={badgeVariants({ variant: "outline" })}>
-                <Play height={14} />
-                {abbreviateNumber(item.view)}
-              </div>
-              <div className={badgeVariants({ variant: "outline" })}>
-                <Heart height={14} />
-                {abbreviateNumber(item.like)}
-              </div>
-              <div className={badgeVariants({ variant: "outline" })}>
-                <MessageCircle height={14} />
-                {abbreviateNumber(item.comment)}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))} */}
       <Carousel>
         <CarouselContent>
           {data.normalized.map((video, index) => (

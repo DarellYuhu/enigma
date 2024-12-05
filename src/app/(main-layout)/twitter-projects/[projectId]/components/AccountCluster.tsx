@@ -57,7 +57,9 @@ const AccountCluster = ({ projectId }: { projectId: string }) => {
   });
   const clusterInfo = useTwitterAccountClusterInfo({
     cluster: account,
-    date: date ? dateFormatter("ISO", date) : "",
+    date: data?.data.date
+      ? dateFormatter("ISO", new Date(data?.data.date))
+      : "",
     projectId,
     window: 1,
   });

@@ -8,10 +8,7 @@ import { useTiktokBoards } from "@/hooks/useTiktokBoards";
 import { useTiktokTrends } from "@/hooks/useTiktokTrends";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import useStatisticDateStore from "@/store/statistic-date-store";
-import abbreviateNumber from "@/utils/abbreviateNumber";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
-import dateFormatter from "@/utils/dateFormatter";
-import { format } from "date-fns";
 import { useEffect } from "react";
 
 const StatisticsFilter = ({ projectId }: { projectId: string }) => {

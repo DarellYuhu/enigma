@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 type Payload = {
   projectId: string;
-  date: string;
+  date?: string;
   window: number;
 };
 

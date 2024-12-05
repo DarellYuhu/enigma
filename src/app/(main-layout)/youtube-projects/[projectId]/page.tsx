@@ -35,43 +35,6 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         <ClusterInfo projectId={params.projectId} />
       </div>
 
-      {/* <div className="card flex flex-col col-span-4 h-96">
-          <h2>Top Publication Channels</h2>
-          <div className="flex flex-1">
-            {topChannels.data && (
-              <HorizontalBarChart
-                data={topChannels.data.tc}
-                dataKey="frac"
-                labelKey="channel_name"
-                label="Frequency"
-                selectedId={selectedChannel?.channel_id}
-                onBarSelect={setSelectedChannel}
-              />
-            )}
-          </div>
-        </div> */}
-
-      {/* <div className="card col-span-8 flex flex-col h-96">
-          {selectedChannel && topChannels.data && (
-            <>
-              <h2>{selectedChannel.channel_name}</h2>
-              <div className="flex flex-1">
-                <BarChart2
-                  data={normalizeChannelsStats(
-                    selectedChannel.channel_id,
-                    topChannels.data?.ts
-                  )}
-                  labelKey={"date"}
-                  dataKey={"value"}
-                  label={"Count"}
-                  topLabel={false}
-                  yAxis={false}
-                />
-              </div>
-            </>
-          )}
-        </div> */}
-
       <Card className="col-span-8">
         <CardHeader>
           <CardTitle>Channel Network</CardTitle>

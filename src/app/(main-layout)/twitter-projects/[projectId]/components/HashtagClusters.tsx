@@ -48,16 +48,16 @@ const scale = [
 ];
 
 const HashtagClusters = ({ projectId }: { projectId: string }) => {
-  const { date } = useHashtagStore();
-  const { hashtag, setHashtag } = useClusterStore();
+  const { date: graphDate } = useHashtagStore();
+  const { hashtag, date, setHashtag } = useClusterStore();
   const graph = useTwitterHashtagNet2({
     projectId,
-    date: dateFormatter("ISO", date),
+    date: graphDate && dateFormatter("ISO", graphDate),
     window: 2,
   });
   const clusterInfo = useTwitterHashtageClusterInfo({
     projectId,
-    date: dateFormatter("ISO", date),
+    date: date && dateFormatter("ISO", date),
     window: 2,
     cluster: hashtag,
   });

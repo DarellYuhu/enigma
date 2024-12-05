@@ -1,4 +1,5 @@
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
+import dateFormatter from "@/utils/dateFormatter";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
@@ -11,7 +12,12 @@ type Payload = {
 
 export default function useTwitterStatistics(payload: Payload) {
   return useQuery({
-    queryKey: ["twitter", "statistics", payload.projectId],
+    queryKey: [
+      "twitter",
+      "statistics",
+      payload.projectId,
+      payload.until && dateFormatter("ISO", payload.until),
+    ],
     queryFn: async () => {
       const response = await fetch(
         `/api/v2/twitter/${payload.projectId}/statistics?since=${format(

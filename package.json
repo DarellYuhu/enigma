@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:migrate": "dotenv -e .env.development prisma migrate dev",
-    "db:deplpoy": "dotenv -e .env.production prisma migrate deploy",
+    "db:deploy": "dotenv -e .env.production prisma migrate deploy",
     "db:seed": "dotenv -e .env.production npx prisma db seed",
     "docker:build": "docker build -t enigma .",
     "docker:up": "docker compose up --wait",
