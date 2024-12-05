@@ -26,7 +26,6 @@ import {
 import ProjectSchema from "@/schemas/project";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
-import CreateSectionDialog from "./CreateSectionDialog";
 import useSections from "@/hooks/features/workspace/useSections";
 import { useParams } from "next/navigation";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -34,6 +33,7 @@ import { useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
 import useCreateProject from "@/hooks/features/workspace/useCreateProject";
+import { Textarea } from "@/components/ui/textarea";
 
 const CreateSheet = () => {
   const closeRef = useRef<HTMLButtonElement | null>(null);
@@ -55,7 +55,7 @@ const CreateSheet = () => {
     control: form.control,
     name: "links",
   });
-  const { mutate, isPending } = useCreateProject();
+  const { mutateAsync, isPending } = useCreateProject();
 
   return (
     <SheetContent className="space-y-8 overflow-y-auto">
@@ -66,7 +66,9 @@ const CreateSheet = () => {
       <Form {...form}>
         <form
           className="space-y-4"
-          onSubmit={form.handleSubmit((value) => mutate(value))}
+          onSubmit={form.handleSubmit((value) =>
+            mutateAsync(value).then(() => closeRef.current?.click())
+          )}
         >
           <FormField
             control={form.control}
@@ -88,7 +90,7 @@ const CreateSheet = () => {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Textarea rows={4} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -143,7 +145,6 @@ const CreateSheet = () => {
               </FormItem>
             )}
           />
-          <CreateSectionDialog />
           <div className="space-y-4">
             <FormLabel>Links</FormLabel>
             {fields.map((field, index) => (
@@ -205,6 +206,9 @@ const CreateSheet = () => {
             <SheetClose
               ref={closeRef}
               className={buttonVariants({ variant: "outline" })}
+              onClick={() => {
+                form.reset();
+              }}
             >
               Cancel
             </SheetClose>

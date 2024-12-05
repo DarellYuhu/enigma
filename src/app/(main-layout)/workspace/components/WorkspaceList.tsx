@@ -1,4 +1,5 @@
 "use client";
+
 import { ColumnDef } from "@tanstack/react-table";
 import Datatable from "@/components/datatable/Datatable";
 import {
@@ -13,6 +14,7 @@ import useWorkspaces, {
 import dateFormatter from "@/utils/dateFormatter";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import DeleteDialog from "./DeleteDialog";
 
 const WorkspaceList = () => {
   const { data } = useWorkspaces();
@@ -25,12 +27,15 @@ const WorkspaceList = () => {
             <AccordionContent className="space-y-4">
               <div className="flex flex-row justify-between gap-4">
                 <h3>{workspace.description}</h3>
-                <Link
-                  href={`/workspace/${workspace.id}`}
-                  className={buttonVariants({ variant: "outline" })}
-                >
-                  Open
-                </Link>
+                <div className="flex items-center gap-2">
+                  <DeleteDialog workspace={workspace} />
+                  <Link
+                    href={`/workspace/${workspace.id}`}
+                    className={buttonVariants({ variant: "outline" })}
+                  >
+                    Open
+                  </Link>
+                </div>
               </div>
               <Datatable columns={columns} data={workspace.users} />
             </AccordionContent>

@@ -18,3 +18,14 @@ export async function GET(
   });
   return Response.json(workspaces);
 }
+
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  await prisma.workspace.delete({
+    where: { id: params.id },
+  });
+
+  return new Response(null, { status: 204 });
+}

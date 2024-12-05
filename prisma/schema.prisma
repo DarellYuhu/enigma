@@ -53,8 +53,8 @@ model Project {
   updatedAt   DateTime  @updatedAt
   workspaceId String
   sectionId   Int
-  Section     Section   @relation(fields: [sectionId], references: [id])
-  Workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  Section     Section   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  Workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   Link        Link[]
 }
 
@@ -67,7 +67,7 @@ model Link {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   projectId String
-  Project   Project  @relation(fields: [projectId], references: [id])
+  Project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Section {
@@ -76,15 +76,15 @@ model Section {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   workspaceId String
-  Workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  Workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   Project     Project[]
 }
 
 model Workspace_User {
   workspaceId String
-  Workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  Workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   userId      Int
-  User        User      @relation(fields: [userId], references: [id])
+  User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 

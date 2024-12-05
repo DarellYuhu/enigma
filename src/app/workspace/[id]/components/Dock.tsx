@@ -9,19 +9,20 @@ import {
 import { DiamondPlusIcon } from "lucide-react";
 import CreateSheet from "./CreateSheet";
 import { cn } from "@/lib/utils";
+import CreateSectionDialog from "./CreateSectionDialog";
 
 const Dock = () => {
   return (
     <DockContainer
       direction="middle"
-      className="h-10 rounded-lg fixed -top-4 right-4 transform -translate-x-1/2 z-10"
+      className="h-10 rounded-lg fixed bottom-4 left-1/2 transform -translate-x-1/2 z-10"
     >
       <DockIcon>
         <Sheet>
           <Tooltip>
             <TooltipTrigger asChild>
               <SheetTrigger
-                aria-label={"Create"}
+                aria-label={"Create card"}
                 className={cn(
                   buttonVariants({ variant: "ghost", size: "icon" }),
                   "size-8 rounded-lg"
@@ -31,11 +32,14 @@ const Dock = () => {
               </SheetTrigger>
             </TooltipTrigger>
             <TooltipContent>
-              <p>{"Create"}</p>
+              <p>{"Create card"}</p>
             </TooltipContent>
           </Tooltip>
           <CreateSheet />
         </Sheet>
+      </DockIcon>
+      <DockIcon>
+        <CreateSectionDialog />
       </DockIcon>
     </DockContainer>
   );

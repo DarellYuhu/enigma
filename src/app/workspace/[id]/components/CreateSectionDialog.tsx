@@ -1,3 +1,4 @@
+"use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,8 +19,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import useCreateSection from "@/hooks/features/workspace/useCreateSection";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FolderPlusIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -48,12 +56,23 @@ const CreateSectionDialog = () => {
   }, [status]);
 
   return (
-    <Dialog onOpenChange={(value) => !value && form.reset()}>
-      <DialogTrigger
-        className={buttonVariants({ variant: "outline", size: "sm" })}
-      >
-        Create Section
-      </DialogTrigger>
+    <Dialog onOpenChange={(open) => !open && form.reset()}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger
+            aria-label="Create new section"
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "icon" }),
+              "size-8 rounded-lg"
+            )}
+          >
+            <FolderPlusIcon className="size-4" />
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{"Create new section"}</p>
+        </TooltipContent>
+      </Tooltip>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Section</DialogTitle>

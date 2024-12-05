@@ -1,12 +1,12 @@
 "use client";
 import { badgeVariants } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { MagicCard } from "@/components/ui/magic-card";
 import useWorkspace from "@/hooks/features/workspace/useWorkspace";
 import { cn } from "@/lib/utils";
-import { Trash } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import DeleteSectionDialog from "./DeleteSectionDialog";
+import DeleteProjectDialog from "./DeleteProjectDialog";
 
 const MainContent = () => {
   const params = useParams<{ id: string }>();
@@ -23,9 +23,13 @@ const MainContent = () => {
           <div className="space-y-4" key={item.id}>
             <div className="flex flex-row justify-between">
               <h2 className="text-2xl font-bold">{item.name}</h2>
-              <Button variant={"destructive"}>
-                <Trash />
-              </Button>
+              <DeleteSectionDialog
+                section={{
+                  id: item.id,
+                  name: item.name,
+                  workspaceId: item.workspaceId,
+                }}
+              />
             </div>
             <div className="grid grid-cols-12 gap-10">
               {item.projects?.map((item, index) => (
@@ -60,6 +64,11 @@ const MainContent = () => {
                       </div>
                     </div>
                   </div>
+                  <DeleteProjectDialog
+                    projectId={item.id}
+                    projectName={item.title}
+                    workspaceId={data.data.id}
+                  />
                 </MagicCard>
               ))}
             </div>

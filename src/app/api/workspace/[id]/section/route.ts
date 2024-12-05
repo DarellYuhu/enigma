@@ -25,3 +25,12 @@ export async function GET(
 
   return Response.json(seciton);
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  await prisma.section.delete({ where: { id: parseInt(params.id) } });
+
+  return new Response(null, { status: 204 });
+}

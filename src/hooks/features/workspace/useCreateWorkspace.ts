@@ -1,9 +1,10 @@
 import WorkspaceSchema from "@/schemas/workspace";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { z } from "zod";
 
 export default function useCreateWorkspace() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (payload: z.infer<typeof WorkspaceSchema.create>) => {
       const response = await fetch("/api/workspace", {
@@ -25,6 +26,7 @@ export default function useCreateWorkspace() {
 
     onSuccess() {
       toast.success("Workspace created successfully", { duration: 5000 });
+      queryClient.invalidateQueries({ queryKey: ["workspaces"] });
     },
     onError(error) {
       toast.error(error.message ?? "Something went wrong", { duration: 5000 });
