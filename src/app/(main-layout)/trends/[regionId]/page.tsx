@@ -6,6 +6,8 @@ import TimeSeries from "../components/TimeSeries";
 import ActorNetwork from "../components/ActorNetwork";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import TopCentrality from "../components/TopCentrality";
+import NetworkConfig from "../components/NetworkConfig";
+import Statistics from "../components/Statistics";
 
 const RegionPage = ({ params }: { params: { regionId: string } }) => {
   return (
@@ -26,18 +28,35 @@ const RegionPage = ({ params }: { params: { regionId: string } }) => {
         <Rank details={params.regionId} />
       </div>
 
-      <div className="col-span-8">
-        <ActorNetwork details={params.regionId} />
-      </div>
-
-      <Card className="col-span-4">
-        <CardHeader>
-          <CardTitle>Top Candidates</CardTitle>
+      <Card className="col-span-full">
+        <CardHeader className="flex flex-row justify-between items-center">
+          <CardTitle>Some Title Here</CardTitle>
+          <NetworkConfig />
         </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-80">
-            <TopCentrality details={params.regionId} />
-          </ScrollArea>
+        <CardContent className="grid grid-cols-12 gap-3">
+          <Card className="col-span-full">
+            <CardHeader>
+              <CardTitle>Statistics</CardTitle>
+            </CardHeader>
+            <CardContent className="h-80">
+              <Statistics details={params.regionId} />
+            </CardContent>
+          </Card>
+
+          <div className="col-span-8">
+            <ActorNetwork details={params.regionId} />
+          </div>
+
+          <Card className="col-span-4">
+            <CardHeader>
+              <CardTitle>Betweeness and Centrality</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-80">
+                <TopCentrality details={params.regionId} />
+              </ScrollArea>
+            </CardContent>
+          </Card>
         </CardContent>
       </Card>
     </div>

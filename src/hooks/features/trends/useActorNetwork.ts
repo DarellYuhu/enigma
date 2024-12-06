@@ -3,16 +3,24 @@ import { useQuery } from "@tanstack/react-query";
 
 type Payload = {
   category: string;
-  date: "";
+  date: string;
   window: number;
   rid: string;
 };
 export default function useActorNetwork(payload: Payload) {
   return useQuery({
-    queryKey: ["trends", "actor-network", payload.rid],
+    queryKey: [
+      "trends",
+      "actor-network",
+      payload.rid,
+      payload.date,
+      payload.window,
+    ],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v2/trends/actor-net?category=${payload.category}&date=${payload.date}&window=${payload.window}&rid=${payload.rid}`
+        `/api/v2/trends/actor-net?category=${
+          payload.category
+        }&date=${""}&window=${payload.window}&rid=${payload.rid}`
       );
       const data: ActorNetwork = await response.json();
       const normalized: VisData = {

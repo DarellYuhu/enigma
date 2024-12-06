@@ -7,7 +7,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import {
   ChevronDown,
   ChevronUp,
-  LucideIcon,
   Minus,
   MoveRight,
   TrendingDown,
