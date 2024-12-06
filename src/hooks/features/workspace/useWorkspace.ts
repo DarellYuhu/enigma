@@ -63,6 +63,7 @@ type Normalized = Record<
 
 type Workspace = Prisma.WorkspaceGetPayload<{
   include: {
+    Workspace_User: true;
     Project: {
       include: { Section: true; Link: true };
     };

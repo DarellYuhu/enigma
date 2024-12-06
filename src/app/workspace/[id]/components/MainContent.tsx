@@ -7,10 +7,16 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import DeleteSectionDialog from "./DeleteSectionDialog";
 import DeleteProjectDialog from "./DeleteProjectDialog";
+import { useSession } from "next-auth/react";
 
 const MainContent = () => {
   const params = useParams<{ id: string }>();
+  const { data: session } = useSession();
   const { data, isLoading } = useWorkspace(params.id);
+  const isManager = data?.data.Workspace_User.some(
+    (item) => item.userId.toString() === session?.user.id
+  );
+
   if (isLoading) return <div>Loading</div>;
   else if (!data) return null;
 
@@ -25,13 +31,15 @@ const MainContent = () => {
           <div className="space-y-4" key={item.id}>
             <div className="flex flex-row justify-between">
               <h2 className="text-2xl font-bold">{item.name}</h2>
-              <DeleteSectionDialog
-                section={{
-                  id: item.id,
-                  name: item.name,
-                  workspaceId: item.workspaceId,
-                }}
-              />
+              {isManager && (
+                <DeleteSectionDialog
+                  section={{
+                    id: item.id,
+                    name: item.name,
+                    workspaceId: item.workspaceId,
+                  }}
+                />
+              )}
             </div>
             <div className="grid grid-cols-12 gap-10">
               {item.projects?.map((item, index) => (
@@ -66,11 +74,13 @@ const MainContent = () => {
                       </div>
                     </div>
                   </div>
-                  <DeleteProjectDialog
-                    projectId={item.id}
-                    projectName={item.title}
-                    workspaceId={data.data.id}
-                  />
+                  {isManager && (
+                    <DeleteProjectDialog
+                      projectId={item.id}
+                      projectName={item.title}
+                      workspaceId={data.data.id}
+                    />
+                  )}
                 </MagicCard>
               ))}
             </div>

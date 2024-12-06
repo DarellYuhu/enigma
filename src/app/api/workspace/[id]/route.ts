@@ -8,6 +8,7 @@ export async function GET(
   const workspaces = await prisma.workspace.findUnique({
     where: { id: params.id },
     include: {
+      Workspace_User: true,
       Project: {
         include: {
           Section: true,

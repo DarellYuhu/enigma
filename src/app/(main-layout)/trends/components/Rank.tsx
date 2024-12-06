@@ -7,7 +7,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import {
   ChevronDown,
   ChevronUp,
+  LucideIcon,
   Minus,
+  MoveRight,
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
@@ -90,14 +92,24 @@ const columns: ColumnDef<
     accessorKey: "diff",
     header: "Change (%)",
     cell({ row }) {
+      let Icon: JSX.Element;
+
+      switch (true) {
+        case parseFloat(row.original.diff) > 0:
+          Icon = <TrendingUp size={14} className="text-green-500" />;
+          break;
+        case parseFloat(row.original.diff) < 0:
+          Icon = <TrendingDown size={14} className="text-red-500" />;
+          break;
+        default:
+          Icon = <MoveRight size={14} />;
+          break;
+      }
+
       return (
         <span className="flex flex-row items-center gap-2">
           {parseFloat(row.original.diff).toFixed(2)}
-          {parseFloat(row.original.diff) > 0 ? (
-            <TrendingUp className="text-green-500" />
-          ) : (
-            <TrendingDown className="text-red-500" />
-          )}
+          {Icon}
         </span>
       );
     },
