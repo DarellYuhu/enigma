@@ -73,7 +73,7 @@ const columns: ColumnProps = (isDisabled, setSelected) => {
     },
     {
       accessorKey: "numTweets",
-      header: "Number of Tweets",
+      header: "Number of Posts",
     },
     {
       accessorKey: "created",

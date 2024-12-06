@@ -11,7 +11,10 @@ const TopCentrality = ({ details }: { details: string }) => {
   const { category, networkDate, networkType } = useConfigStore();
   const { data } = useActorNetwork({
     category,
-    date: dateFormatter("ISO", networkDate),
+    date:
+      typeof networkDate === "string"
+        ? networkDate
+        : dateFormatter("ISO", networkDate),
     rid: details,
     window: parseInt(networkType),
   });

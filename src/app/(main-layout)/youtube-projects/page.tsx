@@ -66,10 +66,6 @@ const columns: ColumnProps = (isDisabled, setSelected) => {
       },
     },
     {
-      accessorKey: "keywords",
-      header: "Keywords",
-    },
-    {
       accessorKey: "numChannels",
       header: "Number of Channels",
     },

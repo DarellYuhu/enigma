@@ -37,6 +37,8 @@ model Workspace {
   id             String           @id @default(uuid())
   name           String
   description    String?
+  bgColor        String?
+  textColor      String?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   Workspace_User Workspace_User[]
@@ -45,29 +47,31 @@ model Workspace {
 }
 
 model Project {
-  id          String    @id @default(uuid())
-  title       String
-  imageUrl    String
-  description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  workspaceId String
-  sectionId   Int
-  Section     Section   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  Workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  Link        Link[]
+  id              String    @id @default(uuid())
+  title           String
+  imageUrl        String
+  description     String?
+  textColor       String?
+  gradientBgColor String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  workspaceId     String
+  sectionId       Int
+  Section         Section   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  Workspace       Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  Link            Link[]
 }
 
 model Link {
-  id        Int      @id @default(autoincrement())
-  label     String
-  url       String
-  // textColor   String   @default("#ffffff")
-  // buttonColor String   @default("#000000")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  projectId String
-  Project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id          Int      @id @default(autoincrement())
+  label       String
+  url         String
+  textColor   String?
+  buttonColor String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  projectId   String
+  Project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Section {

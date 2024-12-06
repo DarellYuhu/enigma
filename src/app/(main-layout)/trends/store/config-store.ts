@@ -8,7 +8,8 @@ type ConfigState = {
   until?: Date;
   type: "week" | "month";
   networkType: "60" | "120";
-  networkDate: Date;
+  networkDate: Date | string;
+  lineType: "apl" | "largest_eig" | "largest_eig_pct";
 };
 
 type ConfigAction = {
@@ -18,6 +19,7 @@ type ConfigAction = {
   setType: (type: ConfigState["type"]) => void;
   setNetworkType: (type: ConfigState["networkType"]) => void;
   setNetworkDate: (date: ConfigState["networkDate"]) => void;
+  setLineType: (type: ConfigState["lineType"]) => void;
 };
 
 const useConfigStore = create<ConfigState & ConfigAction>((set) => ({
@@ -27,7 +29,11 @@ const useConfigStore = create<ConfigState & ConfigAction>((set) => ({
   until: new Date(),
   type: "week",
   networkType: "60",
-  networkDate: new Date(),
+  networkDate: "",
+  lineType: "apl",
+  setLineType(type) {
+    set({ lineType: type });
+  },
   setNetworkDate(date) {
     set({ networkDate: date });
   },

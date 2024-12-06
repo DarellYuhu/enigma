@@ -17,7 +17,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         <CardHeader>
           <CardTitle>Video Network</CardTitle>
         </CardHeader>
-        <CardContent className="h-80">
+        <CardContent className="h-80 relative">
           <VideoNetGraph projectId={params.projectId} />
         </CardContent>
       </Card>
@@ -44,13 +44,8 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         </CardContent>
       </Card>
 
-      <Card className="col-span-4 relative">
-        <CardHeader>
-          <CardTitle>Top Videos from Channel</CardTitle>
-        </CardHeader>
-        <CardContent className="h-80">
-          <ContributionVideos projectId={params.projectId} />
-        </CardContent>
+      <Card className="col-span-4">
+        <ContributionVideos projectId={params.projectId} />
       </Card>
     </div>
   );

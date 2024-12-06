@@ -30,15 +30,15 @@ const RegionPage = ({ params }: { params: { regionId: string } }) => {
 
       <Card className="col-span-full">
         <CardHeader className="flex flex-row justify-between items-center">
-          <CardTitle>Some Title Here</CardTitle>
+          <CardTitle>Corelation Network</CardTitle>
           <NetworkConfig />
         </CardHeader>
         <CardContent className="grid grid-cols-12 gap-3">
-          <Card className="col-span-full">
+          <Card className="col-span-full relative">
             <CardHeader>
-              <CardTitle>Statistics</CardTitle>
+              <CardTitle>Metrics</CardTitle>
             </CardHeader>
-            <CardContent className="h-80">
+            <CardContent className="h-52">
               <Statistics details={params.regionId} />
             </CardContent>
           </Card>
@@ -49,7 +49,7 @@ const RegionPage = ({ params }: { params: { regionId: string } }) => {
 
           <Card className="col-span-4">
             <CardHeader>
-              <CardTitle>Betweeness and Centrality</CardTitle>
+              <CardTitle>Betweeness Centrality</CardTitle>
             </CardHeader>
             <CardContent>
               <ScrollArea className="h-80">

@@ -16,7 +16,10 @@ const HashtagConfig = () => {
 
   return (
     <div className="flex justify-end">
-      <DatePicker date={date} onDateChange={setDate} />
+      <DatePicker
+        date={date}
+        onDateChange={(value) => value && setDate(value)}
+      />
     </div>
   );
 };

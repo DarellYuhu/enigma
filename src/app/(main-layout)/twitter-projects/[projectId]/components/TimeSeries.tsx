@@ -15,29 +15,27 @@ import { useEffect, useState } from "react";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import DateRangePicker from "@/components/ui/date-range-picker";
 import SearchInput from "@/components/SearchInput";
-import { useSearchParams } from "next/navigation";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
+import dateFormatter from "@/utils/dateFormatter";
 
 const TimeSeries = ({ projectId }: { projectId: string }) => {
-  const searchParams = useSearchParams();
   const [string, setString] = useState("");
   const [type, setType] = useState<keyof TwitterStatistics["ts"]>("daily");
   const { data: projectInfo } = useProjectInfo("TWITTER", projectId);
-  const [date, setDate] = useState<{ since?: Date; until?: Date }>({
-    since: adjustDateByFactor(-30, new Date(searchParams.get("date") || "")),
-    until: new Date(searchParams.get("date") || ""),
-  });
+  const [date, setDate] = useState<
+    { since?: Date; until?: Date } | undefined
+  >();
   const { data, refetch } = useTwitterStatistics({
     projectId,
-    since: date.since,
-    until: date.until,
+    since: date?.since && dateFormatter("ISO", date.since),
+    until: date?.until && dateFormatter("ISO", date.until),
     string,
   });
 
   useEffect(() => {
     if (projectInfo?.lastUpdate) {
       setDate({
-        ...date,
+        since: adjustDateByFactor(-3, new Date(projectInfo.lastUpdate)),
         until: new Date(projectInfo.lastUpdate),
       });
     }
@@ -82,7 +80,7 @@ const TimeSeries = ({ projectId }: { projectId: string }) => {
       </div>
       <div className="absolute top-4 right-4 flex flex-row gap-3">
         <DateRangePicker
-          date={{ from: date.since, to: date.until }}
+          date={{ from: date?.since, to: date?.until }}
           setDate={(value) =>
             setDate({
               since: value?.from,

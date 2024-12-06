@@ -16,7 +16,10 @@ const AccountConfig = () => {
   }, [dateParams]);
   return (
     <div className="flex justify-self-end">
-      <DatePicker date={date} onDateChange={setDate} />
+      <DatePicker
+        date={date}
+        onDateChange={(value) => value && setDate(value)}
+      />
     </div>
   );
 };

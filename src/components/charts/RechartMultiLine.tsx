@@ -1,4 +1,4 @@
-import { Brush, CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { Brush, CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
@@ -6,15 +6,21 @@ import {
   ChartTooltipContent,
 } from "../ui/chart";
 import { format } from "date-fns";
+import { CurveType } from "recharts/types/shape/Curve";
+import { AxisDomain } from "recharts/types/util/types";
 
 type Props = {
   config: { dataKey: string; labelKey: string; label: string; color: string }[];
   data: { [key: string]: string | number }[];
+  type?: CurveType;
+  domain?: AxisDomain;
   tickFormatter?: (value: any, index: number) => string;
 };
 const RechartMultiLine = ({
   config,
   data,
+  domain = [0, "auto"],
+  type = "monotone",
   tickFormatter = (value) =>
     value ? format(new Date(value), "yyyy-MM-dd") : "",
 }: Props) => {
@@ -45,12 +51,13 @@ const RechartMultiLine = ({
           tickMargin={8}
           tickFormatter={tickFormatter}
         />
+        <YAxis domain={domain} hide />
         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
         {config.map((item, index) => (
           <Line
             key={index}
             dataKey={item.dataKey}
-            type="monotone"
+            type={type}
             stroke={item.color}
             strokeWidth={2}
             dot={false}

@@ -2,25 +2,25 @@
 import useActorNetwork from "@/hooks/features/trends/useActorNetwork";
 import useConfigStore from "../store/config-store";
 import VisGraph from "@/components/VisGraph";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import dateFormatter from "@/utils/dateFormatter";
 
 const ActorNetwork = ({ details }: { details: string }) => {
   const { category, networkDate, networkType } = useConfigStore();
   const { data } = useActorNetwork({
     category,
-    date: dateFormatter("ISO", networkDate),
+    date:
+      typeof networkDate === "string"
+        ? networkDate
+        : dateFormatter("ISO", networkDate),
     rid: details,
     window: parseInt(networkType),
   });
   if (!data) return null;
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Correlation Network</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="h-80">
+    <Card className="h-full">
+      <CardContent className="p-6 h-full">
+        <div className="h-full">
           <VisGraph data={data.normalized} type="interestNet" />
         </div>
       </CardContent>

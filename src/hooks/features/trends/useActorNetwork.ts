@@ -18,9 +18,7 @@ export default function useActorNetwork(payload: Payload) {
     ],
     queryFn: async () => {
       const response = await fetch(
-        `/api/v2/trends/actor-net?category=${
-          payload.category
-        }&date=${""}&window=${payload.window}&rid=${payload.rid}`
+        `/api/v2/trends/actor-net?category=${payload.category}&date=${payload.date}&window=${payload.window}&rid=${payload.rid}`
       );
       const data: ActorNetwork = await response.json();
       const normalized: VisData = {
@@ -43,7 +41,7 @@ export default function useActorNetwork(payload: Payload) {
         date: item,
         apl: data.statistics.apl[index],
         largest_eig: data.statistics.largest_eig[index],
-        largest_eig_pct: data.statistics.largest_eig_pct[index],
+        largest_eig_pct: data.statistics.largest_eig_pct[index] * 100,
       }));
       const centrality = data.network.nodes
         .sort((a, b) => b.centrality - a.centrality)

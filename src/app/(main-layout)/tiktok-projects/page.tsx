@@ -179,7 +179,7 @@ const columns: ColumnProps = (isDisabled, setSelected) => [
     header: () => {
       return (
         <div className="flex flex-row gap-2 items-center">
-          <ALargeSmall width={20} height={20} /> Name
+          <ALargeSmall width={20} height={20} /> Project Name
         </div>
       );
     },
@@ -189,7 +189,7 @@ const columns: ColumnProps = (isDisabled, setSelected) => [
     header: () => {
       return (
         <div className="flex flex-row gap-2 items-center">
-          <Clapperboard width={18} height={18} /> Total Videos
+          <Clapperboard width={18} height={18} /> Number of Videos
         </div>
       );
     },
