@@ -53,6 +53,9 @@ const AppSidebar = () => {
         return MENUS.analystMenus;
     }
   };
+
+  if (session?.user.role === "VIEWER") return null;
+
   return (
     <Sidebar variant="sidebar">
       <SidebarHeader>

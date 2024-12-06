@@ -63,10 +63,11 @@ const Maps = ({ details }: { details: string }) => {
       <CardHeader>
         <CardTitle>Maps</CardTitle>
       </CardHeader>
-      <CardContent className="h-[450px]">
+      <CardContent className="h-[450px] w-full">
         {geoJson.data && trends.data && (
           <>
             <MapGl
+              onRender={(e) => e.target.resize()}
               interactiveLayerIds={["geo-json"]}
               initialViewState={{
                 longitude: 122.4,
