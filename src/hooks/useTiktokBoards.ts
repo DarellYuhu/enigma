@@ -15,7 +15,7 @@ export function useTiktokBoards(paylaod: {
       paylaod.projectId,
       paylaod.to && dateFormatter("ISO", paylaod.to),
     ],
-    enabled: false,
+    enabled: !!paylaod.to,
     queryFn: async () => {
       const response = await fetch(
         `/api/v1/tiktok/${paylaod.projectId}/boards?since=${format(
@@ -25,7 +25,6 @@ export function useTiktokBoards(paylaod: {
       );
       const data: BoardsData = await response.json();
       const normalize = {
-        ...data,
         top: {
           ...data.top,
           like: data.top.digg,
@@ -35,7 +34,7 @@ export function useTiktokBoards(paylaod: {
           like: data.trending.digg,
         },
       };
-      return normalize;
+      return { data, normalize };
     },
   });
 }

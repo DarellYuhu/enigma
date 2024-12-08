@@ -20,6 +20,6 @@ export default auth((req) => {
 
 export const config: MiddlewareConfig = {
   matcher: [
-    "/((?!api|login-bg.jpg|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!api|login-bg.jpg|logo.jpg|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };

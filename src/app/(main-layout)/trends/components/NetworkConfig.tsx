@@ -21,7 +21,7 @@ const NetworkConfig = () => {
       </ToggleGroup>
 
       <DatePicker
-        date={networkDate}
+        date={networkDate as Date}
         onDateChange={(date) => date && setNetworkDate(date)}
       />
     </div>
