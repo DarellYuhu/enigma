@@ -14,7 +14,6 @@ import Datatable from "@/components/datatable/Datatable";
 import { badgeVariants } from "@/components/ui/badge";
 import Link from "next/link";
 import { useState } from "react";
-import dateFormatter from "@/utils/dateFormatter";
 
 const TwitterProjects = () => {
   const [selected, setSelected] = useState<
@@ -62,9 +61,7 @@ const columns: ColumnProps = (isDisabled, setSelected) => {
         return (
           <Link
             className={badgeVariants({ variant: "default" })}
-            href={`/twitter-projects/${
-              props.row.original.projectId
-            }?date=${dateFormatter("ISO", props.row.original.lastUpdate)}`}
+            href={`/twitter-projects/${props.row.original.projectId}`}
           >
             {props.row.original.projectName}
           </Link>

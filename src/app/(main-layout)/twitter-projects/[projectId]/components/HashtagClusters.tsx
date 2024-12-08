@@ -49,7 +49,7 @@ const scale = [
 
 const HashtagClusters = ({ projectId }: { projectId: string }) => {
   const { date: graphDate } = useHashtagStore();
-  const { hashtag, date, setHashtag } = useClusterStore();
+  const { hashtag, setHashtag } = useClusterStore();
   const graph = useTwitterHashtagNet2({
     projectId,
     date: graphDate && dateFormatter("ISO", graphDate),
@@ -57,7 +57,7 @@ const HashtagClusters = ({ projectId }: { projectId: string }) => {
   });
   const clusterInfo = useTwitterHashtageClusterInfo({
     projectId,
-    date: date && dateFormatter("ISO", date),
+    date: graph.data?.data.date,
     window: 2,
     cluster: hashtag,
   });
