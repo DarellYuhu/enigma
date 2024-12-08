@@ -45,8 +45,8 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const boards = useTwitterBoards({
     project: projectId,
     string: selectedNode?.data.user_screen_name ?? "",
-    since: adjustDateByFactor(-3, date),
-    until: adjustDateByFactor(1, date),
+    since: date && dateFormatter("ISO", adjustDateByFactor(-3, date)),
+    until: date && dateFormatter("ISO", adjustDateByFactor(1, date)),
   });
 
   useEffect(() => {

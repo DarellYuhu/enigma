@@ -6,13 +6,14 @@ import useTwitterBoards, { TwitterBoardItem } from "@/hooks/useTwitterBoards";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 import useBoardConfigStore from "../store/board-config-store";
+import dateFormatter from "@/utils/dateFormatter";
 
 const Board = ({ projectId }: { projectId: string }) => {
   const { from, to, string } = useBoardConfigStore();
   const { data } = useTwitterBoards({
     project: projectId,
-    since: from,
-    until: to,
+    since: from && dateFormatter("ISO", from),
+    until: to && dateFormatter("ISO", to),
     string,
   });
   return (

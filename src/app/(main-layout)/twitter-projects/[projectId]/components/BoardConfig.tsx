@@ -6,37 +6,42 @@ import { ArrowRight, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import useBoardConfigStore from "../store/board-config-store";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
-import { useSearchParams } from "next/navigation";
+import useProjectInfo from "@/hooks/features/useProjectInfo";
 
-const BoardConfig = () => {
-  const searchParams = useSearchParams();
-  const date = searchParams.get("date");
+const BoardConfig = ({ projectId }: { projectId: string }) => {
   const [query, setQuery] = useState("");
   const [toggleValue, setToggleValue] = useState("3");
-  const { setDate, setString } = useBoardConfigStore();
+  const { setFrom, setTo, setString } = useBoardConfigStore();
+  const { data: projectInfo } = useProjectInfo("TWITTER", projectId);
 
   useEffect(() => {
-    switch (toggleValue) {
-      case "1":
-        setDate({
-          from: adjustDateByFactor(-1, new Date(date || "")),
-          to: new Date(date || ""),
-        });
-        break;
-      case "3":
-        setDate({
-          from: adjustDateByFactor(-3, new Date(date || "")),
-          to: new Date(date || ""),
-        });
-        break;
-      case "7":
-        setDate({
-          from: adjustDateByFactor(-7, new Date(date || "")),
-          to: new Date(date || ""),
-        });
-        break;
+    if (projectInfo?.lastUpdate) {
+      setTo(new Date(projectInfo.lastUpdate));
+      switch (toggleValue) {
+        case "1":
+          setFrom(
+            new Date(
+              adjustDateByFactor(-1, new Date(projectInfo.lastUpdate || ""))
+            )
+          );
+          break;
+        case "3":
+          setFrom(
+            new Date(
+              adjustDateByFactor(-3, new Date(projectInfo.lastUpdate || ""))
+            )
+          );
+          break;
+        case "7":
+          setFrom(
+            new Date(
+              adjustDateByFactor(-7, new Date(projectInfo.lastUpdate || ""))
+            )
+          );
+          break;
+      }
     }
-  }, [toggleValue]);
+  }, [toggleValue, projectInfo?.lastUpdate]);
 
   return (
     <div className="flex flex-row gap-2">

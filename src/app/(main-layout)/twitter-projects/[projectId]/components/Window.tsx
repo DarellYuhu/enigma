@@ -18,8 +18,8 @@ const Window = ({ projectId }: { projectId: string }) => {
   const boards = useTwitterBoards({
     project: projectId,
     string: query,
-    since: from,
-    until: to,
+    since: from && dateFormatter("ISO", from),
+    until: to && dateFormatter("ISO", to),
   });
 
   const scatterTopics = useTwitterScatterTopics({
