@@ -15,7 +15,7 @@ const Configuration = () => {
   return (
     <DatePicker
       date={date}
-      onDateChange={(date) => setDate(date!)}
+      onDateChange={(date) => date && setDate(date)}
       toDate={new Date()}
     />
   );

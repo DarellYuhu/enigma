@@ -15,13 +15,14 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  username    String   @unique
-  password    String
-  displayName String
-  role        Role
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             Int              @id @default(autoincrement())
+  username       String           @unique
+  password       String
+  displayName    String
+  role           Role
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Workspace_User Workspace_User[]
 }
 
 model ApiUrl {
@@ -32,11 +33,72 @@ model ApiUrl {
   updatedAt DateTime @updatedAt
 }
 
+model Workspace {
+  id             String           @id @default(uuid())
+  name           String
+  description    String?
+  bgColor        String?
+  textColor      String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Workspace_User Workspace_User[]
+  Section        Section[]
+  Project        Project[]
+}
+
+model Project {
+  id              String    @id @default(uuid())
+  title           String
+  imageUrl        String
+  description     String?
+  textColor       String?
+  gradientBgColor String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  workspaceId     String
+  sectionId       Int
+  Section         Section   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  Workspace       Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  Link            Link[]
+}
+
+model Link {
+  id          Int      @id @default(autoincrement())
+  label       String
+  url         String
+  textColor   String?
+  buttonColor String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  projectId   String
+  Project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Section {
+  id          Int       @id @default(autoincrement())
+  name        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  workspaceId String
+  Workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  Project     Project[]
+}
+
+model Workspace_User {
+  workspaceId String
+  Workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  userId      Int
+  User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([workspaceId, userId])
+}
+
 enum Role {
   VIEWER
   ANALYST
   ADMIN
-  CREATIVE
 }
 
 enum Type {

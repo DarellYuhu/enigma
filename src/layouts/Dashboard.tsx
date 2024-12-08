@@ -22,10 +22,10 @@
 // import tagRelationExport from "@/utils/tagRelationExport";
 // import useGraphDateStore from "@/store/graph-date-store";
 // import HorizontalBarChart2 from "@/components/HorizontalBarChart2";
-// import AreaChart2 from "@/components/AreaChart2";
+// import AreaChart2 from "@/components/charts/AreaChart2";
 // import Graph, { CosmosLink, CosmosNode } from "@/components/Graph";
 // import { CosmographData } from "@cosmograph/react";
-// import BarChart2 from "@/components/BarChart2";
+// import BarChart2 from "@/components/charts/BarChart2";
 // import ReavizPie from "@/components/ReavizPie";
 // import * as Tabs from "@radix-ui/react-tabs";
 // import {
@@ -45,7 +45,7 @@
 // } from "@/components/ui/card";
 // import ReactMarkdown from "react-markdown";
 // import { Separator } from "@/components/ui/separator";
-// import Datatable from "@/components/Datatable";
+// import Datatable from "@/components/datatable/Datatable";
 // import { ColumnDef } from "@tanstack/react-table";
 // import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 // import { badgeVariants } from "@/components/ui/badge";

@@ -1,6 +1,6 @@
 "use client";
 
-import Graph from "@/components/Graph";
+import Graph from "@/components/charts/Graph";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";

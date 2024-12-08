@@ -35,13 +35,12 @@ import { useCreateTTProject } from "@/hooks/useCreateTTProject";
 import TiktokSchema from "@/schemas/tiktok";
 import { useSession } from "next-auth/react";
 import EditDialog from "./components/EditDialog";
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { buttonVariants } from "@/components/ui/button";
 import { useState } from "react";
 import Link from "next/link";
 import { badgeVariants } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 
 type Project = {
   projectId: string;
@@ -167,10 +166,7 @@ const columns: ColumnProps = (isDisabled, setSelected) => [
       return (
         <Link
           className={badgeVariants({ variant: "default" })}
-          href={`/tiktok-projects/${props.row.original.projectId}?date=${format(
-            new Date(props.row.original.lastUpdate),
-            "yyyy-MM-dd"
-          )}`}
+          href={`/tiktok-projects/${props.row.original.projectId}`}
         >
           {props.row.original.projectName}
         </Link>
@@ -179,7 +175,7 @@ const columns: ColumnProps = (isDisabled, setSelected) => [
     header: () => {
       return (
         <div className="flex flex-row gap-2 items-center">
-          <ALargeSmall width={20} height={20} /> Name
+          <ALargeSmall width={20} height={20} /> Project Name
         </div>
       );
     },
@@ -189,7 +185,7 @@ const columns: ColumnProps = (isDisabled, setSelected) => [
     header: () => {
       return (
         <div className="flex flex-row gap-2 items-center">
-          <Clapperboard width={18} height={18} /> Total Videos
+          <Clapperboard width={18} height={18} /> Number of Videos
         </div>
       );
     },

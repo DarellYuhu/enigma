@@ -7,19 +7,19 @@ export default function dateFormatter(type: Type, date: Date) {
     case "ISO":
       return format(date, "yyyy-MM-dd");
     case "DMY":
-      return `${date.getDate()} ${date.toLocaleString("default", {
+      return `${date.getDate()} ${date.toLocaleString("en-US", {
         month: "long",
       })} ${date.getFullYear()}`;
     case "MY":
-      return `${date.toLocaleString("default", {
+      return `${date.toLocaleString("en-US", {
         month: "long",
-      })} ${date.toLocaleString("default", { year: "numeric" })}`;
+      })} ${date.toLocaleString("en-US", { year: "numeric" })}`;
     case "MD":
-      return `${date.toLocaleString("default", {
+      return `${date.toLocaleString("en-US", {
         month: "long",
       })} ${date.getDate()}`;
     case "M":
-      return date.toLocaleString("default", { month: "long" });
+      return date.toLocaleString("en-US", { month: "long" });
     default:
       return "UNKOWN TYPE";
   }

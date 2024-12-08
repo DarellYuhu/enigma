@@ -7,6 +7,9 @@ type ConfigState = {
   since?: Date;
   until?: Date;
   type: "week" | "month";
+  networkType: "60" | "120";
+  networkDate: Date | string;
+  lineType: "apl" | "largest_eig" | "largest_eig_pct";
 };
 
 type ConfigAction = {
@@ -14,6 +17,9 @@ type ConfigAction = {
   setLevel: (level: ConfigState["level"]) => void;
   setDate: (date: Pick<ConfigState, "since" | "until">) => void;
   setType: (type: ConfigState["type"]) => void;
+  setNetworkType: (type: ConfigState["networkType"]) => void;
+  setNetworkDate: (date: ConfigState["networkDate"]) => void;
+  setLineType: (type: ConfigState["lineType"]) => void;
 };
 
 const useConfigStore = create<ConfigState & ConfigAction>((set) => ({
@@ -22,6 +28,18 @@ const useConfigStore = create<ConfigState & ConfigAction>((set) => ({
   since: adjustDateByFactor(-360, new Date()),
   until: new Date(),
   type: "week",
+  networkType: "60",
+  networkDate: "",
+  lineType: "apl",
+  setLineType(type) {
+    set({ lineType: type });
+  },
+  setNetworkDate(date) {
+    set({ networkDate: date });
+  },
+  setNetworkType(type) {
+    set({ networkType: type });
+  },
   setCategory(category) {
     set({ category });
   },

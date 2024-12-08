@@ -1,4 +1,4 @@
-import { CosmosLink, CosmosNode } from "@/components/Graph";
+import { CosmosLink, CosmosNode } from "@/components/charts/Graph";
 import { COLORS } from "@/constants";
 import { CosmographData } from "@cosmograph/react";
 import { useQuery } from "@tanstack/react-query";

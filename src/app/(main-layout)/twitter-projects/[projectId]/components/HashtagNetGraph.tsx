@@ -7,10 +7,11 @@ import { useEffect } from "react";
 import useClusterStore from "../store/cluster-store";
 import useHashtagStore from "../store/hashtag-config-store";
 import dateFormatter from "@/utils/dateFormatter";
+import adjustDateByFactor from "@/utils/adjustDateByFactor";
 
 const HashtagNetGraph = ({ projectId }: { projectId: string }) => {
   const { date } = useHashtagStore();
-  const { setHashtag } = useClusterStore();
+  const { setHashtag, setDate } = useClusterStore();
   const { data } = useTwitterHashtagNet2({
     projectId,
     date: dateFormatter("ISO", date),
@@ -23,6 +24,7 @@ const HashtagNetGraph = ({ projectId }: { projectId: string }) => {
         (key) => data.data.classes[key].representation !== ""
       );
       if (firstNonEmptyClassKey) setHashtag(firstNonEmptyClassKey);
+      setDate(adjustDateByFactor(-1, new Date(data.data.date)));
     }
   }, [data]);
   return (

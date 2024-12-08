@@ -25,8 +25,8 @@ import {
 import chroma from "chroma-js";
 import { Frown, Meh, Smile } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import HorizontalBarChart from "@/components/HorizontalBarChart";
-import Datatable from "@/components/Datatable";
+import HorizontalBarChart from "@/components/charts/HorizontalBarChart";
+import Datatable from "@/components/datatable/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import useHashtagStore from "../store/hashtag-config-store";
 import dateFormatter from "@/utils/dateFormatter";
@@ -48,16 +48,16 @@ const scale = [
 ];
 
 const HashtagClusters = ({ projectId }: { projectId: string }) => {
-  const { date } = useHashtagStore();
+  const { date: graphDate } = useHashtagStore();
   const { hashtag, setHashtag } = useClusterStore();
   const graph = useTwitterHashtagNet2({
     projectId,
-    date: dateFormatter("ISO", date),
+    date: graphDate && dateFormatter("ISO", graphDate),
     window: 2,
   });
   const clusterInfo = useTwitterHashtageClusterInfo({
     projectId,
-    date: dateFormatter("ISO", date),
+    date: graph.data?.data.date,
     window: 2,
     cluster: hashtag,
   });

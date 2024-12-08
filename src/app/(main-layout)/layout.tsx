@@ -1,13 +1,5 @@
 "use client";
 
-import {
-  Clapperboard,
-  ServerCrash,
-  TrendingUp,
-  Twitter,
-  UserCog,
-  Youtube,
-} from "lucide-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
 import {
@@ -15,7 +7,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import {
   Breadcrumb,
@@ -25,6 +16,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { SessionProvider } from "next-auth/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import AppSidebar from "@/components/sidebar/AppSidebar";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,8 +35,8 @@ export default function MainLayout({
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
-        <SidebarProvider>
-          <AppSidebar data={data} />
+        <SidebarProvider defaultOpen={true}>
+          <AppSidebar />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
               <div className="flex items-center gap-2 px-4">
@@ -65,76 +57,12 @@ export default function MainLayout({
             </div>
           </SidebarInset>
         </SidebarProvider>
+        {/* <div className="flex flex-1 flex-col p-4">
+          {children}
+          <Toaster />
+        </div> */}
         <ReactQueryDevtools position="right" />
       </QueryClientProvider>
     </SessionProvider>
   );
 }
-
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Online Public Attention",
-      url: "/trends",
-      icon: TrendingUp,
-      isActive: true,
-    },
-    {
-      title: "Tiktok",
-      url: "",
-      icon: Clapperboard,
-      isActive: true,
-      items: [
-        {
-          title: "Projects",
-          url: "/tiktok-projects",
-        },
-        {
-          title: "Creative Insights",
-          url: "/tiktok-trend",
-        },
-      ],
-    },
-    {
-      title: "Twitter",
-      url: "",
-      icon: Twitter,
-      isActive: true,
-      items: [
-        {
-          title: "Projects",
-          url: "/twitter-projects",
-        },
-      ],
-    },
-    {
-      title: "Youtube",
-      url: "",
-      icon: Youtube,
-      isActive: true,
-      items: [
-        {
-          title: "Projects",
-          url: "/youtube-projects",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Accounts",
-      url: "/accounts",
-      icon: UserCog,
-    },
-    {
-      name: "Serivces",
-      url: "/services",
-      icon: ServerCrash,
-    },
-  ],
-};

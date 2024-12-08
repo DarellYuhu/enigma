@@ -1,6 +1,6 @@
 "use client";
 
-import Graph from "@/components/Graph";
+import Graph from "@/components/charts/Graph";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";

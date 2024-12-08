@@ -1,26 +1,3 @@
-declare type Menus = {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-  navMain: {
-    title: string;
-    url: string;
-    icon: any;
-    isActive: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
-  }[];
-  projects: {
-    name: string;
-    url: string;
-    icon: any;
-  }[];
-};
-
 declare type TagRelationNetwork = {
   relation: {
     edges: {

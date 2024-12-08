@@ -1,4 +1,4 @@
-import RechartSankey from "@/components/RechartSankey";
+import RechartSankey from "@/components/charts/RechartSankey";
 
 const TestPage = () => {
   return (

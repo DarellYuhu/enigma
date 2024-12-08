@@ -79,9 +79,11 @@ export default function useTrends(payload: Payload) {
         .map((item, index) => ({
           ...item,
           rank: index + 1,
-          prevRank: prevMonthly.findIndex((prev) => prev.key === item.key),
+          prevRank: prevMonthly.findIndex((prev) => prev.key === item.key) + 1,
           rankDiff:
-            index + 1 - prevMonthly.findIndex((prev) => prev.key === item.key),
+            prevMonthly.findIndex((prev) => prev.key === item.key) +
+            1 -
+            (index + 1),
           diff: (parseFloat(item.curr) - parseFloat(item.prev)).toFixed(2),
         }));
 

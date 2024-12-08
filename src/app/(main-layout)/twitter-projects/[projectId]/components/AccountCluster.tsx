@@ -25,9 +25,9 @@ import useTwitterAccountNet from "@/hooks/useTwitterAccountNet";
 import useTwitterAccountClusterInfo, {
   ClusterInfo,
 } from "@/hooks/useTwitterAccountClusterInfo";
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
-import HorizontalBarChart from "@/components/HorizontalBarChart";
+import HorizontalBarChart from "@/components/charts/HorizontalBarChart";
 import useAccountStore from "../store/account-config-store";
 import dateFormatter from "@/utils/dateFormatter";
 
@@ -57,7 +57,9 @@ const AccountCluster = ({ projectId }: { projectId: string }) => {
   });
   const clusterInfo = useTwitterAccountClusterInfo({
     cluster: account,
-    date: date ? dateFormatter("ISO", date) : "",
+    date: data?.data.date
+      ? dateFormatter("ISO", new Date(data?.data.date))
+      : "",
     projectId,
     window: 1,
   });

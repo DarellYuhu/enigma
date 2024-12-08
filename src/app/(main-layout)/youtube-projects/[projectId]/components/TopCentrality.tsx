@@ -47,7 +47,15 @@ const TopCentrality = ({ projectId }: { projectId: string }) => {
             .slice(0, 10)
             .map((video, index) => (
               <CarouselItem key={index}>
-                <div className="flex flex-col items-center gap-4">
+                <div className=" relative flex flex-col items-center gap-4">
+                  <div
+                    className={cn(
+                      badgeVariants(),
+                      "absolute top-2 left-2 z-40"
+                    )}
+                  >
+                    #{index + 1}
+                  </div>
                   <div
                     className="relative cursor-pointer group h-full"
                     onClick={() => {
@@ -72,8 +80,7 @@ const TopCentrality = ({ projectId }: { projectId: string }) => {
                       />
                     </div>
                   </div>
-                  <div className="flex flex-row gap-2 z-40">
-                    <div className={badgeVariants()}>#{index + 1}</div>
+                  <div className="flex flex-row gap-2 z-40 flex-wrap">
                     <div
                       className={cn(
                         badgeVariants({

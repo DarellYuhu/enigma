@@ -1,6 +1,6 @@
 "use client";
 
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useTwitterAccountNet, {
   AccountNetwork,

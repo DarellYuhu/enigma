@@ -3,11 +3,18 @@ import loginSchema from "@/schemas/auth/loginSchema";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import * as bcrypt from "bcryptjs";
-import { User } from "@prisma/client";
+import { Role } from "@prisma/client";
 
 declare module "next-auth" {
   interface Session {
-    user: Omit<User, "password">;
+    user: {
+      id: string;
+      username: string;
+      displayName: string;
+      role: Role;
+      createdAt: Date;
+      updatedAt: Date;
+    };
   }
 }
 

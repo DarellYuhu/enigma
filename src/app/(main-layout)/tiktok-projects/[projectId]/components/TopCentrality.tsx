@@ -1,6 +1,6 @@
 "use client";
 
-import Datatable from "@/components/Datatable";
+import Datatable from "@/components/datatable/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import { badgeVariants } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";

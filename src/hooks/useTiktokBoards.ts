@@ -1,3 +1,4 @@
+import dateFormatter from "@/utils/dateFormatter";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
@@ -8,8 +9,13 @@ export function useTiktokBoards(paylaod: {
   string: string;
 }) {
   return useQuery({
-    queryKey: ["tiktok", "boards", paylaod.projectId],
-    enabled: false,
+    queryKey: [
+      "tiktok",
+      "boards",
+      paylaod.projectId,
+      paylaod.to && dateFormatter("ISO", paylaod.to),
+    ],
+    enabled: !!paylaod.to,
     queryFn: async () => {
       const response = await fetch(
         `/api/v1/tiktok/${paylaod.projectId}/boards?since=${format(
@@ -19,7 +25,6 @@ export function useTiktokBoards(paylaod: {
       );
       const data: BoardsData = await response.json();
       const normalize = {
-        ...data,
         top: {
           ...data.top,
           like: data.top.digg,
@@ -29,7 +34,7 @@ export function useTiktokBoards(paylaod: {
           like: data.trending.digg,
         },
       };
-      return normalize;
+      return { data, normalize };
     },
   });
 }

@@ -1,4 +1,5 @@
 import normalizeChannelVids from "@/app/(main-layout)/youtube-projects/[projectId]/utils/normalizeChannelsVids";
+import dateFormatter from "@/utils/dateFormatter";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
@@ -15,6 +16,7 @@ export function useYTChannelTopVids(payload: {
       "top-channels",
       payload.params.projectId,
       payload.selectedTopChannel,
+      payload.to && dateFormatter("ISO", payload.to),
     ],
     enabled: !!payload.selectedTopChannel,
     queryFn: async () => {

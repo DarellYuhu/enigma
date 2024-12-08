@@ -1,5 +1,5 @@
 "use client";
-import RechartMultiLine from "@/components/RechartMultiLine";
+import RechartMultiLine from "@/components/charts/RechartMultiLine";
 import {
   Card,
   CardContent,
