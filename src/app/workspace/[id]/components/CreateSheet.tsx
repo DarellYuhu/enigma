@@ -34,6 +34,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
 import useCreateProject from "@/hooks/features/workspace/useCreateProject";
 import { Textarea } from "@/components/ui/textarea";
+import { ColorPicker } from "@/components/ui/color-picker";
+import PreviewCard from "./PreviewCard";
 
 const CreateSheet = () => {
   const closeRef = useRef<HTMLButtonElement | null>(null);
@@ -44,11 +46,13 @@ const CreateSheet = () => {
     resolver: zodResolver(ProjectSchema.create),
     defaultValues: {
       description: "",
-      links: [{ label: "", url: "" }],
+      links: [{ label: "", url: "", textColor: "", buttonColor: "" }],
+      gradientBgColor: "",
+      textColor: "",
       sectionId: "",
       title: "",
       workspaceId,
-      image: new File([], ""),
+      image: undefined,
     },
   });
   const { fields, append, remove } = useFieldArray({
@@ -115,6 +119,40 @@ const CreateSheet = () => {
               </FormItem>
             )}
           />
+          <div className="flex flex-row gap-4">
+            <FormField
+              control={form.control}
+              name="textColor"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Text Color</FormLabel>
+                  <FormControl>
+                    <ColorPicker
+                      value={field.value!}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="gradientBgColor"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gradient Color</FormLabel>
+                  <FormControl>
+                    <ColorPicker
+                      value={field.value!}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="sectionId"
@@ -145,6 +183,7 @@ const CreateSheet = () => {
               </FormItem>
             )}
           />
+
           <div className="space-y-4">
             <FormLabel>Links</FormLabel>
             {fields.map((field, index) => (
@@ -183,13 +222,49 @@ const CreateSheet = () => {
                     </FormItem>
                   )}
                 />
+                <div className="flex flex-row gap-2">
+                  <FormField
+                    control={form.control}
+                    name={`links.${index}.textColor`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Text Color</FormLabel>
+                        <FormControl>
+                          <ColorPicker
+                            value={field.value!}
+                            onChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`links.${index}.buttonColor`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Button Color</FormLabel>
+                        <FormControl>
+                          <ColorPicker
+                            value={field.value!}
+                            onChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             ))}
             <Button
               variant={"outline"}
               type="button"
               size={"sm"}
-              onClick={() => append({ label: "", url: "" })}
+              onClick={() =>
+                append({ label: "", url: "", textColor: "", buttonColor: "" })
+              }
             >
               Add Link
             </Button>
@@ -215,6 +290,10 @@ const CreateSheet = () => {
           </SheetFooter>
         </form>
       </Form>
+
+      <div>
+        <PreviewCard control={form.control} />
+      </div>
     </SheetContent>
   );
 };

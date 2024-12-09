@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import DeleteSectionDialog from "./DeleteSectionDialog";
 import DeleteProjectDialog from "./DeleteProjectDialog";
 import { useSession } from "next-auth/react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const MainContent = () => {
   const params = useParams<{ id: string }>();
@@ -55,23 +56,35 @@ const MainContent = () => {
                     height={"100"}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute group flex flex-col justify-end bottom-0 left-0 text-left h-full bg-gradient-to-t from-[rgba(255,255,255,1)]  to-40% to-[rgba(255,255,255,0)]  w-full">
+                  <div
+                    className="absolute group flex flex-col justify-end bottom-0 left-0 text-left h-full bg-gradient-to-t from-[rgba(255,255,255,1)]  to-40% to-[rgba(255,255,255,0)]  w-full"
+                    style={{
+                      background: `linear-gradient(to top, ${item.gradientBgColor}, transparent 40%)`,
+                      color: item.textColor ?? "",
+                    }}
+                  >
                     <div className="p-4 group-hover:opacity-0 transition-all duration-500 ease-in-out">
                       <h4 className="text-lg font-semibold">{item.title}</h4>
                       <h5 className="text-sm">{item.description}</h5>
                     </div>
                     <div className="absolute transition-all duration-500 ease-in-out bottom-0 left-0 w-full h-0 group-hover:h-1/5  overflow-y-auto">
-                      <div className="bg-white/30 flex flex-col items-center p-4 gap-2 backdrop-blur-md h-full">
-                        {item.Link.map((item, index) => (
-                          <Link
-                            key={index}
-                            className={cn(badgeVariants(), "col-span-4")}
-                            href={item.url}
-                          >
-                            {item.label}
-                          </Link>
-                        ))}
-                      </div>
+                      <ScrollArea className="h-full bg-white/30 backdrop-blur-md">
+                        <div className="flex flex-col p-4 items-center gap-2 h-full">
+                          {item.Link.map((item, index) => (
+                            <Link
+                              key={index}
+                              className={cn(badgeVariants(), "col-span-4")}
+                              href={item.url}
+                              style={{
+                                background: item.buttonColor ?? "",
+                                color: item.textColor ?? "",
+                              }}
+                            >
+                              {item.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </ScrollArea>
                     </div>
                   </div>
                   {isManager && (
