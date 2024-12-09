@@ -22,7 +22,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import useUpdateUser from "@/hooks/useUpdateUser";
+import useUpdateUser from "@/hooks/features/user/useUpdateUser";
 import updateUser from "@/schemas/account/updateUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Role, User } from "@prisma/client";

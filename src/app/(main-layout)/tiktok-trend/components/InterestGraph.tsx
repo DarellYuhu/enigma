@@ -3,7 +3,7 @@
 import VisGraph, { VisData } from "@/components/VisGraph";
 import useTiktokGlobalClusters, {
   ClusterTrends,
-} from "@/hooks/useTiktokGlobalClusters";
+} from "@/hooks/features/tiktok/useTiktokGlobalClusters";
 import { useEffect, useState } from "react";
 import { DataSet } from "vis-data";
 import ClusterInfo from "./ClusterInfo";

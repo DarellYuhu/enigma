@@ -4,7 +4,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import CreateDialog from "./components/createdialog";
 import EditDialog from "./components/editdialog";
-import { useYoutubeProjects } from "@/hooks/useYoutubeProjects";
+import { useYoutubeProjects } from "@/hooks/features/youtube/useYoutubeProjects";
 import { useSession } from "next-auth/react";
 import Datatable from "@/components/datatable/Datatable";
 import { useState } from "react";

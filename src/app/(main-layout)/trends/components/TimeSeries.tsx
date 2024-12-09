@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import useTrends from "@/hooks/features/useTrends";
+import useTrends from "@/hooks/features/trends/useTrends";
 import dateFormatter from "@/utils/dateFormatter";
 import useConfigStore from "../store/config-store";
 import SingleSelect from "@/components/SingleSelect";

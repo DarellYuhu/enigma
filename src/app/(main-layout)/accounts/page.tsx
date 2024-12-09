@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import CreateSheet from "./components/CreateSheet";
-import { useUsers } from "@/hooks/useUsers";
+import { useUsers } from "@/hooks/features/user/useUsers";
 import {
   DropdownMenu,
   DropdownMenuContent,

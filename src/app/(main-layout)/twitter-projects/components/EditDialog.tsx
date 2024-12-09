@@ -21,8 +21,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import useTwitterInfo from "@/hooks/useTwitterInfo";
-import useEditTWProject from "@/hooks/useEditTWProject";
+import useTwitterInfo from "@/hooks/features/twitter/useTwitterInfo";
+import useEditTWProject from "@/hooks/features/twitter/useEditTWProject";
 
 const EditDialog = ({ projectId }: { projectId?: string }) => {
   const projectQuery = useTwitterInfo(projectId);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useYTChannelTopVids } from "@/hooks/useYTChannelTopVids";
+import { useYTChannelTopVids } from "@/hooks/features/youtube/useYTChannelTopVids";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import { useEffect, useState } from "react";
 import useSelectedChannelStore from "../store/selected-channel-store";
@@ -16,7 +16,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { AnimatePresence, motion } from "framer-motion";
-import useYoutubeChannelNet from "@/hooks/useYoutubeChannelNet";
+import useYoutubeChannelNet from "@/hooks/features/youtube/useYoutubeChannelNet";
 import useConfigStore from "../store/config-store";
 import dateFormatter from "@/utils/dateFormatter";
 import useProjectInfo from "@/hooks/features/useProjectInfo";

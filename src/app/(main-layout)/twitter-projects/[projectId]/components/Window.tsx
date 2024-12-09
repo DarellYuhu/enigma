@@ -1,10 +1,10 @@
 "use client";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import useTwitterBoards from "@/hooks/useTwitterBoards";
-import useTwitterHashtagEvo from "@/hooks/useTwitterHashtagEvo";
-import useTwitterHashtagNet from "@/hooks/useTwitterHashtagNet";
-import useTwitterScatterTopics from "@/hooks/useTwitterScatterTopics";
+import useTwitterBoards from "@/hooks/features/twitter/useTwitterBoards";
+import useTwitterHashtagEvo from "@/hooks/features/twitter/useTwitterHashtagEvo";
+import useTwitterHashtagNet from "@/hooks/features/twitter/useTwitterHashtagNet";
+import useTwitterScatterTopics from "@/hooks/features/twitter/useTwitterScatterTopics";
 import useGraphDateStore from "@/store/graph-date-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import dateFormatter from "@/utils/dateFormatter";

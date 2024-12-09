@@ -1,7 +1,7 @@
 import { Switch } from "@/components/ui/switch";
 import { useEffect } from "react";
-import { useTiktokProject } from "@/hooks/useTiktokProject";
-import { useEditTTProject } from "@/hooks/useEditTTProject";
+import { useTiktokProject } from "@/hooks/features/tiktok/useTiktokProject";
+import { useEditTTProject } from "@/hooks/features/tiktok/useEditTTProject";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

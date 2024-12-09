@@ -4,7 +4,7 @@ import Datatable from "@/components/datatable/Datatable";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useTwitterAccountNet, {
   AccountNetwork,
-} from "@/hooks/useTwitterAccountNet";
+} from "@/hooks/features/twitter/useTwitterAccountNet";
 import { ColumnDef } from "@tanstack/react-table";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import SingleSelect from "@/components/SingleSelect";

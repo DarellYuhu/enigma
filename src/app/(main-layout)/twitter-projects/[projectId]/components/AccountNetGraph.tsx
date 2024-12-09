@@ -14,8 +14,10 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import useTwitterAccountNet from "@/hooks/useTwitterAccountNet";
-import useTwitterBoards, { TwitterBoardItem } from "@/hooks/useTwitterBoards";
+import useTwitterAccountNet from "@/hooks/features/twitter/useTwitterAccountNet";
+import useTwitterBoards, {
+  TwitterBoardItem,
+} from "@/hooks/features/twitter/useTwitterBoards";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import {
   CosmographData,

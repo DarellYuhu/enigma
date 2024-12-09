@@ -1,7 +1,7 @@
 "use client";
 
 import VisGraph from "@/components/VisGraph";
-import useTwitterHashtagNet2 from "@/hooks/useTwitterHashtagNet2";
+import useTwitterHashtagNet2 from "@/hooks/features/twitter/useTwitterHashtagNet2";
 import { Edge, Node } from "vis-network/declarations/entry-esnext";
 import { useEffect } from "react";
 import useClusterStore from "../store/cluster-store";

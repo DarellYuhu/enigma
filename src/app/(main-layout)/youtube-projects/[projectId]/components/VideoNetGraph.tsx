@@ -3,7 +3,7 @@
 import Graph from "@/components/charts/Graph";
 import useYoutubeVideoNet, {
   NodeVideoNetwork,
-} from "@/hooks/useYoutubeVideoNet";
+} from "@/hooks/features/youtube/useYoutubeVideoNet";
 
 import useConfigStore from "../store/config-store";
 import dateFormatter from "@/utils/dateFormatter";

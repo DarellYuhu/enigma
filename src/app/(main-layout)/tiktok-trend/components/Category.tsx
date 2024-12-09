@@ -3,7 +3,7 @@
 import useCategoryStore from "@/store/category-store";
 import CategoryButton from "@/components/CategoryButton";
 import { Heart, MessageSquareMore, MonitorPlay, Share2 } from "lucide-react";
-import { useTiktokTrends } from "@/hooks/useTiktokTrends";
+import { useTiktokTrends } from "@/hooks/features/tiktok/useTiktokTrends";
 import useStatisticDateStore from "@/store/statistic-date-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 

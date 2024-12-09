@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import CreateNewDialog from "./components/CreateNewDialog";
 import useTwitterProjects, {
   TTwitterProjects,
-} from "@/hooks/useTwitterProjects";
+} from "@/hooks/features/twitter/useTwitterProjects";
 import EditDialog from "./components/EditDialog";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";

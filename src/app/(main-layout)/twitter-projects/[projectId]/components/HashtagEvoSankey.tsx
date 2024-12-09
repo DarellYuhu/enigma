@@ -1,6 +1,6 @@
 "use client";
 
-import useTwitterHashtagEvo from "@/hooks/useTwitterHashtagEvo";
+import useTwitterHashtagEvo from "@/hooks/features/twitter/useTwitterHashtagEvo";
 import dynamic from "next/dynamic";
 import useHashtagStore from "../store/hashtag-config-store";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";

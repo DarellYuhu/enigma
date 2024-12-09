@@ -11,8 +11,8 @@ import {
   Form as HookForm,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { usePutService } from "@/hooks/usePutService";
-import { useServices } from "@/hooks/useServices";
+import { usePutService } from "@/hooks/features/service/usePutService";
+import { useServices } from "@/hooks/features/service/useServices";
 import ServiceSchema from "@/schemas/service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";

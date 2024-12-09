@@ -2,7 +2,7 @@
 
 import useTwitterStatistics, {
   TwitterStatistics,
-} from "@/hooks/useTwitterStatistics";
+} from "@/hooks/features/twitter/useTwitterStatistics";
 import {
   Card,
   CardContent,

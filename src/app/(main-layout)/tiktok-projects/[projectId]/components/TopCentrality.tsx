@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import useTiktokInterestNet2, {
   GetInterestGraphs,
   InterestNetwork2,
-} from "@/hooks/useTiktokInterestNet2";
+} from "@/hooks/features/tiktok/useTiktokInterestNet2";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";

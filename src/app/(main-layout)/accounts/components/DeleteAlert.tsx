@@ -7,7 +7,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import useDeleteUser from "@/hooks/useDeleteUser";
+import useDeleteUser from "@/hooks/features/user/useDeleteUser";
 
 const DeleteAlert = ({ id }: { id: number }) => {
   const { mutate, isPending } = useDeleteUser();

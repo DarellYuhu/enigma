@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import useTwitterScatterTopics, {
   ScatterTopicsResult,
-} from "@/hooks/useTwitterScatterTopics";
+} from "@/hooks/features/twitter/useTwitterScatterTopics";
 import chroma from "chroma-js";
 import { Frown, Meh, Smile } from "lucide-react";
 import { useState } from "react";

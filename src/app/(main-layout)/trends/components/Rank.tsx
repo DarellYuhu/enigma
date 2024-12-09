@@ -1,7 +1,7 @@
 "use client";
 import Datatable from "@/components/datatable/Datatable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import useTrends from "@/hooks/features/useTrends";
+import useTrends from "@/hooks/features/trends/useTrends";
 import useConfigStore from "../store/config-store";
 import { ColumnDef } from "@tanstack/react-table";
 import {

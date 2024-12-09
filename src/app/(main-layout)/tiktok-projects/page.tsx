@@ -30,8 +30,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useTiktokProjects } from "@/hooks/useTiktokProjects";
-import { useCreateTTProject } from "@/hooks/useCreateTTProject";
+import { useTiktokProjects } from "@/hooks/features/tiktok/useTiktokProjects";
+import { useCreateTTProject } from "@/hooks/features/tiktok/useCreateTTProject";
 import TiktokSchema from "@/schemas/tiktok";
 import { useSession } from "next-auth/react";
 import EditDialog from "./components/EditDialog";

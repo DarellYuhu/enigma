@@ -3,7 +3,7 @@
 import TagInformation from "@/components/TagInformation";
 import { Button } from "@/components/ui/button";
 import VisGraph from "@/components/VisGraph";
-import { useTiktokHashtagNet } from "@/hooks/useTiktokHashtagNet";
+import { useTiktokHashtagNet } from "@/hooks/features/tiktok/useTiktokHashtagNet";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import tagRelationExport from "@/utils/tagRelationExport";
 import { useEffect, useState } from "react";

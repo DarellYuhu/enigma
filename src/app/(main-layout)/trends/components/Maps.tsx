@@ -8,7 +8,7 @@ import { Layer, Map as MapGl, Source } from "react-map-gl";
 import { useTheme } from "next-themes";
 import PH_JSON from "@/data/geojson/ph.json";
 import { MAP_THEME } from "@/constants";
-import useTrends from "@/hooks/features/useTrends";
+import useTrends from "@/hooks/features/trends/useTrends";
 import SingleSelect from "@/components/SingleSelect";
 import RechartPie from "@/components/charts/RechartPie";
 

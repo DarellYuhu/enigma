@@ -3,7 +3,7 @@
 import { badgeVariants } from "@/components/ui/badge";
 import useYoutubeVideoNet, {
   NodeVideoNetwork,
-} from "@/hooks/useYoutubeVideoNet";
+} from "@/hooks/features/youtube/useYoutubeVideoNet";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { Heart, MessageCircle, Play, XIcon } from "lucide-react";
 import {

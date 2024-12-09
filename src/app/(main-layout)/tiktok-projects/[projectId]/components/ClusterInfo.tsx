@@ -12,7 +12,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import useTiktokInterestNet2, {
   InterestNetwork2,
-} from "@/hooks/useTiktokInterestNet2";
+} from "@/hooks/features/tiktok/useTiktokInterestNet2";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import * as Tabs from "@radix-ui/react-tabs";
 import chroma from "chroma-js";

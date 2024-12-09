@@ -1,7 +1,7 @@
 "use client";
 
 import VisGraph from "@/components/VisGraph";
-import useYoutubeChannelNet from "@/hooks/useYoutubeChannelNet";
+import useYoutubeChannelNet from "@/hooks/features/youtube/useYoutubeChannelNet";
 import { useEffect } from "react";
 import useSelectedChannelStore from "../store/selected-channel-store";
 import { DataSet } from "vis-data";

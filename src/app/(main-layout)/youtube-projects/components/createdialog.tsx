@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRef } from "react";
-import { useCreateYTProject } from "@/hooks/useCreateYTProject";
+import { useCreateYTProject } from "@/hooks/features/youtube/useCreateYTProject";
 import YoutubeSchema from "@/schemas/youtube";
 
 const CreateDialog = () => {

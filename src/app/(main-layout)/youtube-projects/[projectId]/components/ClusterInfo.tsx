@@ -20,7 +20,7 @@ import {
 } from "reaviz";
 import chroma from "chroma-js";
 import { Frown, Meh, Play, Smile, XIcon } from "lucide-react";
-import useYoutubeVideoNet from "@/hooks/useYoutubeVideoNet";
+import useYoutubeVideoNet from "@/hooks/features/youtube/useYoutubeVideoNet";
 import {
   Carousel,
   CarouselContent,

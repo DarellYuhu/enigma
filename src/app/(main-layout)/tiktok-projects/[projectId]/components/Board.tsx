@@ -26,8 +26,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useTiktokBoards } from "@/hooks/useTiktokBoards";
-import { useTiktokComments } from "@/hooks/useTiktokComments";
+import { useTiktokBoards } from "@/hooks/features/user/useTiktokBoards";
+import { useTiktokComments } from "@/hooks/features/tiktok/useTiktokComments";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Datatable from "@/components/datatable/Datatable";

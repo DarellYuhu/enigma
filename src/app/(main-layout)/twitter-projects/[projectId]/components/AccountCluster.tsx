@@ -21,10 +21,10 @@ import {
 import chroma from "chroma-js";
 import { Frown, Meh, Smile } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import useTwitterAccountNet from "@/hooks/useTwitterAccountNet";
+import useTwitterAccountNet from "@/hooks/features/twitter/useTwitterAccountNet";
 import useTwitterAccountClusterInfo, {
   ClusterInfo,
-} from "@/hooks/useTwitterAccountClusterInfo";
+} from "@/hooks/features/twitter/useTwitterAccountClusterInfo";
 import Datatable from "@/components/datatable/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import HorizontalBarChart from "@/components/charts/HorizontalBarChart";

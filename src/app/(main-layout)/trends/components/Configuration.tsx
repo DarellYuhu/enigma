@@ -1,5 +1,5 @@
 "use client";
-import useTrends from "@/hooks/features/useTrends";
+import useTrends from "@/hooks/features/trends/useTrends";
 
 import useConfigStore from "../store/config-store";
 import { Label } from "@/components/ui/label";

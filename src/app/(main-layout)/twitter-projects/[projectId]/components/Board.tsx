@@ -2,7 +2,9 @@
 
 import Datatable from "@/components/datatable/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
-import useTwitterBoards, { TwitterBoardItem } from "@/hooks/useTwitterBoards";
+import useTwitterBoards, {
+  TwitterBoardItem,
+} from "@/hooks/features/twitter/useTwitterBoards";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 import useBoardConfigStore from "../store/board-config-store";

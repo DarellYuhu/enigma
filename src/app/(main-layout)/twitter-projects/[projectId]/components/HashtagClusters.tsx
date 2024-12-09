@@ -2,11 +2,11 @@
 
 import useTwitterHashtageClusterInfo, {
   ClusterInfo,
-} from "@/hooks/useTwitterHashtagClusterInfo";
+} from "@/hooks/features/twitter/useTwitterHashtagClusterInfo";
 import useClusterStore from "../store/cluster-store";
 import * as Tabs from "@radix-ui/react-tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import useTwitterHashtagNet2 from "@/hooks/useTwitterHashtagNet2";
+import useTwitterHashtagNet2 from "@/hooks/features/twitter/useTwitterHashtagNet2";
 import {
   Card,
   CardContent,

@@ -1,7 +1,7 @@
 "use client";
 
 import BarChart2 from "@/components/charts/BarChart2";
-import { useTiktokTrends } from "@/hooks/useTiktokTrends";
+import { useTiktokTrends } from "@/hooks/features/tiktok/useTiktokTrends";
 import useCategoryStore from "@/store/category-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";
 import useStatisticDateStore from "@/store/statistic-date-store";

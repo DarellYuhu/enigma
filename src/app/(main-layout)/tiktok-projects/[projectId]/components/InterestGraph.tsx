@@ -3,7 +3,7 @@
 import Graph from "@/components/charts/Graph";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
-import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
+import useTiktokInterestNet2 from "@/hooks/features/tiktok/useTiktokInterestNet2";
 import { interestNetExport2 } from "@/utils/interestNetExport";
 import Link from "next/link";
 import { useState } from "react";

@@ -57,10 +57,6 @@ export default function MainLayout({
             </div>
           </SidebarInset>
         </SidebarProvider>
-        {/* <div className="flex flex-1 flex-col p-4">
-          {children}
-          <Toaster />
-        </div> */}
         <ReactQueryDevtools position="right" />
       </QueryClientProvider>
     </SessionProvider>

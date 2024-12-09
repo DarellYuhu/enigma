@@ -12,8 +12,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import useTiktokClusterInfo, {
   ClusterInfoData,
-} from "@/hooks/useTiktokClusterInfo";
-import { ClusterTrends } from "@/hooks/useTiktokGlobalClusters";
+} from "@/hooks/features/tiktok/useTiktokClusterInfo";
+import { ClusterTrends } from "@/hooks/features/tiktok/useTiktokGlobalClusters";
 import { cn } from "@/lib/utils";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import { Scrollbar } from "@radix-ui/react-scroll-area";

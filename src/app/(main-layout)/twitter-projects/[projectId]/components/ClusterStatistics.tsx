@@ -2,7 +2,7 @@
 
 import useTwitterClusterStats, {
   ClusterStats,
-} from "@/hooks/useTwitterClusterStats";
+} from "@/hooks/features/twitter/useTwitterClusterStats";
 import RechartArea from "@/components/charts/RechartArea";
 import SingleSelect from "@/components/SingleSelect";
 import { useEffect, useState } from "react";

@@ -14,8 +14,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useEditYTProject } from "@/hooks/useEditYTProject";
-import { useYTProjectConfig } from "@/hooks/useYTProjectConfig";
+import { useEditYTProject } from "@/hooks/features/youtube/useEditYTProject";
+import { useYTProjectConfig } from "@/hooks/features/youtube/useYTProjectConfig";
 import YoutubeSchema from "@/schemas/youtube";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
