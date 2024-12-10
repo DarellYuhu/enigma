@@ -23,6 +23,7 @@ import { useState } from "react";
 import Datatable from "@/components/datatable/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type User = Omit<PrismaUser, "password">;
 
@@ -30,7 +31,20 @@ const Account = () => {
   const [selectedRow, setSelectedRow] = useState<User | undefined>();
   const [resetAlert, setResetAlert] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState(false);
-  const users = useUsers();
+  const { data, isPending } = useUsers();
+
+  if (isPending)
+    return (
+      <div className="flex flex-col gap-3">
+        <Skeleton className="h-10 w-40 place-self-end" />
+        <div className="grid grid-cols-12 gap-3">
+          {Array.from({ length: 24 }).map((_, index) => (
+            <Skeleton className="h-6 w-full col-span-3" key={index} />
+          ))}
+        </div>
+      </div>
+    );
+
   return (
     <div className="flex flex-col gap-3">
       <Sheet>
@@ -54,7 +68,7 @@ const Account = () => {
                   setSelectedRow,
                 })
               }
-              data={users?.data || []}
+              data={data || []}
             />
             <UpdateSheet user={selectedRow} />
             <DeleteAlert id={selectedRow?.id || 0} />

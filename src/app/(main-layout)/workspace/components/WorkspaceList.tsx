@@ -15,9 +15,20 @@ import dateFormatter from "@/utils/dateFormatter";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import DeleteDialog from "./DeleteDialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const WorkspaceList = () => {
-  const { data } = useWorkspaces();
+  const { data, isPending } = useWorkspaces();
+
+  if (isPending)
+    return (
+      <div className="space-y-4 mt-4">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Skeleton className="h-14 w-full" key={index} />
+        ))}
+      </div>
+    );
+
   return (
     <div>
       <Accordion type="single" collapsible>

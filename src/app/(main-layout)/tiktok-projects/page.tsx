@@ -41,6 +41,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { badgeVariants } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Project = {
   projectId: string;
@@ -54,7 +55,7 @@ type Project = {
 const Projects = () => {
   const [selected, setSelected] = useState<Project | undefined>();
   const { data: session } = useSession();
-  const projectsQuery = useTiktokProjects();
+  const { isPending, data } = useTiktokProjects();
   const projectsMutation = useCreateTTProject();
   const createForm = useForm<z.infer<typeof TiktokSchema.create>>({
     resolver: zodResolver(TiktokSchema.create),
@@ -69,9 +70,17 @@ const Projects = () => {
     createForm.reset();
   };
 
-  if (projectsQuery.status === "pending") {
-    return <div>Loading...</div>;
-  }
+  if (isPending)
+    return (
+      <div className="flex flex-col gap-3">
+        <Skeleton className="h-10 w-40 place-self-end" />
+        <div className="grid grid-cols-12 gap-3">
+          {Array.from({ length: 24 }).map((_, index) => (
+            <Skeleton className="h-6 w-full col-span-3" key={index} />
+          ))}
+        </div>
+      </div>
+    );
   return (
     <div className="flex flex-col gap-3">
       <Dialog>
@@ -140,7 +149,7 @@ const Projects = () => {
         <Dialog onOpenChange={(open) => !open && selected}>
           <Datatable
             columns={columns(session?.user.role === "VIEWER", setSelected)}
-            data={projectsQuery.data?.projects || []}
+            data={data?.projects || []}
           />
           <DialogContent>
             <DialogHeader>

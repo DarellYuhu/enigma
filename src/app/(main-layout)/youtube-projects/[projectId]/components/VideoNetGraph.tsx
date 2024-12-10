@@ -9,15 +9,18 @@ import useConfigStore from "../store/config-store";
 import dateFormatter from "@/utils/dateFormatter";
 import Link from "next/link";
 import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const VideoNetGraph = ({ projectId }: { projectId: string }) => {
   const [node, setNode] = useState<NodeVideoNetwork | null>(null);
   const { date } = useConfigStore();
-  const { data } = useYoutubeVideoNet({
+  const { data, isPending } = useYoutubeVideoNet({
     projectId,
     window: 5,
     date: dateFormatter("ISO", date),
   });
+
+  if (isPending) return <Skeleton className="h-full w-full" />;
 
   if (!data) return null;
 
@@ -33,7 +36,6 @@ const VideoNetGraph = ({ projectId }: { projectId: string }) => {
           }
         }}
       />
-      ;
       {node && (
         <div className="absolute bottom-2 w-96 left-2 h-3/5 flex flex-col gap-2 border rounded-md p-2 shadow-lg backdrop-blur-md">
           <h6 className="text-wrap">{node.title}</h6>

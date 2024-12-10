@@ -8,11 +8,12 @@ import useClusterStore from "../store/cluster-store";
 import useHashtagStore from "../store/hashtag-config-store";
 import dateFormatter from "@/utils/dateFormatter";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const HashtagNetGraph = ({ projectId }: { projectId: string }) => {
   const { date } = useHashtagStore();
   const { setHashtag, setDate } = useClusterStore();
-  const { data } = useTwitterHashtagNet2({
+  const { data, isPending } = useTwitterHashtagNet2({
     projectId,
     date: dateFormatter("ISO", date),
     window: 2,
@@ -27,22 +28,11 @@ const HashtagNetGraph = ({ projectId }: { projectId: string }) => {
       setDate(adjustDateByFactor(-1, new Date(data.data.date)));
     }
   }, [data]);
+
+  if (isPending) return <Skeleton className="h-80 w-full" />;
+
   return (
     <div className="w-full h-80 shadow-inner">
-      {/* <Graph
-        simulationGravity={0.0}
-        simulationRepulsion={1}
-        simulationLinkSpring={0.4}
-        data={(data as CosmographData<CosmosNode, CosmosLink>) ?? []}
-        //   onClick={(node) => {
-        //     if (node) {
-        //       setTagNode(node.data);
-        //     } else {
-        //       setTagNode(null);
-        //     }
-        //   }}
-      /> */}
-
       <VisGraph
         data={
           (data?.normalized.network as { nodes: Node[]; edges: Edge[] }) ?? []

@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useState } from "react";
 import useGraphConfigStore from "../store/graph-config-store";
 import SingleSelect from "@/components/SingleSelect";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TopCentrality = ({ projectId }: { projectId: string }) => {
   const [type, setType] =
@@ -24,11 +25,19 @@ const TopCentrality = ({ projectId }: { projectId: string }) => {
       >
     >("centrality_pr");
   const { to } = useGraphConfigStore();
-  const { data } = useTiktokInterestNet2({
+  const { data, isPending } = useTiktokInterestNet2({
     projectId,
     window: 3,
     date: to!,
   });
+
+  if (isPending)
+    return (
+      <div className="p-4 h-80">
+        <Skeleton className="w-full h-full" />
+      </div>
+    );
+
   if (!data) return null;
   return (
     <>

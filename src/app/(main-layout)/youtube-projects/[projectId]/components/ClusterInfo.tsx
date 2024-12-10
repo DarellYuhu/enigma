@@ -32,17 +32,39 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import useConfigStore from "../store/config-store";
 import dateFormatter from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ClusterInfo = ({ projectId }: { projectId: string }) => {
   const { date } = useConfigStore();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState<string | null>(null);
-  const { data } = useYoutubeVideoNet({
+  const { data, isPending } = useYoutubeVideoNet({
     projectId,
     window: 5,
     date: dateFormatter("ISO", date),
   });
+
+  if (isPending)
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-12 gap-3">
+          <Skeleton className="h-8 w-full col-span-4" />
+          <Skeleton className="h-8 w-full col-span-4" />
+          <Skeleton className="h-8 w-full col-span-4" />
+        </div>
+        <div className="grid grid-cols-12 gap-3">
+          <div className="grid grid-cols-12 gap-3 col-span-8">
+            <Skeleton className="h-32 w-full col-span-6" />
+            <Skeleton className="h-32 w-full col-span-6" />
+            <Skeleton className="h-80 w-full col-span-full" />
+          </div>
+          <Skeleton className="h-full w-full col-span-4" />
+        </div>
+      </div>
+    );
+
   if (!data) return null;
+
   return (
     <>
       <Tabs.Root className="space-y-4" defaultValue="0">

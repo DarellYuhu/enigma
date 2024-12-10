@@ -32,6 +32,7 @@ import { useQueryFilterStore } from "@/store/query-filter-store";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Datatable from "@/components/datatable/Datatable";
 import useSelectionStore from "../store/selection-store";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
   projectId: string;
@@ -45,7 +46,22 @@ const Board = ({ projectId }: Props) => {
   const { query } = useQueryFilterStore();
   const { type } = useSelectionStore();
   const comments = useTiktokComments();
-  const boards = useTiktokBoards({ projectId, string: query, from, to });
+  const { data, isPending } = useTiktokBoards({
+    projectId,
+    string: query,
+    from,
+    to,
+  });
+
+  if (isPending)
+    return (
+      <div className="grid grid-cols-12 gap-3">
+        {Array.from({ length: 24 }).map((_, index) => (
+          <Skeleton className="w-full h-7 col-span-3" key={index} />
+        ))}
+      </div>
+    );
+
   return (
     <div className="flex flex-col bg-white rounded-md">
       <div className="flex flex-row items-center justify-end m-2"></div>
@@ -53,7 +69,7 @@ const Board = ({ projectId }: Props) => {
         <ScrollArea className="h-80">
           <Datatable
             columns={columns(setSelected)}
-            data={boards.data?.normalize?.[type][category] || []}
+            data={data?.normalize?.[type][category] || []}
           />
         </ScrollArea>
         <DialogContent>

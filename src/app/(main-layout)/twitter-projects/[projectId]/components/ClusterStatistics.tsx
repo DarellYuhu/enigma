@@ -10,6 +10,7 @@ import DateRangePicker from "@/components/ui/date-range-picker";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import dateFormatter from "@/utils/dateFormatter";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ClusterStatistics = ({ projectId }: { projectId: string }) => {
   const { data: projectInfo } = useProjectInfo("TWITTER", projectId);
@@ -19,7 +20,7 @@ const ClusterStatistics = ({ projectId }: { projectId: string }) => {
   });
   const [type, setType] =
     useState<keyof Omit<ClusterStats["ts"], "date">>("num_clusters_gc");
-  const { data } = useTwitterClusterStats({
+  const { data, isPending } = useTwitterClusterStats({
     projectId,
     since: date.since ? dateFormatter("ISO", date.since) : "",
     until: date.until ? dateFormatter("ISO", date.until) : "",
@@ -34,6 +35,8 @@ const ClusterStatistics = ({ projectId }: { projectId: string }) => {
       });
     }
   }, [projectInfo?.lastUpdate]);
+
+  if (isPending) return <Skeleton className="h-full w-full" />;
 
   return (
     <>

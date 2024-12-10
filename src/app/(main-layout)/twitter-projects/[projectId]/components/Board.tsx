@@ -9,15 +9,26 @@ import abbreviateNumber from "@/utils/abbreviateNumber";
 import { ColumnDef } from "@tanstack/react-table";
 import useBoardConfigStore from "../store/board-config-store";
 import dateFormatter from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Board = ({ projectId }: { projectId: string }) => {
   const { from, to, string } = useBoardConfigStore();
-  const { data } = useTwitterBoards({
+  const { data, isPending } = useTwitterBoards({
     project: projectId,
     since: from && dateFormatter("ISO", from),
     until: to && dateFormatter("ISO", to),
     string,
   });
+
+  if (isPending)
+    return (
+      <div className="grid grid-cols-12 gap-3">
+        {Array.from({ length: 24 }).map((_, index) => (
+          <Skeleton className="w-full h-8 col-span-3" key={index} />
+        ))}
+      </div>
+    );
+
   return (
     <div>
       <Datatable columns={column} data={data?.top.bookmark_count || []} />

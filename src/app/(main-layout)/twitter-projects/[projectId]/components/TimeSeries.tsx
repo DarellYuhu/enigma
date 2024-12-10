@@ -17,6 +17,7 @@ import DateRangePicker from "@/components/ui/date-range-picker";
 import SearchInput from "@/components/SearchInput";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
 import dateFormatter from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TimeSeries = ({ projectId }: { projectId: string }) => {
   const [string, setString] = useState("");
@@ -25,7 +26,7 @@ const TimeSeries = ({ projectId }: { projectId: string }) => {
   const [date, setDate] = useState<
     { since?: Date; until?: Date } | undefined
   >();
-  const { data, refetch } = useTwitterStatistics({
+  const { data, refetch, isPending } = useTwitterStatistics({
     projectId,
     since: date?.since && dateFormatter("ISO", date.since),
     until: date?.until && dateFormatter("ISO", date.until),
@@ -40,6 +41,14 @@ const TimeSeries = ({ projectId }: { projectId: string }) => {
       });
     }
   }, [projectInfo?.lastUpdate]);
+
+  if (isPending)
+    return (
+      <div className="grid grid-cols-2 gap-4 h-60">
+        <Skeleton className="h-full w-full col-span-1" />
+        <Skeleton className="h-full w-full col-span-1" />
+      </div>
+    );
 
   if (!data) return null;
   return (

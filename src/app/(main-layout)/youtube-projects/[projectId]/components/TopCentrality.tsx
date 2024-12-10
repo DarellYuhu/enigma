@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import useConfigStore from "../store/config-store";
 import SingleSelect from "@/components/SingleSelect";
 import dateFormatter from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 // import SingleSelect from "@/components/SingleSelect";
 
 const TopCentrality = ({ projectId }: { projectId: string }) => {
@@ -32,11 +33,14 @@ const TopCentrality = ({ projectId }: { projectId: string }) => {
   const { date } = useConfigStore();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState<string | null>(null);
-  const { data } = useYoutubeVideoNet({
+  const { data, isPending } = useYoutubeVideoNet({
     projectId: projectId,
     window: 5,
     date: dateFormatter("ISO", date),
   });
+
+  if (isPending) return <Skeleton className="h-full w-full" />;
+
   if (!data) return null;
   return (
     <>

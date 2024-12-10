@@ -9,12 +9,13 @@ import useConfigStore from "../store/config-store";
 import dateFormatter from "@/utils/dateFormatter";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
   const { date, setDate } = useConfigStore();
   const { setChannel } = useSelectedChannelStore();
   const { data: projectInfo } = useProjectInfo("YOUTUBE", projectId);
-  const { data } = useYoutubeChannelNet({
+  const { data, isPending } = useYoutubeChannelNet({
     projectId: projectId,
     window: 5,
     date: dateFormatter("ISO", date),
@@ -35,6 +36,8 @@ const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
       setDate(adjustDateByFactor(-1, new Date(projectInfo.lastUpdate)));
     }
   }, [projectInfo?.lastUpdate]);
+
+  if (isPending) return <Skeleton className="w-full h-full" />;
 
   if (!data) return null;
 

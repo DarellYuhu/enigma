@@ -1,6 +1,7 @@
 "use client";
 
 import ReavizPie from "@/components/charts/ReavizPie";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useTiktokTrends } from "@/hooks/features/tiktok/useTiktokTrends";
 import useCategoryStore from "@/store/category-store";
 import { useQueryFilterStore } from "@/store/query-filter-store";
@@ -10,7 +11,7 @@ const Creators = ({ projectId }: { projectId: string }) => {
   const { from, to } = useStatisticDateStore();
   const { category } = useCategoryStore();
   const { query } = useQueryFilterStore();
-  const { data } = useTiktokTrends({
+  const { data, isPending } = useTiktokTrends({
     params: { projectId },
     statisticDate: {
       from,
@@ -18,6 +19,14 @@ const Creators = ({ projectId }: { projectId: string }) => {
     },
     query,
   });
+
+  if (isPending)
+    return (
+      <div className="w-full h-full p-4">
+        <Skeleton className="w-full h-full" />
+      </div>
+    );
+
   return (
     <ReavizPie
       data={

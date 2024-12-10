@@ -5,6 +5,7 @@ import useConfigStore from "../store/config-store";
 import dateFormatter from "@/utils/dateFormatter";
 import RechartMultiLine from "@/components/charts/RechartMultiLine";
 import SingleSelect from "@/components/SingleSelect";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Statistics = ({ details }: { details: string }) => {
   const {
@@ -15,7 +16,7 @@ const Statistics = ({ details }: { details: string }) => {
     setNetworkDate,
     setLineType,
   } = useConfigStore();
-  const { data } = useActorNetwork({
+  const { data, isPending } = useActorNetwork({
     category,
     date:
       typeof networkDate === "string"
@@ -30,6 +31,8 @@ const Statistics = ({ details }: { details: string }) => {
       setNetworkDate(new Date(data?.data.date));
     }
   }, [data?.data.date]);
+
+  if (isPending) return <Skeleton className="h-40 w-full" />;
 
   if (!data) return null;
 

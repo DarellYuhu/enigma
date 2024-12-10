@@ -27,6 +27,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ContributionVideos = ({ projectId }: { projectId: string }) => {
   const { date } = useConfigStore();
@@ -35,7 +36,7 @@ const ContributionVideos = ({ projectId }: { projectId: string }) => {
   const { from, to, setTo } = useStatisticDateStore();
   const { channelId } = useSelectedChannelStore();
   const { data: projectInfo } = useProjectInfo("YOUTUBE", projectId);
-  const { data } = useYTChannelTopVids({
+  const { data, isPending } = useYTChannelTopVids({
     from,
     to,
     params: { projectId },
@@ -52,6 +53,18 @@ const ContributionVideos = ({ projectId }: { projectId: string }) => {
     if (projectInfo?.lastUpdate)
       setTo(adjustDateByFactor(-1, new Date(projectInfo.lastUpdate)));
   }, [projectInfo?.lastUpdate]);
+
+  if (isPending)
+    return (
+      <>
+        <CardHeader>
+          <CardTitle>Top Videos from Channel</CardTitle>
+        </CardHeader>
+        <CardContent className="h-80">
+          <Skeleton className="h-full w-full" />
+        </CardContent>
+      </>
+    );
 
   if (!data) return null;
 

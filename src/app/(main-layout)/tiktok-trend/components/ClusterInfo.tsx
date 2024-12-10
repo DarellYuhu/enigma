@@ -20,6 +20,7 @@ import { Scrollbar } from "@radix-ui/react-scroll-area";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import dateFormatter from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ClusterInfo = ({
   date,
@@ -28,11 +29,23 @@ const ClusterInfo = ({
   date?: string;
   node: ClusterTrends["network"]["nodes"]["0"] | null;
 }) => {
-  const { data } = useTiktokClusterInfo({
+  const { data, isPending } = useTiktokClusterInfo({
     cluster: node?.id,
     date: date && dateFormatter("ISO", new Date(date)),
     window: 7,
   });
+
+  if (isPending)
+    return (
+      <div className="p-7 space-y-3">
+        <Skeleton className="w-full h-40" />
+        <div className="grid grid-cols-12 gap-3">
+          <Skeleton className="col-span-4 h-80 w-full" />
+          <Skeleton className="col-span-8 h-full w-full" />
+        </div>
+      </div>
+    );
+
   return (
     <div className="grid grid-cols-12 gap-3 p-4">
       <Card className="col-span-full">

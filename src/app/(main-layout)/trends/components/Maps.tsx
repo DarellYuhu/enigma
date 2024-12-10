@@ -11,6 +11,7 @@ import { MAP_THEME } from "@/constants";
 import useTrends from "@/hooks/features/trends/useTrends";
 import SingleSelect from "@/components/SingleSelect";
 import RechartPie from "@/components/charts/RechartPie";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Maps = ({ details }: { details: string }) => {
   const [type, setType] = useState<"pct_total" | "1w" | "1m">("1m");
@@ -58,6 +59,8 @@ const Maps = ({ details }: { details: string }) => {
     },
     [geoJson.data]
   );
+
+  if (geoJson.isPending) return <Skeleton className="h-80 w-full" />;
   return (
     <Card className="relative">
       <CardHeader>

@@ -11,13 +11,14 @@ import { DataSet } from "vis-data";
 import useGraphConfigStore from "../store/graph-config-store";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const HashtagGraph = ({ projectId }: { projectId: string }) => {
   const [tagNode, setTagNode] = useState(null);
   const { from, to, setTo } = useGraphConfigStore();
   const { query } = useQueryFilterStore();
   const projectInfo = useProjectInfo("TIKTOK", projectId);
-  const { data } = useTiktokHashtagNet({
+  const { data, isPending } = useTiktokHashtagNet({
     params: { projectId },
     graphDate: {
       to,
@@ -31,6 +32,13 @@ const HashtagGraph = ({ projectId }: { projectId: string }) => {
       setTo(adjustDateByFactor(-1, new Date(projectInfo.data.lastUpdate)));
     }
   }, [projectInfo.data?.lastUpdate]);
+
+  if (isPending)
+    return (
+      <div className="p-4 w-full h-full">
+        <Skeleton className="w-full h-full" />
+      </div>
+    );
 
   if (!data?.normalized) return null;
 

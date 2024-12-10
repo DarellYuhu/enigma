@@ -14,13 +14,27 @@ import Datatable from "@/components/datatable/Datatable";
 import { badgeVariants } from "@/components/ui/badge";
 import Link from "next/link";
 import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TwitterProjects = () => {
   const [selected, setSelected] = useState<
     TTwitterProjects["projects"][0] | undefined
   >();
   const { data: session } = useSession();
-  const projects = useTwitterProjects();
+  const { data, isPending } = useTwitterProjects();
+
+  if (isPending)
+    return (
+      <div className="flex flex-col gap-3">
+        <Skeleton className="h-10 w-40 place-self-end" />
+        <div className="grid grid-cols-12 gap-3">
+          {Array.from({ length: 24 }).map((_, index) => (
+            <Skeleton className="h-6 w-full col-span-3" key={index} />
+          ))}
+        </div>
+      </div>
+    );
+
   return (
     <div className="flex flex-col gap-3">
       <Dialog>
@@ -36,7 +50,7 @@ const TwitterProjects = () => {
         <Dialog onOpenChange={(open) => !open && setSelected(undefined)}>
           <Datatable
             columns={columns(session?.user.role === "VIEWER", setSelected)}
-            data={projects.data?.projects || []}
+            data={data?.projects || []}
           />
           <EditDialog projectId={selected?.projectId} />
         </Dialog>

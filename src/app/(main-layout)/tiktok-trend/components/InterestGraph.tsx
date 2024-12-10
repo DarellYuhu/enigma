@@ -9,6 +9,7 @@ import { DataSet } from "vis-data";
 import ClusterInfo from "./ClusterInfo";
 import useSelectionStore from "../hooks/selection-store";
 import useConfigStore from "../hooks/config-store";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const InterestGraph = () => {
   const { date } = useConfigStore();
@@ -20,7 +21,7 @@ const InterestGraph = () => {
   const [node, setNode] = useState<
     ClusterTrends["network"]["nodes"]["0"] | null
   >(null);
-  const { data } = useTiktokGlobalClusters({ window: 7, date });
+  const { data, isPending } = useTiktokGlobalClusters({ window: 7, date });
 
   useEffect(() => {
     if (data?.data.network.nodes.length !== 0 && data) {
@@ -50,6 +51,13 @@ const InterestGraph = () => {
       );
     }
   }, [data]);
+
+  if (isPending)
+    return (
+      <div className="px-6 pb-6">
+        <Skeleton className="h-80 w-full" />
+      </div>
+    );
 
   if (!graphData) return null;
 

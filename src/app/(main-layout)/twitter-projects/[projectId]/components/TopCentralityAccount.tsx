@@ -11,6 +11,7 @@ import SingleSelect from "@/components/SingleSelect";
 import { useState } from "react";
 import useAccountStore from "../store/account-config-store";
 import dateFormatter from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TopCentralityAccount = ({ projectId }: { projectId: string }) => {
   const [type, setType] =
@@ -21,11 +22,13 @@ const TopCentralityAccount = ({ projectId }: { projectId: string }) => {
       >
     >("centrality_pr");
   const { date } = useAccountStore();
-  const { data } = useTwitterAccountNet({
+  const { data, isPending } = useTwitterAccountNet({
     projectId,
     Window: 1,
     date: date ? dateFormatter("ISO", date) : "",
   });
+
+  if (isPending) return <Skeleton className="h-[400px] w-full" />;
 
   return (
     <>

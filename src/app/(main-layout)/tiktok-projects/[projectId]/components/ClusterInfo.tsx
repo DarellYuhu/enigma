@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/tabs";
 import Datatable from "@/components/datatable/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -52,11 +53,31 @@ const scale = [
 
 const ClusterInfo = ({ projectId }: { projectId: string }) => {
   const { to } = useGraphConfigStore();
-  const { data } = useTiktokInterestNet2({
+  const { data, isPending } = useTiktokInterestNet2({
     projectId,
     window: 3,
     date: to!,
   });
+
+  if (isPending)
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-12 gap-3">
+          <Skeleton className="h-8 w-full col-span-4" />
+          <Skeleton className="h-8 w-full col-span-4" />
+          <Skeleton className="h-8 w-full col-span-4" />
+        </div>
+        <div className="grid grid-cols-12 gap-3">
+          <div className="grid grid-cols-12 gap-3 col-span-8">
+            <Skeleton className="h-32 w-full col-span-6" />
+            <Skeleton className="h-32 w-full col-span-6" />
+            <Skeleton className="h-80 w-full col-span-full" />
+          </div>
+          <Skeleton className="h-full w-full col-span-4" />
+        </div>
+      </div>
+    );
+
   return (
     <Tabs.Root className="space-y-4" defaultValue="0">
       <ScrollArea className="w-full overflow-x-auto ">
