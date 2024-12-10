@@ -1,4 +1,4 @@
-import { InterestNetwork2 } from "@/hooks/useTiktokInterestNet2";
+import { InterestNetwork2 } from "@/hooks/features/tiktok/useTiktokInterestNet2";
 
 const interestNetExport = (
   since: Date,

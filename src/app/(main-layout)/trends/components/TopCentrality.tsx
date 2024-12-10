@@ -6,10 +6,11 @@ import useActorNetwork, {
 import useConfigStore from "../store/config-store";
 import { ColumnDef } from "@tanstack/react-table";
 import dateFormatter from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TopCentrality = ({ details }: { details: string }) => {
   const { category, networkDate, networkType } = useConfigStore();
-  const { data } = useActorNetwork({
+  const { data, isPending } = useActorNetwork({
     category,
     date:
       typeof networkDate === "string"
@@ -18,6 +19,22 @@ const TopCentrality = ({ details }: { details: string }) => {
     rid: details,
     window: parseInt(networkType),
   });
+
+  if (isPending)
+    return (
+      <div className="grid grid-cols-12 gap-3">
+        <Skeleton className="w-full h-8 col-span-4" />
+        <Skeleton className="w-full h-8 col-span-4" />
+        <Skeleton className="w-full h-8 col-span-4" />
+        <Skeleton className="w-full h-8 col-span-4" />
+        <Skeleton className="w-full h-8 col-span-4" />
+        <Skeleton className="w-full h-8 col-span-4" />
+        <Skeleton className="w-full h-8 col-span-4" />
+        <Skeleton className="w-full h-8 col-span-4" />
+        <Skeleton className="w-full h-8 col-span-4" />
+      </div>
+    );
+
   if (!data) return null;
   return (
     <Datatable

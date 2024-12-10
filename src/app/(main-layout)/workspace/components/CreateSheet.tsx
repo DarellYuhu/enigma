@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import useCreateWorkspace from "@/hooks/features/workspace/useCreateWorkspace";
-import { useUsers } from "@/hooks/useUsers";
+import { useUsers } from "@/hooks/features/user/useUsers";
 import { cn } from "@/lib/utils";
 import WorkspaceSchema from "@/schemas/workspace";
 import { zodResolver } from "@hookform/resolvers/zod";

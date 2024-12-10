@@ -1,11 +1,9 @@
-import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
 
 type Payload = {
   project: string;
-  since?: Date;
-  until?: Date;
+  since?: string;
+  until?: string;
   string: string;
 };
 
@@ -13,18 +11,12 @@ const useTwitterBoards = (payload: Payload) => {
   return useQuery({
     queryFn: async () => {
       const response = await fetch(
-        `/api/v1/twitter/${payload.project}/boards?since=${format(
-          payload.since!,
-          "yyyy-MM-dd"
-        )}&until=${format(
-          adjustDateByFactor(1, payload.until!),
-          "yyyy-MM-dd"
-        )}&string=${payload.string}`
+        `/api/v1/twitter/${payload.project}/boards?since=${payload.since}&until=${payload.until}&string=${payload.string}`
       );
       const data: TwitterBoards = await response.json();
       return data;
     },
-    queryKey: ["twitter", "boards", payload.project, payload.string],
+    queryKey: ["twitter", "boards", payload],
   });
 };
 

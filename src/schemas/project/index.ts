@@ -4,7 +4,7 @@ const create = z.object({
   workspaceId: z.string().trim().min(1, "Required"),
   title: z.string().trim().min(1, "Required"),
   textColor: z.string().trim().optional(),
-  bgColor: z.string().trim().optional(),
+  gradientBgColor: z.string().trim().optional(),
   description: z.string().trim().min(1, "Required"),
   sectionId: z.string().trim().min(1, "Required"),
   image: z.instanceof(File).refine((file) => file.type.startsWith("image/"), {

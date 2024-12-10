@@ -2,19 +2,17 @@
 
 import useTwitterClusterStats, {
   ClusterStats,
-} from "@/hooks/useTwitterClusterStats";
+} from "@/hooks/features/twitter/useTwitterClusterStats";
 import RechartArea from "@/components/charts/RechartArea";
 import SingleSelect from "@/components/SingleSelect";
 import { useEffect, useState } from "react";
 import DateRangePicker from "@/components/ui/date-range-picker";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
-import { useSearchParams } from "next/navigation";
 import dateFormatter from "@/utils/dateFormatter";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ClusterStatistics = ({ projectId }: { projectId: string }) => {
-  const searchParams = useSearchParams();
-  const dateParams = searchParams.get("date");
   const { data: projectInfo } = useProjectInfo("TWITTER", projectId);
   const [date, setDate] = useState<{ since?: Date; until?: Date }>({
     since: adjustDateByFactor(-3, new Date()),
@@ -22,21 +20,12 @@ const ClusterStatistics = ({ projectId }: { projectId: string }) => {
   });
   const [type, setType] =
     useState<keyof Omit<ClusterStats["ts"], "date">>("num_clusters_gc");
-  const { data } = useTwitterClusterStats({
+  const { data, isPending } = useTwitterClusterStats({
     projectId,
     since: date.since ? dateFormatter("ISO", date.since) : "",
     until: date.until ? dateFormatter("ISO", date.until) : "",
     string: "",
   });
-
-  useEffect(() => {
-    if (dateParams) {
-      setDate({
-        since: adjustDateByFactor(-3, new Date(dateParams)),
-        until: new Date(dateParams),
-      });
-    }
-  }, [dateParams]);
 
   useEffect(() => {
     if (projectInfo?.lastUpdate) {
@@ -46,6 +35,8 @@ const ClusterStatistics = ({ projectId }: { projectId: string }) => {
       });
     }
   }, [projectInfo?.lastUpdate]);
+
+  if (isPending) return <Skeleton className="h-full w-full" />;
 
   return (
     <>

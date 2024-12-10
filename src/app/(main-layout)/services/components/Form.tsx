@@ -11,8 +11,9 @@ import {
   Form as HookForm,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { usePutService } from "@/hooks/usePutService";
-import { useServices } from "@/hooks/useServices";
+import { Skeleton } from "@/components/ui/skeleton";
+import { usePutService } from "@/hooks/features/service/usePutService";
+import { useServices } from "@/hooks/features/service/useServices";
 import ServiceSchema from "@/schemas/service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -73,6 +74,18 @@ const Form = () => {
       form.reset(newValues);
     }
   }, [services.data]);
+
+  if (services.isPending)
+    return (
+      <div className="p-4 space-y-3">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <div className="space-y-2" key={index}>
+            <Skeleton className="h-8 w-20" />
+            <Skeleton className="h-11 w-full" />
+          </div>
+        ))}
+      </div>
+    );
 
   return (
     <HookForm {...form}>

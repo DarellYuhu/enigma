@@ -49,6 +49,8 @@ type Normalized = Record<
       updatedAt: Date;
       workspaceId: string;
       sectionId: number;
+      gradientBgColor: string | null;
+      textColor: string | null;
       Section: {
         id: number;
         name: string;

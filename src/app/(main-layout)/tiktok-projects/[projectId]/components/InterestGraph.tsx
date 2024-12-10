@@ -3,21 +3,29 @@
 import Graph from "@/components/charts/Graph";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
-import useTiktokInterestNet2 from "@/hooks/useTiktokInterestNet2";
+import useTiktokInterestNet2 from "@/hooks/features/tiktok/useTiktokInterestNet2";
 import { interestNetExport2 } from "@/utils/interestNetExport";
 import Link from "next/link";
 import { useState } from "react";
 import useGraphConfigStore from "../store/graph-config-store";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const InterestGraph = ({ projectId }: { projectId: string }) => {
   const [label, setLabel] = useState(false);
   const [node, setNode] = useState<any>(null);
   const { from, to } = useGraphConfigStore();
-  const { data } = useTiktokInterestNet2({
+  const { data, isPending } = useTiktokInterestNet2({
     projectId,
     window: 3,
     date: to!,
   });
+
+  if (isPending)
+    return (
+      <div className="w-full h-full p-4">
+        <Skeleton className="w-full h-full" />
+      </div>
+    );
 
   if (!data?.data.date) return null;
 

@@ -4,10 +4,11 @@ import useConfigStore from "../store/config-store";
 import VisGraph from "@/components/VisGraph";
 import { Card, CardContent } from "@/components/ui/card";
 import dateFormatter from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ActorNetwork = ({ details }: { details: string }) => {
   const { category, networkDate, networkType } = useConfigStore();
-  const { data } = useActorNetwork({
+  const { data, isPending } = useActorNetwork({
     category,
     date:
       typeof networkDate === "string"
@@ -16,6 +17,9 @@ const ActorNetwork = ({ details }: { details: string }) => {
     rid: details,
     window: parseInt(networkType),
   });
+
+  if (isPending) return <Skeleton className="h-96 w-full" />;
+
   if (!data) return null;
   return (
     <Card className="h-full">

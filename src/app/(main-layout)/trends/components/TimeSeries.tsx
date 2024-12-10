@@ -7,18 +7,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import useTrends from "@/hooks/features/useTrends";
+import useTrends from "@/hooks/features/trends/useTrends";
 import dateFormatter from "@/utils/dateFormatter";
 import useConfigStore from "../store/config-store";
 import SingleSelect from "@/components/SingleSelect";
 import MultipleSelector from "@/components/MultiSelect";
 import { useCallback, useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TimeSeries = ({ details }: { details: string }) => {
   const { category, level, since, until, type, setType } = useConfigStore();
   const [selected, setSelected] =
     useState<{ label: string; value: string }[]>();
-  const { data } = useTrends({
+  const { data, isPending } = useTrends({
     category,
     level,
     details,
@@ -51,6 +52,8 @@ const TimeSeries = ({ details }: { details: string }) => {
       );
     }
   }, [data]);
+
+  if (isPending) return <Skeleton className="h-80 w-full" />;
 
   if (!data) return null;
 

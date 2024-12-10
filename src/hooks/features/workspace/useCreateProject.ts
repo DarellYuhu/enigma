@@ -13,6 +13,9 @@ export default function useCreateProject() {
       formData.append("description", payload.description);
       formData.append("sectionId", payload.sectionId);
       formData.append("file", payload.image);
+      if (payload.gradientBgColor)
+        formData.append("gradientBgColor", payload.gradientBgColor);
+      if (payload.textColor) formData.append("textColor", payload.textColor);
       formData.append("links", JSON.stringify(payload.links));
       const response = await fetch(
         `/api/workspace/${payload.workspaceId}/project`,
@@ -40,6 +43,5 @@ export default function useCreateProject() {
         duration: 5000,
       });
     },
-    throwOnError: true,
   });
 }

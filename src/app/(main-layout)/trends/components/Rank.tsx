@@ -1,7 +1,7 @@
 "use client";
 import Datatable from "@/components/datatable/Datatable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import useTrends from "@/hooks/features/useTrends";
+import useTrends from "@/hooks/features/trends/useTrends";
 import useConfigStore from "../store/config-store";
 import { ColumnDef } from "@tanstack/react-table";
 import {
@@ -13,16 +13,30 @@ import {
   TrendingUp,
 } from "lucide-react";
 import React from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Rank = ({ details }: { details: string }) => {
   const { category, level, since, until, type } = useConfigStore();
-  const { data } = useTrends({
+  const { data, isPending } = useTrends({
     category,
     level,
     details,
     since: since!,
     until: until!,
   });
+
+  if (isPending)
+    return (
+      <div className="space-y-4">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div className="grid grid-cols-12 gap-3" key={index}>
+            <Skeleton className="w-full h-8 col-span-4" />
+            <Skeleton className="w-full h-8 col-span-4" />
+            <Skeleton className="w-full h-8 col-span-4" />
+          </div>
+        ))}
+      </div>
+    );
 
   if (!data) return null;
 

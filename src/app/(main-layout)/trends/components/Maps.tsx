@@ -8,9 +8,10 @@ import { Layer, Map as MapGl, Source } from "react-map-gl";
 import { useTheme } from "next-themes";
 import PH_JSON from "@/data/geojson/ph.json";
 import { MAP_THEME } from "@/constants";
-import useTrends from "@/hooks/features/useTrends";
+import useTrends from "@/hooks/features/trends/useTrends";
 import SingleSelect from "@/components/SingleSelect";
 import RechartPie from "@/components/charts/RechartPie";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Maps = ({ details }: { details: string }) => {
   const [type, setType] = useState<"pct_total" | "1w" | "1m">("1m");
@@ -58,6 +59,8 @@ const Maps = ({ details }: { details: string }) => {
     },
     [geoJson.data]
   );
+
+  if (geoJson.isPending) return <Skeleton className="h-80 w-full" />;
   return (
     <Card className="relative">
       <CardHeader>

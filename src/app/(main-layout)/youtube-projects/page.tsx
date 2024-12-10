@@ -4,7 +4,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import CreateDialog from "./components/createdialog";
 import EditDialog from "./components/editdialog";
-import { useYoutubeProjects } from "@/hooks/useYoutubeProjects";
+import { useYoutubeProjects } from "@/hooks/features/youtube/useYoutubeProjects";
 import { useSession } from "next-auth/react";
 import Datatable from "@/components/datatable/Datatable";
 import { useState } from "react";
@@ -12,11 +12,24 @@ import Link from "next/link";
 import { badgeVariants } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const YoutubeProjects = () => {
   const [selected, setSelected] = useState<YoutubeProject | undefined>();
   const { data: session } = useSession();
-  const projects = useYoutubeProjects();
+  const { data, isPending } = useYoutubeProjects();
+  if (isPending)
+    return (
+      <div className="flex flex-col gap-3">
+        <Skeleton className="h-10 w-40 place-self-end" />
+        <div className="grid grid-cols-12 gap-3">
+          {Array.from({ length: 24 }).map((_, index) => (
+            <Skeleton className="h-6 w-full col-span-3" key={index} />
+          ))}
+        </div>
+      </div>
+    );
+
   return (
     <div className="flex flex-col gap-3">
       <Dialog>
@@ -32,7 +45,7 @@ const YoutubeProjects = () => {
         <Dialog onOpenChange={(open) => !open && setSelected(undefined)}>
           <Datatable
             columns={columns(session?.user.role === "VIEWER", setSelected)}
-            data={projects.data?.projects || []}
+            data={data?.projects || []}
           />
           {selected && <EditDialog item={selected} />}
         </Dialog>

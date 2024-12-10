@@ -37,7 +37,10 @@ services:
     image: enigma
     ports:
       - "3000:3000"
+    volumes:
+      - D:/file-storage:/app/uploads # MODIFY THIS TO YOUR PATH
 
 volumes:
   dev-data:
   data:
+  file-storage:

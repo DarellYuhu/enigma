@@ -21,15 +21,16 @@ import {
 import chroma from "chroma-js";
 import { Frown, Meh, Smile } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import useTwitterAccountNet from "@/hooks/useTwitterAccountNet";
+import useTwitterAccountNet from "@/hooks/features/twitter/useTwitterAccountNet";
 import useTwitterAccountClusterInfo, {
   ClusterInfo,
-} from "@/hooks/useTwitterAccountClusterInfo";
+} from "@/hooks/features/twitter/useTwitterAccountClusterInfo";
 import Datatable from "@/components/datatable/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import HorizontalBarChart from "@/components/charts/HorizontalBarChart";
 import useAccountStore from "../store/account-config-store";
 import dateFormatter from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -50,7 +51,7 @@ const scale = [
 const AccountCluster = ({ projectId }: { projectId: string }) => {
   const { account, setAccount } = useClusterStore();
   const { date } = useAccountStore();
-  const { data } = useTwitterAccountNet({
+  const { data, isPending } = useTwitterAccountNet({
     projectId,
     Window: 1,
     date: date ? dateFormatter("ISO", date) : "",
@@ -63,6 +64,25 @@ const AccountCluster = ({ projectId }: { projectId: string }) => {
     projectId,
     window: 1,
   });
+
+  if (isPending)
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-12 gap-3">
+          <Skeleton className="h-8 w-full col-span-4" />
+          <Skeleton className="h-8 w-full col-span-4" />
+          <Skeleton className="h-8 w-full col-span-4" />
+        </div>
+        <div className="grid grid-cols-12 gap-3">
+          <div className="grid grid-cols-12 gap-3 col-span-8">
+            <Skeleton className="h-32 w-full col-span-6" />
+            <Skeleton className="h-32 w-full col-span-6" />
+            <Skeleton className="h-80 w-full col-span-full" />
+          </div>
+          <Skeleton className="h-full w-full col-span-4" />
+        </div>
+      </div>
+    );
 
   return (
     <Tabs.Root className="space-y-4" value={account} onValueChange={setAccount}>
@@ -175,34 +195,38 @@ const AccountCluster = ({ projectId }: { projectId: string }) => {
               </CardHeader>
             </Card>
           </div>
-          <div className="col-span-full lg:col-span-4 grid grid-cols-12 gap-4">
-            <Card className="col-span-full">
-              <CardHeader className="p-4">
-                <CardTitle className="text-base">
-                  Top Replied Accounts
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ScrollArea className="h-80">
-                  <Datatable
-                    pagination={false}
-                    columns={columns}
-                    data={clusterInfo.data?.data.authors || []}
-                    initialPageSize={10}
-                  />
-                </ScrollArea>
-              </CardContent>
-            </Card>
-            <div className="col-span-full h-96">
-              <HorizontalBarChart
-                data={clusterInfo.data?.normalized || []}
-                dataKey="value"
-                labelKey="hashtag"
-                label="Value"
-                hidelabel={false}
-              />
+          {clusterInfo.isPending ? (
+            <Skeleton className="w-full h-full col-span-4" />
+          ) : (
+            <div className="col-span-full lg:col-span-4 grid grid-cols-12 gap-4">
+              <Card className="col-span-full">
+                <CardHeader className="p-4">
+                  <CardTitle className="text-base">
+                    Top Replied Accounts
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ScrollArea className="h-80">
+                    <Datatable
+                      pagination={false}
+                      columns={columns}
+                      data={clusterInfo.data?.data.authors || []}
+                      initialPageSize={10}
+                    />
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+              <div className="col-span-full h-96">
+                <HorizontalBarChart
+                  data={clusterInfo.data?.normalized || []}
+                  dataKey="value"
+                  labelKey="hashtag"
+                  label="Value"
+                  hidelabel={false}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </Tabs.TabsContent>
       ))}
     </Tabs.Root>

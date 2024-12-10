@@ -2,11 +2,11 @@
 
 import useTwitterHashtageClusterInfo, {
   ClusterInfo,
-} from "@/hooks/useTwitterHashtagClusterInfo";
+} from "@/hooks/features/twitter/useTwitterHashtagClusterInfo";
 import useClusterStore from "../store/cluster-store";
 import * as Tabs from "@radix-ui/react-tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import useTwitterHashtagNet2 from "@/hooks/useTwitterHashtagNet2";
+import useTwitterHashtagNet2 from "@/hooks/features/twitter/useTwitterHashtagNet2";
 import {
   Card,
   CardContent,
@@ -30,6 +30,7 @@ import Datatable from "@/components/datatable/Datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import useHashtagStore from "../store/hashtag-config-store";
 import dateFormatter from "@/utils/dateFormatter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const colorScheme = chroma.scale(["#f87171", "#4ade80"]).colors(3);
 const scale = [
@@ -61,6 +62,26 @@ const HashtagClusters = ({ projectId }: { projectId: string }) => {
     window: 2,
     cluster: hashtag,
   });
+
+  if (graph.isPending || clusterInfo.isPending)
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-12 gap-3">
+          <Skeleton className="h-8 w-full col-span-4" />
+          <Skeleton className="h-8 w-full col-span-4" />
+          <Skeleton className="h-8 w-full col-span-4" />
+        </div>
+        <div className="grid grid-cols-12 gap-3">
+          <div className="grid grid-cols-12 gap-3 col-span-8">
+            <Skeleton className="h-32 w-full col-span-6" />
+            <Skeleton className="h-32 w-full col-span-6" />
+            <Skeleton className="h-80 w-full col-span-full" />
+          </div>
+          <Skeleton className="h-full w-full col-span-4" />
+        </div>
+      </div>
+    );
+
   return (
     <Tabs.Root className="space-y-4" value={hashtag} onValueChange={setHashtag}>
       <ScrollArea className="w-full overflow-x-auto ">

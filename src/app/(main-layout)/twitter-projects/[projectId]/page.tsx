@@ -31,7 +31,7 @@ const TwitterProjectDetail = ({
       <Card className="col-span-full">
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle>Board</CardTitle>
-          <BoardConfig />
+          <BoardConfig projectId={params.projectId} />
         </CardHeader>
         <CardContent>
           <Board projectId={params.projectId} />

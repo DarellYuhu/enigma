@@ -7,7 +7,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useResetPassword } from "@/hooks/useResetPassword";
+import { useResetPassword } from "@/hooks/features/user/useResetPassword";
 
 const ResetPassAlert = ({ id }: { id: number }) => {
   const { mutate } = useResetPassword();

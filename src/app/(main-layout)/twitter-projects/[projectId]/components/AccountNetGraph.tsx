@@ -14,8 +14,10 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import useTwitterAccountNet from "@/hooks/useTwitterAccountNet";
-import useTwitterBoards, { TwitterBoardItem } from "@/hooks/useTwitterBoards";
+import useTwitterAccountNet from "@/hooks/features/twitter/useTwitterAccountNet";
+import useTwitterBoards, {
+  TwitterBoardItem,
+} from "@/hooks/features/twitter/useTwitterBoards";
 import abbreviateNumber from "@/utils/abbreviateNumber";
 import {
   CosmographData,
@@ -29,6 +31,7 @@ import useAccountStore from "../store/account-config-store";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import dateFormatter from "@/utils/dateFormatter";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const { setAccount } = useClusterStore();
@@ -37,7 +40,7 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const projectInfo = useProjectInfo("TWITTER", projectId);
   const { date, setDate } = useAccountStore();
-  const { data } = useTwitterAccountNet({
+  const { data, isPending } = useTwitterAccountNet({
     projectId,
     Window: 1,
     date: date ? dateFormatter("ISO", date) : "",
@@ -45,8 +48,8 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const boards = useTwitterBoards({
     project: projectId,
     string: selectedNode?.data.user_screen_name ?? "",
-    since: adjustDateByFactor(-3, date),
-    until: adjustDateByFactor(1, date),
+    since: date && dateFormatter("ISO", adjustDateByFactor(-3, date)),
+    until: date && dateFormatter("ISO", adjustDateByFactor(1, date)),
   });
 
   useEffect(() => {
@@ -62,6 +65,9 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
       );
     }
   }, [data]);
+
+  if (isPending) return <Skeleton className="h-[400px] w-full" />;
+
   return (
     <div className="relative w-full h-[400px] shadow-inner">
       <CosmographProvider

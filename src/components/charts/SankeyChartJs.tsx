@@ -13,7 +13,7 @@ import {
 } from "chart.js";
 import { Chart as ChartJs } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
-import { HashtagEvolution } from "@/hooks/useTwitterHashtagEvo";
+import { HashtagEvolution } from "@/hooks/features/twitter/useTwitterHashtagEvo";
 import generateNodeColors from "@/utils/generateNodeColors";
 import { GlobalEvolutionData } from "@/hooks/features/tiktok/useGlobalEvolution";
 import { useEffect } from "react";

@@ -8,28 +8,25 @@ type BoardConfigState = {
 };
 
 type BoardConfigAction = {
-  setDate: (date: Omit<BoardConfigState, "string">) => void;
+  setFrom: (from?: Date) => void;
+  setTo: (to?: Date) => void;
   setString: (string: Pick<BoardConfigState, "string">) => void;
-  reset: () => void;
 };
 
 const useBoardConfigStore = create<BoardConfigState & BoardConfigAction>(
   (set) => ({
-    from: adjustDateByFactor(-3, new Date(Date.now())),
-    to: new Date(Date.now()),
+    from: adjustDateByFactor(-3, new Date()),
+    to: new Date(),
     string: "",
-    setDate(date) {
-      set(date);
+    setFrom(from) {
+      set({ from });
     },
+    setTo(to) {
+      set({ to });
+    },
+
     setString(string) {
       set(string);
-    },
-    reset() {
-      set({
-        from: adjustDateByFactor(-3, new Date(Date.now())),
-        to: new Date(Date.now()),
-        string: "",
-      });
     },
   })
 );
