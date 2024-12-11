@@ -2,6 +2,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "sonner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +21,7 @@ export default function WorkspaceLayout({
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
         {children}
+        <Toaster />
         <ReactQueryDevtools position="right" />
       </QueryClientProvider>
     </SessionProvider>

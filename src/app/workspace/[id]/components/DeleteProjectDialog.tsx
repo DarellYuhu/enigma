@@ -22,7 +22,7 @@ const DeleteProjectDialog = (params: Params) => {
   const { mutateAsync, isPending } = useDeleteProject();
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild className="absolute top-2 right-2">
+      <AlertDialogTrigger asChild>
         <Button variant="outline" size={"icon"}>
           <Trash />
         </Button>

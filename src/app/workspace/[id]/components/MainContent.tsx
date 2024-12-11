@@ -9,6 +9,7 @@ import DeleteSectionDialog from "./DeleteSectionDialog";
 import DeleteProjectDialog from "./DeleteProjectDialog";
 import { useSession } from "next-auth/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import EditProjectSheet from "./EditProjectSheet";
 
 const MainContent = () => {
   const params = useParams<{ id: string }>();
@@ -88,11 +89,14 @@ const MainContent = () => {
                     </div>
                   </div>
                   {isManager && (
-                    <DeleteProjectDialog
-                      projectId={item.id}
-                      projectName={item.title}
-                      workspaceId={data.data.id}
-                    />
+                    <div className="absolute top-2 right-2 space-x-1">
+                      <EditProjectSheet projectId={item.id} />
+                      <DeleteProjectDialog
+                        projectId={item.id}
+                        projectName={item.title}
+                        workspaceId={data.data.id}
+                      />
+                    </div>
                   )}
                 </MagicCard>
               ))}
