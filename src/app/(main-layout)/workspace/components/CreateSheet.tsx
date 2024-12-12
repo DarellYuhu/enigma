@@ -36,6 +36,7 @@ import { Trash, UserPlus } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
+import { ColorPicker } from "@/components/ui/color-picker";
 
 const CreateSheet = () => {
   const users = useUsers();
@@ -103,6 +104,40 @@ const CreateSheet = () => {
                 </FormItem>
               )}
             />
+            <div className="flex flex-row gap-4">
+              <FormField
+                control={form.control}
+                name="textColor"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Text Color</FormLabel>
+                    <FormControl>
+                      <ColorPicker
+                        value={field.value!}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="bgColor"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Background Color</FormLabel>
+                    <FormControl>
+                      <ColorPicker
+                        value={field.value!}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className="space-y-1">
               <FormLabel>Workspace Manager</FormLabel>
               {fields.map((field, index) => (

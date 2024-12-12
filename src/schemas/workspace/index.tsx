@@ -3,6 +3,8 @@ import { z } from "zod";
 const create = z.object({
   name: z.string().trim().min(1, "Required"),
   description: z.string().trim().optional(),
+  textColor: z.string().trim().optional(),
+  bgColor: z.string().trim().optional(),
   users: z
     .array(
       z.object({

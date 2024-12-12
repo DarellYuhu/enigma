@@ -23,11 +23,16 @@ const MainContent = () => {
   else if (!data) return null;
 
   return (
-    <div className="p-10 text-center relative">
-      <h1 className="text-6xl font-bold mt-8">{data.data.name}</h1>
-      {data.data.description && (
-        <h3 className="text-xl p-10 text-gray-400">{data.data.description}</h3>
-      )}
+    <div
+      className="p-10 text-center relative min-h-screen h-fulll overscroll-y-auto"
+      style={{ backgroundColor: data.data.bgColor ?? "" }}
+    >
+      <div style={{ color: data.data.textColor ?? "" }}>
+        <h1 className="text-6xl font-bold mt-8">{data.data.name}</h1>
+        {data.data.description && (
+          <h3 className="text-xl p-10">{data.data.description}</h3>
+        )}
+      </div>
       <div className="space-y-8">
         {Object.values(data.normalized).map((item) => (
           <div className="space-y-4" key={item.id}>
