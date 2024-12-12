@@ -36,8 +36,6 @@ export async function PATCH(
     UpdateProject & { file: File; links: string }
   >;
 
-  console.log(data);
-
   if (data.file) {
     filename = `${Date.now()}-${data.file.name}`;
     const arrayBuffer = await data.file.arrayBuffer();

@@ -45,7 +45,7 @@ const EditProjectSheet = ({ projectId }: { projectId: string }) => {
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState(false);
   const [initValues, setInitValues] = useState<UpdateProject>();
-  const { mutateAsync } = useUpdateProject();
+  const { mutateAsync, isPending } = useUpdateProject();
   const params: { id: string } = useParams();
   const { data: sections } = useSections(params.id);
   const { data: project, isPending: isProjectPending } = useProject({
@@ -378,9 +378,9 @@ const EditProjectSheet = ({ projectId }: { projectId: string }) => {
                 <Button
                   type="submit"
                   className={buttonVariants()}
-                  //   disabled={isPending}
+                  disabled={isPending}
                 >
-                  Create
+                  Update
                 </Button>
                 <SheetClose
                   ref={closeRef}
