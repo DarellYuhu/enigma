@@ -10,6 +10,9 @@ import dateFormatter from "@/utils/dateFormatter";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Expand } from "lucide-react";
 
 const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
   const { date, setDate } = useConfigStore();
@@ -42,19 +45,43 @@ const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
   if (!data) return null;
 
   return (
-    <VisGraph
-      data={data.normalized}
-      type="tagRelation"
-      events={{
-        click: (event) => {
-          const nodes = new DataSet(data.normalized.nodes);
-          const node: any = nodes.get(event.nodes[0]);
-          if (node && !Array.isArray(node)) {
-            setChannel(node.data.id);
-          }
-        },
-      }}
-    />
+    <>
+      <VisGraph
+        data={data.normalized}
+        type="tagRelation"
+        events={{
+          click: (event) => {
+            const nodes = new DataSet(data.normalized.nodes);
+            const node: any = nodes.get(event.nodes[0]);
+            if (node && !Array.isArray(node)) {
+              setChannel(node.data.id);
+            }
+          },
+        }}
+      />
+      <Dialog>
+        <DialogTrigger className="absolute top-2 right-2">
+          <Button size={"icon"} variant={"ghost"}>
+            <Expand size={14} />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="min-w-[90%] h-[90%]">
+          <VisGraph
+            data={data.normalized}
+            type="tagRelation"
+            events={{
+              click: (event) => {
+                const nodes = new DataSet(data.normalized.nodes);
+                const node: any = nodes.get(event.nodes[0]);
+                if (node && !Array.isArray(node)) {
+                  setChannel(node.data.id);
+                }
+              },
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

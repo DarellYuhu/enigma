@@ -32,6 +32,8 @@ import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import dateFormatter from "@/utils/dateFormatter";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Expand } from "lucide-react";
 
 const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const { setAccount } = useClusterStore();
@@ -69,84 +71,125 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   if (isPending) return <Skeleton className="h-[400px] w-full" />;
 
   return (
-    <div className="relative w-full h-[400px] shadow-inner">
-      <CosmographProvider
-        links={data?.normalized.network.links}
-        nodes={data?.normalized.network.nodes}
-      >
-        <div className=" bg-[#222222] absolute top-0 w-full z-10 px-2">
-          <CosmographSearch
-            accessors={[
-              {
-                label: "Name",
-                accessor: (node: CosmosNode) => node.data.user_screen_name,
-              },
-              {
-                label: "Description",
-                accessor: (node) => node.data.user_description,
-              },
-            ]}
-          />
-        </div>
-        <Graph
-          onNodeMouseOver={(node) => setNode(node)}
-          onNodeMouseOut={() => setNode(null)}
-          simulationGravity={0.25}
-          simulationRepulsion={1}
-          simulationRepulsionTheta={1.15}
-          simulationLinkSpring={1}
-          simulationLinkDistance={10}
-          simulationFriction={0.85}
-          linkVisibilityDistanceRange={[100, 500]}
-          linkVisibilityMinTransparency={0.2}
-          selectedNode={node}
-          data={
-            (data?.normalized.network as CosmographData<
-              CosmosNode,
-              CosmosLink
-            >) ?? []
-          }
-          onClick={(node) => {
-            if (node) {
-              setSelectedNode(node);
-              setIsOpen(true);
-            } else {
-              setSelectedNode(null);
+    <>
+      <div className="relative w-full h-[400px] shadow-inner">
+        <CosmographProvider
+          links={data?.normalized.network.links}
+          nodes={data?.normalized.network.nodes}
+        >
+          <div className=" bg-[#222222] absolute top-0 w-full z-10 px-2">
+            <CosmographSearch
+              accessors={[
+                {
+                  label: "Name",
+                  accessor: (node: CosmosNode) => node.data.user_screen_name,
+                },
+                {
+                  label: "Description",
+                  accessor: (node) => node.data.user_description,
+                },
+              ]}
+            />
+          </div>
+          <Graph
+            onNodeMouseOver={(node) => setNode(node)}
+            onNodeMouseOut={() => setNode(null)}
+            simulationGravity={0.25}
+            simulationRepulsion={1}
+            simulationRepulsionTheta={1.15}
+            simulationLinkSpring={1}
+            simulationLinkDistance={10}
+            simulationFriction={0.85}
+            linkVisibilityDistanceRange={[100, 500]}
+            linkVisibilityMinTransparency={0.2}
+            selectedNode={node}
+            data={
+              (data?.normalized.network as CosmographData<
+                CosmosNode,
+                CosmosLink
+              >) ?? []
             }
-          }}
-        />
-      </CosmographProvider>
+            onClick={(node) => {
+              if (node) {
+                setSelectedNode(node);
+                setIsOpen(true);
+              } else {
+                setSelectedNode(null);
+              }
+            }}
+          />
+        </CosmographProvider>
 
-      <Drawer
-        open={isOpen}
-        onOpenChange={(open) => {
-          setNode(null);
-          setIsOpen(open);
-        }}
-      >
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Content Board</DrawerTitle>
-            <DrawerDescription>
-              <p>{node?.label}</p>
-              <p>{node?.data.user_description}</p>
-              <p>Followers: {abbreviateNumber(node?.data.num_followers)}</p>
-            </DrawerDescription>
-          </DrawerHeader>
-          {boards.data && node && (
-            <ScrollArea className="w-full h-80 bg-white">
-              <Datatable columns={columns} data={boards.data.top.view_count} />
-              <ScrollBar orientation="vertical" />
-            </ScrollArea>
-          )}
-          <DrawerFooter>
-            <DrawerClose>
-              <Button variant="outline">Close</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    </div>
+        <Drawer
+          open={isOpen}
+          onOpenChange={(open) => {
+            setNode(null);
+            setIsOpen(open);
+          }}
+        >
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Content Board</DrawerTitle>
+              <DrawerDescription>
+                <p>{node?.label}</p>
+                <p>{node?.data.user_description}</p>
+                <p>Followers: {abbreviateNumber(node?.data.num_followers)}</p>
+              </DrawerDescription>
+            </DrawerHeader>
+            {boards.data && node && (
+              <ScrollArea className="w-full h-80 bg-white">
+                <Datatable
+                  columns={columns}
+                  data={boards.data.top.view_count}
+                />
+                <ScrollBar orientation="vertical" />
+              </ScrollArea>
+            )}
+            <DrawerFooter>
+              <DrawerClose>
+                <Button variant="outline">Close</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      </div>
+      <Dialog>
+        <DialogTrigger className="absolute top-2 right-2">
+          <Button size={"icon"} variant={"ghost"}>
+            <Expand size={14} />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="min-w-[90%] h-[90%]">
+          <Graph
+            onNodeMouseOver={(node) => setNode(node)}
+            onNodeMouseOut={() => setNode(null)}
+            simulationGravity={0.25}
+            simulationRepulsion={1}
+            simulationRepulsionTheta={1.15}
+            simulationLinkSpring={1}
+            simulationLinkDistance={10}
+            simulationFriction={0.85}
+            linkVisibilityDistanceRange={[100, 500]}
+            linkVisibilityMinTransparency={0.2}
+            selectedNode={node}
+            data={
+              (data?.normalized.network as CosmographData<
+                CosmosNode,
+                CosmosLink
+              >) ?? []
+            }
+            onClick={(node) => {
+              if (node) {
+                setSelectedNode(node);
+                setIsOpen(true);
+              } else {
+                setSelectedNode(null);
+              }
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

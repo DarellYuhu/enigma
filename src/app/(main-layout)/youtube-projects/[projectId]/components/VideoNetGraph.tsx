@@ -10,6 +10,9 @@ import dateFormatter from "@/utils/dateFormatter";
 import Link from "next/link";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Expand } from "lucide-react";
 
 const VideoNetGraph = ({ projectId }: { projectId: string }) => {
   const [node, setNode] = useState<NodeVideoNetwork | null>(null);
@@ -49,6 +52,25 @@ const VideoNetGraph = ({ projectId }: { projectId: string }) => {
           <span className="text-xs overflow-y-auto">{node.desc}</span>
         </div>
       )}
+      <Dialog>
+        <DialogTrigger className="absolute top-2 right-2">
+          <Button size={"icon"} variant={"ghost"}>
+            <Expand size={14} />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="min-w-[90%] h-[90%]">
+          <Graph
+            data={data.normalized}
+            onClick={(node) => {
+              if (node) {
+                setNode(node.data);
+              } else {
+                setNode(null);
+              }
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
