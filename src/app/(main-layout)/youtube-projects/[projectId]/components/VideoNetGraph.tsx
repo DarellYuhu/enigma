@@ -12,8 +12,9 @@ import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Expand } from "lucide-react";
+import { Download, Expand } from "lucide-react";
 import { Toggle } from "@/components/ui/toggle";
+import { exportNetwork } from "@/utils/exportNetwork";
 
 const VideoNetGraph = ({ projectId }: { projectId: string }) => {
   const [label, setLabel] = useState(false);
@@ -63,9 +64,18 @@ const VideoNetGraph = ({ projectId }: { projectId: string }) => {
         >
           Show Label
         </Toggle>
+        <Button
+          size={"icon"}
+          variant={"outline"}
+          onClick={() =>
+            exportNetwork(date, data?.data.network, "Video Network")
+          }
+        >
+          <Download />
+        </Button>
         <Dialog>
           <DialogTrigger>
-            <Button size={"icon"} variant={"ghost"}>
+            <Button size={"icon"} variant={"outline"}>
               <Expand size={14} />
             </Button>
           </DialogTrigger>

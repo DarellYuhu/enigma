@@ -12,8 +12,9 @@ import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Expand } from "lucide-react";
+import { Download, Expand } from "lucide-react";
 import { Toggle } from "@/components/ui/toggle";
+import { exportNetwork } from "@/utils/exportNetwork";
 
 const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
   const [label, setLabel] = useState(true);
@@ -65,7 +66,7 @@ const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
       <div className="absolute top-2 right-2 flex gap-2 items-center">
         <Dialog>
           <DialogTrigger>
-            <Button size={"icon"} variant={"ghost"}>
+            <Button size={"icon"} variant={"outline"}>
               <Expand size={14} />
             </Button>
           </DialogTrigger>
@@ -88,6 +89,15 @@ const ChannelNetGraph = ({ projectId }: { projectId: string }) => {
             />
           </DialogContent>
         </Dialog>
+        <Button
+          size={"icon"}
+          variant={"outline"}
+          onClick={() =>
+            exportNetwork(date, data?.data.network, "Channel Network")
+          }
+        >
+          <Download />
+        </Button>
         <Toggle
           pressed={label}
           onPressedChange={setLabel}

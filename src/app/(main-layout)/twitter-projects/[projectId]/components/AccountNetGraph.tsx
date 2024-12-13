@@ -33,8 +33,10 @@ import dateFormatter from "@/utils/dateFormatter";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Expand } from "lucide-react";
+import { Download, Expand } from "lucide-react";
 import { Toggle } from "@/components/ui/toggle";
+import { exportNetwork } from "@/utils/exportNetwork";
+import { toast } from "sonner";
 
 const AccountNetGraph = ({ projectId }: { projectId: string }) => {
   const [label, setLabel] = useState(false);
@@ -157,9 +159,20 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
         </Drawer>
       </div>
       <div className="absolute top-2 right-2 flex items-center gap-2">
+        <Button
+          size={"icon"}
+          variant={"outline"}
+          onClick={() =>
+            data?.data.network
+              ? exportNetwork(date, data?.data.network, "Actor Network")
+              : toast.error("Fail export network")
+          }
+        >
+          <Download />
+        </Button>
         <Dialog>
           <DialogTrigger>
-            <Button size={"icon"} variant={"ghost"}>
+            <Button size={"icon"} variant={"outline"}>
               <Expand size={14} />
             </Button>
           </DialogTrigger>
