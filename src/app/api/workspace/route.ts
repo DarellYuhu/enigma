@@ -4,10 +4,17 @@ import { z } from "zod";
 import prisma from "../database";
 
 export async function POST(req: NextRequest) {
-  const { name, users, description }: z.infer<typeof WorkspaceSchema.create> =
-    await req.json();
+  const {
+    name,
+    users,
+    description,
+    textColor,
+    bgColor,
+  }: z.infer<typeof WorkspaceSchema.create> = await req.json();
   const workspace = await prisma.workspace.create({
     data: {
+      textColor,
+      bgColor,
       name,
       description,
       Workspace_User: {

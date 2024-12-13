@@ -1,15 +1,16 @@
-import { buttonVariants } from "@/components/ui/button";
-import { Dock as DockContainer, DockIcon } from "@/components/ui/dock";
-import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { buttonVariants } from "@/components/ui/button";
+import { Dock as DockContainer, DockIcon } from "@/components/ui/dock";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { DiamondPlusIcon } from "lucide-react";
 import CreateSheet from "./CreateSheet";
 import { cn } from "@/lib/utils";
 import CreateSectionDialog from "./CreateSectionDialog";
+import EditWorkspaceSheet from "./EditWorkspaceSheet";
 
 const Dock = () => {
   return (
@@ -40,6 +41,9 @@ const Dock = () => {
       </DockIcon>
       <DockIcon>
         <CreateSectionDialog />
+      </DockIcon>
+      <DockIcon>
+        <EditWorkspaceSheet />
       </DockIcon>
     </DockContainer>
   );

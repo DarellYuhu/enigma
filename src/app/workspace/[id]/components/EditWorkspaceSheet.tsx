@@ -1,5 +1,16 @@
 "use client";
-import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Form,
   FormControl,
@@ -8,14 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Sheet,
   SheetClose,
@@ -26,26 +29,36 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Textarea } from "@/components/ui/textarea";
-import useCreateWorkspace from "@/hooks/features/workspace/useCreateWorkspace";
-import { useUsers } from "@/hooks/features/user/useUsers";
-import { cn } from "@/lib/utils";
-import WorkspaceSchema from "@/schemas/workspace";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash, UserPlus } from "lucide-react";
-import { useEffect, useRef } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { ColorPicker } from "@/components/ui/color-picker";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Pencil, Trash, UserPlus } from "lucide-react";
+import WorkspaceSchema, { UpdateWorkspace } from "@/schemas/workspace";
+import { useUsers } from "@/hooks/features/user/useUsers";
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
+import useWorkspace from "@/hooks/features/workspace/useWorkspace";
+import { useParams } from "next/navigation";
+import isEqual from "lodash/isEqual";
+import { zodResolver } from "@hookform/resolvers/zod";
+import useUpdateWorkspace from "@/hooks/features/workspace/useUpdateWorkspace";
 
-const CreateSheet = () => {
-  const users = useUsers();
+const EditWorkspaceSheet = () => {
+  const [initValue, setInitValue] = useState<UpdateWorkspace | undefined>();
+  const params: { id: string } = useParams();
   const closeRef = useRef<HTMLButtonElement | null>(null);
-  const form = useForm<z.infer<typeof WorkspaceSchema.create>>({
-    resolver: zodResolver(WorkspaceSchema.create),
+  const { data } = useWorkspace(params.id);
+  const users = useUsers();
+  const { mutate, isPending } = useUpdateWorkspace();
+  const form = useForm<UpdateWorkspace>({
+    resolver: zodResolver(WorkspaceSchema.update),
     defaultValues: {
-      name: "",
+      bgColor: "",
+      textColor: "",
       description: "",
+      name: "",
       users: [{ id: "" }],
     },
   });
@@ -53,25 +66,59 @@ const CreateSheet = () => {
     control: form.control,
     name: "users",
   });
-  const { mutate, isPending, status } = useCreateWorkspace();
-
-  const onSubmit = (values: z.infer<typeof WorkspaceSchema.create>) =>
-    mutate(values);
+  const onSubmit = (value: UpdateWorkspace) => {
+    const keys = Object.keys(value).filter(
+      (key) =>
+        !isEqual(
+          initValue?.[key as keyof UpdateWorkspace],
+          value[key as keyof UpdateWorkspace]
+        )
+    );
+    const changedField = keys.map((key) => [
+      key,
+      value[key as keyof UpdateWorkspace],
+    ]);
+    const payload = Object.fromEntries(changedField);
+    mutate({ payload, id: params.id });
+  };
 
   useEffect(() => {
-    if (status === "success") {
-      closeRef.current?.click();
+    if (data) {
+      const value = {
+        bgColor: data.data.bgColor ?? "",
+        textColor: data.data.textColor ?? "",
+        description: data.data.description ?? "",
+        name: data.data.name,
+        users: data.data.Workspace_User.map((item) => ({
+          id: item.userId.toString(),
+        })),
+      };
+      form.reset(value);
+      setInitValue(value);
     }
-  }, [status]);
+  }, [data]);
 
   return (
     <Sheet onOpenChange={(open) => !open && form.reset()}>
-      <SheetTrigger className={cn(buttonVariants(), "flex justify-self-end")}>
-        Create Workspace
-      </SheetTrigger>
-      <SheetContent>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <SheetTrigger
+            aria-label="Edit workspace"
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "icon" }),
+              "size-8 rounded-lg"
+            )}
+          >
+            <Pencil className="size-4" />
+          </SheetTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{"Edit workspace"}</p>
+        </TooltipContent>
+      </Tooltip>
+      <SheetContent className="overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Create Workspace</SheetTitle>
+          <SheetTitle>Edit Workspace</SheetTitle>
           <SheetDescription>
             Please fill all the available form
           </SheetDescription>
@@ -196,7 +243,7 @@ const CreateSheet = () => {
 
             <SheetFooter className="justify-self-start">
               <Button type="submit" disabled={isPending}>
-                Create
+                Update
               </Button>
               <SheetClose
                 ref={closeRef}
@@ -212,4 +259,4 @@ const CreateSheet = () => {
   );
 };
 
-export default CreateSheet;
+export default EditWorkspaceSheet;

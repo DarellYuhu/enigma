@@ -79,7 +79,7 @@ const TwitterProjectDetail = ({
         <AccountConfig />
       </div>
 
-      <Card className="col-span-8">
+      <Card className="col-span-8 relative">
         <CardHeader>
           <CardTitle>Actor Network</CardTitle>
         </CardHeader>

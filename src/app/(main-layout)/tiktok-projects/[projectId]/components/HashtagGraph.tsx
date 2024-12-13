@@ -12,6 +12,8 @@ import useGraphConfigStore from "../store/graph-config-store";
 import useProjectInfo from "@/hooks/features/useProjectInfo";
 import adjustDateByFactor from "@/utils/adjustDateByFactor";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Expand } from "lucide-react";
 
 const HashtagGraph = ({ projectId }: { projectId: string }) => {
   const [tagNode, setTagNode] = useState(null);
@@ -64,13 +66,38 @@ const HashtagGraph = ({ projectId }: { projectId: string }) => {
           <TagInformation tagNode={tagNode} />
         </div>
       ) : null}
-      <Button
-        variant={"outline"}
-        onClick={() => tagRelationExport(from!, to!, data.data.relation)}
-        className="absolute top-2 right-2"
-      >
-        Export (.gdf)
-      </Button>
+      <div className="absolute top-2 right-2 justify-items-center flex gap-2">
+        <Dialog>
+          <DialogTrigger>
+            <Button size={"icon"} variant={"ghost"}>
+              <Expand size={14} />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="min-w-[90%] h-[90%]">
+            <VisGraph
+              data={data.normalized ?? []}
+              type="tagRelation"
+              events={{
+                click: (event) => {
+                  const nodes = new DataSet(data.data.relation.nodes);
+                  const node = nodes.get(event.nodes[0]);
+                  if (node && !Array.isArray(node)) {
+                    setTagNode(node);
+                  } else {
+                    setTagNode(null);
+                  }
+                },
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+        <Button
+          variant={"outline"}
+          onClick={() => tagRelationExport(from!, to!, data.data.relation)}
+        >
+          Export (.gdf)
+        </Button>
+      </div>
     </>
   );
 };

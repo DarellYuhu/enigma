@@ -13,11 +13,11 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         <Configuration />
       </div>
 
-      <Card className="col-span-8">
+      <Card className="col-span-8 relative">
         <CardHeader>
           <CardTitle>Video Network</CardTitle>
         </CardHeader>
-        <CardContent className="h-80 relative">
+        <CardContent className="h-80">
           <VideoNetGraph projectId={params.projectId} />
         </CardContent>
       </Card>
@@ -35,7 +35,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         <ClusterInfo projectId={params.projectId} />
       </div>
 
-      <Card className="col-span-8">
+      <Card className="col-span-8 relative">
         <CardHeader>
           <CardTitle>Channel Network</CardTitle>
         </CardHeader>

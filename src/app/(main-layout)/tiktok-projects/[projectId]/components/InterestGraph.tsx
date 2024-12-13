@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useState } from "react";
 import useGraphConfigStore from "../store/graph-config-store";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Expand } from "lucide-react";
 
 const InterestGraph = ({ projectId }: { projectId: string }) => {
   const [label, setLabel] = useState(false);
@@ -56,6 +58,26 @@ const InterestGraph = ({ projectId }: { projectId: string }) => {
         </div>
       ) : null}
       <div className="absolute top-2 right-2 space-x-3">
+        <Dialog>
+          <DialogTrigger>
+            <Button size={"icon"} variant={"outline"}>
+              <Expand size={14} />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="min-w-[90%] h-[90%]">
+            <Graph
+              data={data.normalized.network}
+              onClick={(node) => {
+                if (node) {
+                  setNode(node.data);
+                } else {
+                  setNode(null);
+                }
+              }}
+              showDynamicLabel={label}
+            />
+          </DialogContent>
+        </Dialog>
         <Toggle
           pressed={label}
           onPressedChange={setLabel}
