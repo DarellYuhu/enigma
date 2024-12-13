@@ -1,5 +1,3 @@
-import React from "react";
-
 const home = () => {
   return (
     <div className="w-full">

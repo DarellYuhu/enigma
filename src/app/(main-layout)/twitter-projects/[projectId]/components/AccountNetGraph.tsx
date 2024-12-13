@@ -3,7 +3,7 @@
 import Datatable from "@/components/datatable/Datatable";
 import { DataTableColumnHeader } from "@/components/datatable/DataTableColumnHeader";
 import Graph, { CosmosLink, CosmosNode } from "@/components/charts/Graph";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -34,8 +34,10 @@ import useProjectInfo from "@/hooks/features/useProjectInfo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Expand } from "lucide-react";
+import { Toggle } from "@/components/ui/toggle";
 
 const AccountNetGraph = ({ projectId }: { projectId: string }) => {
+  const [label, setLabel] = useState(false);
   const { setAccount } = useClusterStore();
   const [node, setNode] = useState<CosmosNode | null>(null);
   const [selectedNode, setSelectedNode] = useState<CosmosNode | null>(null);
@@ -103,6 +105,7 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
             linkVisibilityDistanceRange={[100, 500]}
             linkVisibilityMinTransparency={0.2}
             selectedNode={node}
+            showDynamicLabels={label}
             data={
               (data?.normalized.network as CosmographData<
                 CosmosNode,
@@ -153,42 +156,52 @@ const AccountNetGraph = ({ projectId }: { projectId: string }) => {
           </DrawerContent>
         </Drawer>
       </div>
-      <Dialog>
-        <DialogTrigger className="absolute top-2 right-2">
-          <Button size={"icon"} variant={"ghost"}>
-            <Expand size={14} />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="min-w-[90%] h-[90%]">
-          <Graph
-            onNodeMouseOver={(node) => setNode(node)}
-            onNodeMouseOut={() => setNode(null)}
-            simulationGravity={0.25}
-            simulationRepulsion={1}
-            simulationRepulsionTheta={1.15}
-            simulationLinkSpring={1}
-            simulationLinkDistance={10}
-            simulationFriction={0.85}
-            linkVisibilityDistanceRange={[100, 500]}
-            linkVisibilityMinTransparency={0.2}
-            selectedNode={node}
-            data={
-              (data?.normalized.network as CosmographData<
-                CosmosNode,
-                CosmosLink
-              >) ?? []
-            }
-            onClick={(node) => {
-              if (node) {
-                setSelectedNode(node);
-                setIsOpen(true);
-              } else {
-                setSelectedNode(null);
+      <div className="absolute top-2 right-2 flex items-center gap-2">
+        <Dialog>
+          <DialogTrigger>
+            <Button size={"icon"} variant={"ghost"}>
+              <Expand size={14} />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="min-w-[90%] h-[90%]">
+            <Graph
+              onNodeMouseOver={(node) => setNode(node)}
+              onNodeMouseOut={() => setNode(null)}
+              simulationGravity={0.25}
+              simulationRepulsion={1}
+              simulationRepulsionTheta={1.15}
+              simulationLinkSpring={1}
+              simulationLinkDistance={10}
+              simulationFriction={0.85}
+              linkVisibilityDistanceRange={[100, 500]}
+              linkVisibilityMinTransparency={0.2}
+              selectedNode={node}
+              showDynamicLabels={label}
+              data={
+                (data?.normalized.network as CosmographData<
+                  CosmosNode,
+                  CosmosLink
+                >) ?? []
               }
-            }}
-          />
-        </DialogContent>
-      </Dialog>
+              onClick={(node) => {
+                if (node) {
+                  setSelectedNode(node);
+                  setIsOpen(true);
+                } else {
+                  setSelectedNode(null);
+                }
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+        <Toggle
+          pressed={label}
+          onPressedChange={setLabel}
+          className={buttonVariants({ variant: "outline" })}
+        >
+          Show Label
+        </Toggle>
+      </div>
     </>
   );
 };

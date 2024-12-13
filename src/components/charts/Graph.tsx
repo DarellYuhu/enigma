@@ -21,7 +21,7 @@ export type CosmosLink = CosmosInputLink & {
 
 type Props = {
   linkVisibilityDistanceRange?: [number, number];
-  showDynamicLabel?: boolean;
+  showDynamicLabels?: boolean;
   simulationGravity?: number;
   simulationLinkSpring?: number;
   simulationRepulsion?: number;
@@ -40,7 +40,7 @@ type Props = {
 
 const Graph = ({
   data,
-  showDynamicLabel = true,
+  showDynamicLabels = true,
   linkVisibilityDistanceRange = [90, 90],
   simulationGravity = 0.38,
   simulationLinkSpring = 0.03,
@@ -78,7 +78,7 @@ const Graph = ({
       nodeSize={(node) => (node.size ? node.size * 0.18 : 1)}
       nodeLabelAccessor={nodeLabelAccessor}
       nodeLabelColor={"#fff"}
-      showDynamicLabels={showDynamicLabel}
+      showDynamicLabels={showDynamicLabels}
       linkArrows={linkArrows}
       linkColor={(link) => link.fill || "#c7c7c7"}
       linkVisibilityDistanceRange={linkVisibilityDistanceRange}

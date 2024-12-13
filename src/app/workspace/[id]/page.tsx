@@ -1,4 +1,3 @@
-import React from "react";
 import Dock from "./components/Dock";
 import MainContent from "./components/MainContent";
 import { auth } from "@/lib/auth";

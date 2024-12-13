@@ -57,7 +57,7 @@ const ScatterTopics = ({ projectId }: { projectId: string }) => {
           nodeGreyoutOpacity={0.05}
           selectedNodes={filterd}
           data={data.normalized}
-          showDynamicLabel={false}
+          showDynamicLabels={false}
           nodeLabelAccessor={(node) => {
             return `${node.label}: ${node.data.full_text}`;
           }}

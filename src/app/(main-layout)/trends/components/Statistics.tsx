@@ -1,6 +1,6 @@
 "use client";
 import useActorNetwork from "@/hooks/features/trends/useActorNetwork";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import useConfigStore from "../store/config-store";
 import dateFormatter from "@/utils/dateFormatter";
 import RechartMultiLine from "@/components/charts/RechartMultiLine";
