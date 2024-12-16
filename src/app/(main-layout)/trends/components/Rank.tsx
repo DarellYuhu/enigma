@@ -12,7 +12,6 @@ import {
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
-import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Rank = ({ details }: { details: string }) => {

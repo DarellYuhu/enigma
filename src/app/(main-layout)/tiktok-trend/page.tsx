@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import InterestGraph from "./components/InterestGraph";
-import TypeSelection from "./components/TypeSelection";
 import Evolution from "./components/Evolution";
 import Configuration from "./components/Configuration";
 
@@ -11,12 +10,11 @@ const Trend = () => {
         <Configuration />
       </div>
 
-      <Card className="col-span-full flex flex-col">
-        <CardHeader className="flex flex-row justify-between items-center">
+      <Card className="col-span-full relative">
+        <CardHeader>
           <CardTitle>Interest Network</CardTitle>
-          <TypeSelection />
         </CardHeader>
-        <CardContent className="relative p-0">
+        <CardContent className="p-0">
           <InterestGraph />
         </CardContent>
       </Card>

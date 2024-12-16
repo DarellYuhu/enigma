@@ -39,7 +39,7 @@ const ProjectDetail = ({ params }: { params: { projectId: string } }) => {
         <CardHeader>
           <CardTitle>Channel Network</CardTitle>
         </CardHeader>
-        <CardContent className="h-80">
+        <CardContent className="h-80 p-0">
           <ChannelNetGraph projectId={params.projectId} />
         </CardContent>
       </Card>

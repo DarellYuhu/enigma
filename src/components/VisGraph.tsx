@@ -49,8 +49,8 @@ const defaultOptions = {
 };
 
 export type VisData<NodeData = unknown, EdgeData = unknown> = {
-  nodes: (Node & { data: NodeData })[];
-  edges: (Edge & { data: EdgeData })[];
+  nodes: (Node & { data?: NodeData; [key: string]: any })[];
+  edges: (Edge & { data?: EdgeData; [key: string]: any })[];
 };
 
 interface VisGraphProps {

@@ -11,10 +11,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Expand } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Download, Expand } from "lucide-react";
+import { Toggle } from "@/components/ui/toggle";
+import { exportNetwork } from "@/utils/exportNetwork";
 
 const VideoNetGraph = ({ projectId }: { projectId: string }) => {
+  const [label, setLabel] = useState(false);
   const [node, setNode] = useState<NodeVideoNetwork | null>(null);
   const { date } = useConfigStore();
   const { data, isPending } = useYoutubeVideoNet({
@@ -31,6 +34,7 @@ const VideoNetGraph = ({ projectId }: { projectId: string }) => {
     <>
       <Graph
         data={data.normalized}
+        showDynamicLabels={label}
         onClick={(node) => {
           if (node) {
             setNode(node.data);
@@ -52,25 +56,44 @@ const VideoNetGraph = ({ projectId }: { projectId: string }) => {
           <span className="text-xs overflow-y-auto">{node.desc}</span>
         </div>
       )}
-      <Dialog>
-        <DialogTrigger className="absolute top-2 right-2">
-          <Button size={"icon"} variant={"ghost"}>
-            <Expand size={14} />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="min-w-[90%] h-[90%]">
-          <Graph
-            data={data.normalized}
-            onClick={(node) => {
-              if (node) {
-                setNode(node.data);
-              } else {
-                setNode(null);
-              }
-            }}
-          />
-        </DialogContent>
-      </Dialog>
+      <div className="absolute top-2 right-2 flex items-center gap-2">
+        <Toggle
+          pressed={label}
+          onPressedChange={setLabel}
+          className={buttonVariants({ variant: "outline" })}
+        >
+          Show Label
+        </Toggle>
+        <Button
+          size={"icon"}
+          variant={"outline"}
+          onClick={() =>
+            exportNetwork(date, data?.data.network, "Video Network")
+          }
+        >
+          <Download />
+        </Button>
+        <Dialog>
+          <DialogTrigger>
+            <Button size={"icon"} variant={"outline"}>
+              <Expand size={14} />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="min-w-[90%] h-[90%]">
+            <Graph
+              data={data.normalized}
+              showDynamicLabels={label}
+              onClick={(node) => {
+                if (node) {
+                  setNode(node.data);
+                } else {
+                  setNode(null);
+                }
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+      </div>
     </>
   );
 };

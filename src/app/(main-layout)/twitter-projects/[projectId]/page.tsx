@@ -51,7 +51,7 @@ const TwitterProjectDetail = ({
         </CardContent>
       </Card>
 
-      <Card className="col-span-full">
+      <Card className="col-span-full relative">
         <CardHeader>
           <CardTitle>Hashtag Network</CardTitle>
         </CardHeader>

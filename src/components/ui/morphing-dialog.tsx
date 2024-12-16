@@ -1,6 +1,7 @@
 "use client";
 
-import React, {
+import {
+  createContext,
   useCallback,
   useContext,
   useEffect,
@@ -28,8 +29,9 @@ interface MorphingDialogContextType {
   triggerRef: React.RefObject<HTMLDivElement>;
 }
 
-const MorphingDialogContext =
-  React.createContext<MorphingDialogContextType | null>(null);
+const MorphingDialogContext = createContext<MorphingDialogContextType | null>(
+  null
+);
 
 function useMorphingDialog() {
   const context = useContext(MorphingDialogContext);

@@ -3,7 +3,7 @@ import { MagicCard } from "@/components/ui/magic-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ProjectSchema from "@/schemas/project";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Control, useWatch } from "react-hook-form";
 import { z } from "zod";
 

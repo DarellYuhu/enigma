@@ -6,8 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import dateFormatter from "@/utils/dateFormatter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Expand } from "lucide-react";
+import { Download, Expand } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { exportNetwork } from "@/utils/exportNetwork";
 
 const ActorNetwork = ({ details }: { details: string }) => {
   const { category, networkDate, networkType } = useConfigStore();
@@ -31,16 +32,31 @@ const ActorNetwork = ({ details }: { details: string }) => {
           <VisGraph data={data.normalized} type="interestNet" />
         </div>
       </CardContent>
-      <Dialog>
-        <DialogTrigger className="absolute top-2 right-2">
-          <Button size={"icon"} variant={"ghost"}>
-            <Expand size={14} />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="min-w-[90%] h-[90%]">
-          <VisGraph data={data.normalized} type="interestNet" />
-        </DialogContent>
-      </Dialog>
+      <div className="absolute top-2 right-2 space-x-2">
+        <Button
+          size={"icon"}
+          variant={"ghost"}
+          onClick={() =>
+            exportNetwork(
+              new Date(networkDate),
+              data?.data.network,
+              "Correlation Network"
+            )
+          }
+        >
+          <Download />
+        </Button>
+        <Dialog>
+          <DialogTrigger>
+            <Button size={"icon"} variant={"ghost"}>
+              <Expand size={14} />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="min-w-[90%] h-[90%]">
+            <VisGraph data={data.normalized} type="interestNet" />
+          </DialogContent>
+        </Dialog>
+      </div>
     </Card>
   );
 };

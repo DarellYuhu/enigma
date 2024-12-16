@@ -42,7 +42,7 @@ const InterestGraph = ({ projectId }: { projectId: string }) => {
             setNode(null);
           }
         }}
-        showDynamicLabel={label}
+        showDynamicLabels={label}
       />
       {node ? (
         <div className="absolute bottom-2 left-2 h-3/5 w-64 flex flex-col gap-2 border rounded-md p-2 shadow-lg backdrop-blur-md">
@@ -74,7 +74,7 @@ const InterestGraph = ({ projectId }: { projectId: string }) => {
                   setNode(null);
                 }
               }}
-              showDynamicLabel={label}
+              showDynamicLabels={label}
             />
           </DialogContent>
         </Dialog>
