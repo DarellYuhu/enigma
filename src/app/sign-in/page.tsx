@@ -51,11 +51,20 @@ const SignIn = async (props: {
                 await signIn("credentials", {
                   username: formData.get("username"),
                   password: formData.get("password"),
-                  redirectTo: "/",
+                  redirectTo:
+                    decodeURIComponent(props.searchParams.callbackUrl ?? "") ??
+                    "/",
                 });
               } catch (error) {
                 if (error instanceof AuthError) {
-                  return redirect(`/sign-in?error=${error.type}`);
+                  const params = new URLSearchParams();
+                  params.set(
+                    "callbackUrl",
+                    props.searchParams.callbackUrl ?? "/"
+                  );
+                  params.set("error", error.type);
+                  console.log(params.toString());
+                  return redirect(`/sign-in?${params.toString()}`);
                 }
                 throw error;
               }

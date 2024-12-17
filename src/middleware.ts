@@ -6,7 +6,10 @@ export default auth((req) => {
   const pathname = req.nextUrl.pathname;
   const hasError = pathname === "/sign-in" && url.searchParams.has("error");
   if (!req.auth && !hasError && pathname !== "/sign-in") {
-    const newUrl = new URL("/sign-in", req.nextUrl.origin);
+    const newUrl = new URL(
+      `/sign-in?callbackUrl=${encodeURIComponent(pathname)}`,
+      req.nextUrl.origin
+    );
     return Response.redirect(newUrl);
   }
   if (
