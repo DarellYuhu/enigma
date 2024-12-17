@@ -43,14 +43,26 @@ export const exportNetwork = (date: Date, network: VisData, name: string) => {
 };
 
 const createDefHelper = (obj: DefObject) => {
-  return Object.entries(obj)
+  const keyMap: Record<string, string> = {
+    from: "node1",
+    to: "node2",
+    id: "name",
+  };
+
+  return Object.entries({ id: obj.id, ...obj })
+    .filter(([_, value]) => value)
     .map(([key, value]) => {
       let type: string = "";
+      const keyValue = keyMap[key] ?? key;
       switch (typeof value) {
         case "string":
           type = "VARCHAR";
           break;
         case "number":
+          if (!Number.isInteger(value)) {
+            type = "DOUBLE";
+            break;
+          }
           type = "INT";
           break;
         case "boolean":
@@ -61,7 +73,7 @@ const createDefHelper = (obj: DefObject) => {
           type = "UNKOWN_TYPE";
           break;
       }
-      return `${key} ${type}`;
+      return `${keyValue} ${type}`;
     })
     .join(",");
 };
