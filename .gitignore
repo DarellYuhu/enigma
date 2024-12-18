@@ -18,12 +18,12 @@
 
 # production
 **/build
+**/dist
 **/*docker.tar.gz
 
 # misc
 .DS_Store
 *.pem
-.vscode/settings.json
 .turbo
 
 # debug
@@ -41,3 +41,14 @@
 # typescript
 **/*.tsbuildinfo
 **/next-env.d.ts
+
+
+# IDE
+.vscode/
+.idea/
+.awcache/
+.devcontainer/
+.classpath/
+.project/
+.settings/
+*.code-workspace
