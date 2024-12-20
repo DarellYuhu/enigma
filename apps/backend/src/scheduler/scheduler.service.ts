@@ -3,6 +3,11 @@ import { ConfigService } from '@nestjs/config';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { FacebookGraphResponseDto } from './dto/facebook-graph-response.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { validateOrReject } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
+import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class SchedulerService {
@@ -10,6 +15,7 @@ export class SchedulerService {
     private configService: ConfigService,
     private schedulerRegistry: SchedulerRegistry,
     private prisma: PrismaService,
+    private httpService: HttpService,
   ) {}
 
   @Cron('*/5 * * * * *', { name: 'getFacebookData' })
@@ -18,10 +24,8 @@ export class SchedulerService {
       const FACEBOOK_GRAPH_BASE_URL = this.configService.get<string>(
         'FACEBOOK_GRAPH_BASE_URL',
       );
-
       const metrics = [
         'page_post_engagements',
-        'page_lifetime_engaged_followers_unique',
         'page_daily_follows',
         'page_follows',
         'page_impressions',
@@ -36,9 +40,9 @@ export class SchedulerService {
         'post_reactions_sorry_total',
         'post_reactions_anger_total',
         'page_fans',
-        'page_fans_locale',
-        'page_fans_city',
-        'page_fans_country',
+        // 'page_fans_locale',
+        // 'page_fans_city',
+        // 'page_fans_country',
         'page_fan_adds',
         'page_fan_removes',
         'page_video_views',
@@ -55,17 +59,30 @@ export class SchedulerService {
       url.searchParams.set('metric', metrics.join(','));
       url.searchParams.set('access_token', accessToken);
       url.searchParams.set('date_preset', 'last_month');
-      const response = await fetch(url);
 
-      const data: FacebookGraphResponseDto = await response.json();
+      const { data } = await lastValueFrom<
+        AxiosResponse<FacebookGraphResponseDto>
+      >(this.httpService.get(url.toString()));
+
+      const testPayload = plainToInstance(FacebookGraphResponseDto, data);
+
+      await validateOrReject(testPayload, {
+        stopAtFirstError: true,
+        whitelist: true,
+        forbidUnknownValues: false,
+        forbidNonWhitelisted: true,
+      });
 
       const metricPayload = data.data.flatMap((metric) =>
         metric.values.map((value) => ({
           metricId: metric.id,
-          end_time: new Date(value.end_time),
+          end_time: value.end_time
+            ? new Date(value.end_time).toISOString()
+            : undefined,
           ...value,
         })),
       );
+
       await this.prisma.$transaction(async (db) => {
         const page = await db.page.create({
           data: { accessToken, pageId },
@@ -77,17 +94,19 @@ export class SchedulerService {
           })),
           skipDuplicates: true,
         });
-        //   .finally(() => this.schedulerRegistry.deleteCronJob('getFacebookData'));
 
         await db.values.createMany({
           data: metricPayload.map((value) => ({
-            ...value,
+            metricId: value.metricId,
+            value: value.value,
           })),
           skipDuplicates: true,
         });
       });
+
+      console.log('success');
     } catch (error) {
-      console.log(error);
+      console.log(error[0].children[0]);
     } finally {
       this.schedulerRegistry.deleteCronJob('getFacebookData');
     }
