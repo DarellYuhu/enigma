@@ -1,14 +1,4 @@
 services:
-  # # UNCOMMENT THIS TO USE IN DEVELOPMENT
-  # dev-db:
-  #   image: postgres:latest
-  #   env_file:
-  #     - .env.development
-  #   ports:
-  #     - 5433:5432
-  #   volumes:
-  #     - dev-data:/var/lib/postgresql/data
-
   db:
     image: postgres:latest
     restart: always
@@ -41,6 +31,5 @@ services:
       - D:/file-storage:/app/uploads # MODIFY THIS TO YOUR PATH
 
 volumes:
-  dev-data:
   data:
   file-storage:
