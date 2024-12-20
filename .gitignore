@@ -23,6 +23,8 @@ uploads
 # misc
 .DS_Store
 *.pem
+.vscode/settings.json
+.turbo
 
 # debug
 npm-debug.log*
@@ -39,6 +41,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# misc
-.vscode/settings.json

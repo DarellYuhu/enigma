@@ -14,6 +14,7 @@
     "docker:up": "docker compose up --wait",
     "docker:save": "docker save enigma | gzip > enigma-docker.tar.gz"
   },
+  "packageManager": "npm@10.8.2",
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
@@ -102,6 +103,6 @@
     "prisma": "^5.21.1",
     "tailwindcss": "^3.4.13",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.2"
   }
 }
